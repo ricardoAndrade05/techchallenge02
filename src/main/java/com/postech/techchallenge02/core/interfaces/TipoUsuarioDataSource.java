@@ -10,6 +10,8 @@ public interface TipoUsuarioDataSource {
     TipoUsuarioDTO cadastraTipoUsuario(NovoTipoUsuarioDTO novoTipoUsuarioDTO);
 
     boolean excluirTipoUsuario(Long idTipoUsuario);
+
+    TipoUsuarioDTO atualizar(TipoUsuarioDTO dto);
     
 
 }

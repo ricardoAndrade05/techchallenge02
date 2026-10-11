@@ -18,7 +18,7 @@ public class TipoUsuario {
         return new TipoUsuario(id, restaurante, nome, tipo);
     }
 
-    public void atualizar(String novoNomeTipo, TipoUsuarioEnun tipo) {
+    public void atualizar(String novoNomeTipo) {
         setNome(novoNomeTipo);
         setTipo(tipo);
     }

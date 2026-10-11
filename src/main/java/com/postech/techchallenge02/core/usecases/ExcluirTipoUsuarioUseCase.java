@@ -26,7 +26,7 @@ public class ExcluirTipoUsuarioUseCase {
             throw new UsuarioSemPermissaoException("Usuário " + excluirTipoUsuarioDTO.idUsuarioLogado() + " não tem permissão para excluir tipo de usuário");
         }
 
-        boolean existeTipoUsuario = this.tipoUsuarioGateway.existeTipoUsuario(excluirTipoUsuarioDTO.idTipoUsuario());
+        boolean existeTipoUsuario = this.tipoUsuarioGateway.existeTipoUsuario(excluirTipoUsuarioDTO.idTipoUsuario(),usuarioLogado.getTipoUsuario().getIdRestaurante(),usuarioLogado.getTipoUsuario().getTipo());
         if (!existeTipoUsuario) {
             throw new TipoUsuarioNaoEncontradoException("Tipo de usuário não encontrado/inexistente: " + excluirTipoUsuarioDTO.idTipoUsuario());
         }

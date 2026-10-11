@@ -3,10 +3,10 @@ package com.postech.techchallenge02.core.interfaces;
 import java.util.List;
 import java.util.Optional;
 
-import com.postech.techchallenge02.core.dtos.NovoTipoUsuarioDTO;
 import com.postech.techchallenge02.core.dtos.Pagina;
 import com.postech.techchallenge02.core.dtos.Paginacao;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
+import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
 
 public interface TipoUsuarioGateway {
 
@@ -24,9 +24,9 @@ public interface TipoUsuarioGateway {
 
     void excluirTipoUsuario(Long idTipoUsuario);
 
-    boolean existeTipoUsuario(NovoTipoUsuarioDTO novoTipoUsuarioDTO);
+    boolean existeTipoUsuario(String nome, Long idRestaurante, TipoUsuarioEnun tipoUsuarioEnun);
 
-    boolean existeTipoUsuario(Long idTipoUsuario);
+    boolean existeTipoUsuario(Long idTipoUsuario, Long idRestaurante, TipoUsuarioEnun tipoUsuarioEnun);
 
 }
 

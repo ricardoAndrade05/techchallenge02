@@ -10,6 +10,7 @@ import com.postech.techchallenge02.core.dtos.RestauranteDTO;
 import com.postech.techchallenge02.core.dtos.TipoUsuarioDTO;
 import com.postech.techchallenge02.core.entities.Restaurante;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
+import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
 import com.postech.techchallenge02.core.interfaces.RestauranteDataSource;
 import com.postech.techchallenge02.core.interfaces.TipoUsuarioDataSource;
 import com.postech.techchallenge02.core.interfaces.TipoUsuarioGateway;
@@ -32,40 +33,38 @@ public class TipoUsuarioGatewayImpl implements TipoUsuarioGateway {
     }
 
     @Override
-    public TipoUsuario atualizarTipoUsuario(TipoUsuario tipoUsuario) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'atualizarTipoUsuario'");
+    public TipoUsuario atualizarTipoUsuario(TipoUsuario tipo) {
+       TipoUsuarioDTO dto = new TipoUsuarioDTO(tipo.getId(),tipo.getIdRestaurante(),tipo.getNome(),tipo.getTipo());
+       dto = this.dataSource.atualizar(dto);
+       return TipoUsuario.restaurar(dto.id(), tipo.getRestaurante(), dto.nome(), dto.tipoUsuario());
     }
 
-@Override
-public Optional<TipoUsuario> buscaTipoUsuarioPorId(Long idTipoUsuario) {
-    TipoUsuarioDTO tipoUsuarioDTO = this.dataSource.buscaTipoUsuarioPorId(idTipoUsuario);
-    if (tipoUsuarioDTO == null) {
-        return Optional.empty();
+    @Override
+    public Optional<TipoUsuario> buscaTipoUsuarioPorId(Long idTipoUsuario) {
+        TipoUsuarioDTO tipoUsuarioDTO = this.dataSource.buscaTipoUsuarioPorId(idTipoUsuario);
+        if (tipoUsuarioDTO == null) {
+            return Optional.empty();
+        }
+
+        RestauranteDTO restauranteDTO = this.restauranteDataSource.buscaRestaurantePorId(tipoUsuarioDTO.idRestaurante());
+        Restaurante restaurante = (restauranteDTO != null)
+                ? Restaurante.restaurar(restauranteDTO.id(), restauranteDTO.nome())
+                : null;
+
+        TipoUsuario tipoUsuario = TipoUsuario.restaurar(
+                idTipoUsuario,
+                restaurante,
+                tipoUsuarioDTO.nome(),
+                tipoUsuarioDTO.tipoUsuario());
+
+        return Optional.of(tipoUsuario);
     }
-
-    RestauranteDTO restauranteDTO = this.restauranteDataSource.buscaRestaurantePorId(tipoUsuarioDTO.idRestaurante());
-    Restaurante restaurante = (restauranteDTO != null) 
-        ? Restaurante.restaurar(restauranteDTO.id(), restauranteDTO.nome()) 
-        : null;
-
-    TipoUsuario tipoUsuario = TipoUsuario.restaurar(
-        idTipoUsuario,
-        restaurante,
-        tipoUsuarioDTO.nome(),
-        tipoUsuarioDTO.tipoUsuario()
-    );
-
-    return Optional.of(tipoUsuario);
-}
-
-
 
     @Override
     public TipoUsuario cadastraTipoUsuario(TipoUsuario tipoUsuario) {
-       NovoTipoUsuarioDTO novoTipoUsuarioDTO = new NovoTipoUsuarioDTO(tipoUsuario.getRestaurante().getId(), tipoUsuario.getNome(), tipoUsuario.getTipo());
-       TipoUsuarioDTO tipoUsuarioDTO = this.dataSource.cadastraTipoUsuario(novoTipoUsuarioDTO);
-       return TipoUsuario.restaurar(tipoUsuarioDTO.id(), tipoUsuario.getRestaurante(), tipoUsuarioDTO.nome(), tipoUsuarioDTO.tipoUsuario());
+        NovoTipoUsuarioDTO novoTipoUsuarioDTO = new NovoTipoUsuarioDTO(tipoUsuario.getRestaurante().getId(), tipoUsuario.getNome(), tipoUsuario.getTipo());
+        TipoUsuarioDTO tipoUsuarioDTO = this.dataSource.cadastraTipoUsuario(novoTipoUsuarioDTO);
+        return TipoUsuario.restaurar(tipoUsuarioDTO.id(), tipoUsuario.getRestaurante(), tipoUsuarioDTO.nome(), tipoUsuarioDTO.tipoUsuario());
     }
 
     @Override
@@ -76,19 +75,7 @@ public Optional<TipoUsuario> buscaTipoUsuarioPorId(Long idTipoUsuario) {
 
     @Override
     public void excluirTipoUsuario(Long idTipoUsuario) {
-      this.dataSource.excluirTipoUsuario(idTipoUsuario);
-    }
-
-    @Override
-    public boolean existeTipoUsuario(NovoTipoUsuarioDTO novoTipoUsuarioDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'existeTipoUsuario'");
-    }
-
-    @Override
-    public boolean existeTipoUsuario(Long idTipoUsuario) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'existeTipoUsuario'");
+        this.dataSource.excluirTipoUsuario(idTipoUsuario);
     }
 
     @Override
@@ -101,6 +88,18 @@ public Optional<TipoUsuario> buscaTipoUsuarioPorId(Long idTipoUsuario) {
     public List<TipoUsuario> buscaTiposUsuarioPorRestaurante(Long idRestaurante) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'buscaTiposUsuarioPorRestaurante'");
+    }
+
+    @Override
+    public boolean existeTipoUsuario(String nome, Long idRestaurante, TipoUsuarioEnun tipoUsuarioEnun) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'existeTipoUsuario'");
+    }
+
+    @Override
+    public boolean existeTipoUsuario(Long idTipoUsuario, Long idRestaurante, TipoUsuarioEnun tipoUsuarioEnun) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'existeTipoUsuario'");
     }
 
 }
