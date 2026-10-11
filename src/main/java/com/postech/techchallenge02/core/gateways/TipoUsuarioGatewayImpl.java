@@ -66,9 +66,10 @@ public Optional<TipoUsuario> buscaTipoUsuarioPorId(Long idTipoUsuario) {
     }
 
     @Override
-    public TipoUsuario cadastraTipoUsuario(TipoUsuario novoTipoUsuario) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cadastraTipoUsuario'");
+    public TipoUsuario cadastraTipoUsuario(TipoUsuario tipoUsuario) {
+       NovoTipoUsuarioDTO novoTipoUsuarioDTO = new NovoTipoUsuarioDTO(tipoUsuario.getRestaurante().getId(), tipoUsuario.getNome(), tipoUsuario.getTipo());
+       TipoUsuarioDTO tipoUsuarioDTO = this.dataSource.cadastraTipoUsuario(novoTipoUsuarioDTO);
+       return TipoUsuario.restaurar(tipoUsuarioDTO.id(), tipoUsuario.getRestaurante(), tipoUsuarioDTO.nome(), tipoUsuarioDTO.tipoUsuario());
     }
 
     @Override
