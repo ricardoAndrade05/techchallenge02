@@ -4,7 +4,6 @@ import com.postech.techchallenge02.core.dtos.NovoTipoUsuarioDTO;
 import com.postech.techchallenge02.core.entities.Restaurante;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
 import com.postech.techchallenge02.core.entities.Usuario;
-import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
 import com.postech.techchallenge02.core.exceptions.RestauranteNaoEncontradoException;
 import com.postech.techchallenge02.core.exceptions.TipoUsuarioExistenteException;
 import com.postech.techchallenge02.core.exceptions.UsuarioNaoEncontradoException;

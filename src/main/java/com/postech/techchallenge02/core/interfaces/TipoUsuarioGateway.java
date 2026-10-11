@@ -1,11 +1,11 @@
 package com.postech.techchallenge02.core.interfaces;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.postech.techchallenge02.core.dtos.NovoTipoUsuarioDTO;
 import com.postech.techchallenge02.core.dtos.Pagina;
 import com.postech.techchallenge02.core.dtos.Paginacao;
-import com.postech.techchallenge02.core.entities.Restaurante;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
 
 public interface TipoUsuarioGateway {
@@ -14,13 +14,15 @@ public interface TipoUsuarioGateway {
 
     Optional<TipoUsuario> buscaTipoUsuarioPorId(Long idTipoUsuario);
 
-    Pagina<TipoUsuario> buscaTipoUsuarioPorRestaurante(Restaurante restaurante, Paginacao paginacao);
+    Pagina<TipoUsuario> buscaTiposUsuarioPorRestaurante(Long idRestaurante, Paginacao paginacao);
+
+    List<TipoUsuario> buscaTiposUsuarioPorRestaurante(Long idRestaurante);
 
     TipoUsuario cadastraTipoUsuario(TipoUsuario novoTipoUsuario);
 
     boolean tipoUsuarioEstaVinculado(Long idTipoUsuario);
 
-    boolean excluirTipoUsuario(Long idTipoUsuario);
+    void excluirTipoUsuario(Long idTipoUsuario);
 
     boolean existeTipoUsuario(NovoTipoUsuarioDTO novoTipoUsuarioDTO);
 

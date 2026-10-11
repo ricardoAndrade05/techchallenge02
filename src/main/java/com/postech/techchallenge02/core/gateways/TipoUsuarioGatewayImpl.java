@@ -1,5 +1,6 @@
 package com.postech.techchallenge02.core.gateways;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.postech.techchallenge02.core.dtos.NovoTipoUsuarioDTO;
@@ -59,11 +60,6 @@ public Optional<TipoUsuario> buscaTipoUsuarioPorId(Long idTipoUsuario) {
 }
 
 
-    @Override
-    public Pagina<TipoUsuario> buscaTipoUsuarioPorRestaurante(Restaurante restaurante, Paginacao paginacao) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'buscaTipoUsuarioPorRestaurante'");
-    }
 
     @Override
     public TipoUsuario cadastraTipoUsuario(TipoUsuario tipoUsuario) {
@@ -79,9 +75,8 @@ public Optional<TipoUsuario> buscaTipoUsuarioPorId(Long idTipoUsuario) {
     }
 
     @Override
-    public boolean excluirTipoUsuario(Long idTipoUsuario) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'excluirTipoUsuario'");
+    public void excluirTipoUsuario(Long idTipoUsuario) {
+      this.dataSource.excluirTipoUsuario(idTipoUsuario);
     }
 
     @Override
@@ -94,6 +89,18 @@ public Optional<TipoUsuario> buscaTipoUsuarioPorId(Long idTipoUsuario) {
     public boolean existeTipoUsuario(Long idTipoUsuario) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'existeTipoUsuario'");
+    }
+
+    @Override
+    public Pagina<TipoUsuario> buscaTiposUsuarioPorRestaurante(Long idRestaurante, Paginacao paginacao) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'buscaTiposUsuarioPorRestaurante'");
+    }
+
+    @Override
+    public List<TipoUsuario> buscaTiposUsuarioPorRestaurante(Long idRestaurante) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'buscaTiposUsuarioPorRestaurante'");
     }
 
 }
