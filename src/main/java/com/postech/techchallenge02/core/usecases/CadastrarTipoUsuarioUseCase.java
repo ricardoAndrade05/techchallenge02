@@ -22,20 +22,20 @@ public class CadastrarTipoUsuarioUseCase {
         return new CadastrarTipoUsuarioUseCase(tipoUsuarioGateway, usuarioGateway, restauranteGateway);
     }
 
-    public TipoUsuario execute(NovoTipoUsuarioDTO novoTipoUsuarioDTO) {
-        final boolean existe = this.tipoUsuarioGateway.existeTipoUsuario(novoTipoUsuarioDTO);
+    public TipoUsuario execute(NovoTipoUsuarioDTO dto) {
+        final boolean existe = this.tipoUsuarioGateway.existeTipoUsuario(dto.nomeTipo(),dto.idRestaurante(),dto.tipoUsuario());
         if (existe) {
-            throw new TipoUsuarioExistenteException("Tipo " + novoTipoUsuarioDTO.nomeTipo() + " já cadastrado");
+            throw new TipoUsuarioExistenteException("Tipo " + dto.nomeTipo() + " já cadastrado");
         }
-        Usuario usuarioCriador = this.usuarioGateway.buscaUsuarioPorId(novoTipoUsuarioDTO.idUsuarioCriador())
-            .orElseThrow(() -> new UsuarioNaoEncontradoException("Usuário " + novoTipoUsuarioDTO.idUsuarioCriador() + " não encontrado"));
+        Usuario usuarioCriador = this.usuarioGateway.buscaUsuarioPorId(dto.idUsuarioCriador())
+            .orElseThrow(() -> new UsuarioNaoEncontradoException("Usuário " + dto.idUsuarioCriador() + " não encontrado"));
         if (!usuarioCriador.podeCadastrarTipoUsuario()) {
-            throw new UsuarioSemPermissaoException("Usuário " + novoTipoUsuarioDTO.idUsuarioCriador() + " não tem permissão para criar tipo de usuário");
+            throw new UsuarioSemPermissaoException("Usuário " + dto.idUsuarioCriador() + " não tem permissão para criar tipo de usuário");
         }
-        Restaurante restaurante = this.restauranteGateway.buscaRestaurantePorId(novoTipoUsuarioDTO.idRestaurante())
-            .orElseThrow(() -> new RestauranteNaoEncontradoException("Restaurante " + novoTipoUsuarioDTO.idRestaurante() + " não encontrado"));
+        Restaurante restaurante = this.restauranteGateway.buscaRestaurantePorId(dto.idRestaurante())
+            .orElseThrow(() -> new RestauranteNaoEncontradoException("Restaurante " + dto.idRestaurante() + " não encontrado"));
     
-        final TipoUsuario novoTipoUsuario = TipoUsuario.criar(restaurante,novoTipoUsuarioDTO.nomeTipo(),novoTipoUsuarioDTO.tipoUsuario());
+        final TipoUsuario novoTipoUsuario = TipoUsuario.criar(restaurante,dto.nomeTipo(),dto.tipoUsuario());
 
         return this.tipoUsuarioGateway.cadastraTipoUsuario(novoTipoUsuario);
     }

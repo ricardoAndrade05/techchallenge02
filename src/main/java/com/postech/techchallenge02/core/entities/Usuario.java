@@ -20,6 +20,10 @@ public class Usuario {
         return this.tipoUsuario != null && !TipoUsuarioEnun.CLIENTE.equals(this.tipoUsuario.getTipo());
     }
 
+    public boolean podeAtualizarTipoUsuario() {
+        return this.tipoUsuario != null && !TipoUsuarioEnun.CLIENTE.equals(this.tipoUsuario.getTipo());
+    }
+
     private Usuario(Long id, String nome, TipoUsuario tipoUsuario) {
         this.id = id;
         this.nome = nome;
