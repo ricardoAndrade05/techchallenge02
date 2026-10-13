@@ -1,11 +1,11 @@
-package com.postech.techchallenge02.externo.entities;
+package com.postech.techchallenge02.infra.entities;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.postech.techchallenge02.core.enums.TipoCozinhaEnun;
-import com.postech.techchallenge02.externo.infra.converters.TipoCozinhaConverter;
+import com.postech.techchallenge02.infra.infra.converters.TipoCozinhaConverter;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Convert;
@@ -19,10 +19,12 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "tb_restaurante")
 @Getter
+@Setter
 public class Restaurante {
 
     @Id

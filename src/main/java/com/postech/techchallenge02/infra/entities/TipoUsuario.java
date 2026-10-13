@@ -1,7 +1,7 @@
-package com.postech.techchallenge02.externo.entities;
+package com.postech.techchallenge02.infra.entities;
 
 import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
-import com.postech.techchallenge02.externo.infra.converters.TipoUsuarioConverter;
+import com.postech.techchallenge02.infra.infra.converters.TipoUsuarioConverter;
 
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -12,10 +12,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity 
 @Table(name = "tb_tipo_usuario")
 @Getter 
+@Setter
 public class TipoUsuario {
    
     @Id
