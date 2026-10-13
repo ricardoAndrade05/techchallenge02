@@ -1,4 +1,4 @@
-package com.postech.techchallenge02.externo.entities;
+package com.postech.techchallenge02.infra.entities;
 
 import java.time.LocalDateTime;
 
@@ -12,10 +12,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "tb_usuario")
-@Getter 
+@Getter
+@Setter 
 public class Usuario {
 
     @Id

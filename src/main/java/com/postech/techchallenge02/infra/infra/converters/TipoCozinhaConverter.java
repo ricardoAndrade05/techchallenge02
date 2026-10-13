@@ -1,4 +1,4 @@
-package com.postech.techchallenge02.externo.infra.converters;
+package com.postech.techchallenge02.infra.infra.converters;
 
 import com.postech.techchallenge02.core.enums.TipoCozinhaEnun;
 import com.postech.techchallenge02.core.exceptions.RecursoNaoEncontradoException;
