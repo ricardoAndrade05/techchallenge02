@@ -1,8 +1,12 @@
 package com.postech.techchallenge02.core.controllers;
 
+import java.util.List;
+
 import com.postech.techchallenge02.core.dtos.AtualizarTipoUsuarioDTO;
 import com.postech.techchallenge02.core.dtos.ExcluirTipoUsuarioDTO;
 import com.postech.techchallenge02.core.dtos.NovoTipoUsuarioDTO;
+import com.postech.techchallenge02.core.dtos.Pagina;
+import com.postech.techchallenge02.core.dtos.Paginacao;
 import com.postech.techchallenge02.core.dtos.TipoUsuarioDTO;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
 import com.postech.techchallenge02.core.gateways.RestauranteGatewayImpl;
@@ -17,6 +21,7 @@ import com.postech.techchallenge02.core.interfaces.UsuarioGateway;
 import com.postech.techchallenge02.core.presenters.TipoUsuarioPresenter;
 import com.postech.techchallenge02.core.usecases.AtualizarTipoUsuarioUseCase;
 import com.postech.techchallenge02.core.usecases.BuscarTipoUsuarioPorIdUseCase;
+import com.postech.techchallenge02.core.usecases.BuscarTipoUsuarioPorRestauranteUseCase;
 import com.postech.techchallenge02.core.usecases.CadastrarTipoUsuarioUseCase;
 import com.postech.techchallenge02.core.usecases.ExcluirTipoUsuarioUseCase;
 
@@ -41,14 +46,14 @@ public class TipoUsuarioController {
     }
 
     public TipoUsuarioDTO buscaTipoUsuarioPorId(long idTipoUsuario) {
-        TipoUsuarioGateway gateway = TipoUsuarioGatewayImpl.getInstance(this.dataSource, this.restauranteDataSource);
+        TipoUsuarioGateway gateway = TipoUsuarioGatewayImpl.getInstance(this.dataSource, this.restauranteDataSource, this.usuarioDataSource);
         TipoUsuario tipoUsuario = BuscarTipoUsuarioPorIdUseCase.getInstance(gateway).execute(idTipoUsuario);
 
         return TipoUsuarioPresenter.toDTO(tipoUsuario);
     }
 
     public TipoUsuarioDTO inserirTipoUsuario(NovoTipoUsuarioDTO novoTipoUsuarioDTO) {
-        TipoUsuarioGateway tipoUsuarioGateway = TipoUsuarioGatewayImpl.getInstance(this.dataSource, this.restauranteDataSource);
+        TipoUsuarioGateway tipoUsuarioGateway = TipoUsuarioGatewayImpl.getInstance(this.dataSource, this.restauranteDataSource, this.usuarioDataSource);
         UsuarioGateway usuarioGateway = UsuarioGatewayImpl.getInstance(this.usuarioDataSource, this.restauranteDataSource, this.dataSource);
         RestauranteGateway restauranteGateway = RestauranteGatewayImpl.getInstance(this.restauranteDataSource);
         TipoUsuario tipoUsuario = CadastrarTipoUsuarioUseCase.getInstance(tipoUsuarioGateway, usuarioGateway, restauranteGateway).execute(novoTipoUsuarioDTO);
@@ -57,18 +62,25 @@ public class TipoUsuarioController {
     }
 
     public void excluirTipoUsuario(ExcluirTipoUsuarioDTO excluirTipoUsuarioDTO) {
-        TipoUsuarioGateway tipoUsuarioGateway = TipoUsuarioGatewayImpl.getInstance(this.dataSource, this.restauranteDataSource);
+        TipoUsuarioGateway tipoUsuarioGateway = TipoUsuarioGatewayImpl.getInstance(this.dataSource, this.restauranteDataSource, this.usuarioDataSource);
         UsuarioGateway usuarioGateway = UsuarioGatewayImpl.getInstance(this.usuarioDataSource, this.restauranteDataSource, this.dataSource);
 
         ExcluirTipoUsuarioUseCase.getInstance(tipoUsuarioGateway, usuarioGateway).execute(excluirTipoUsuarioDTO);
     }
 
     public TipoUsuarioDTO atualizarTipoUsuario(AtualizarTipoUsuarioDTO atualizarTipoUsuarioDTO) {
-        TipoUsuarioGateway tipoUsuarioGateway = TipoUsuarioGatewayImpl.getInstance(this.dataSource, this.restauranteDataSource);
+        TipoUsuarioGateway tipoUsuarioGateway = TipoUsuarioGatewayImpl.getInstance(this.dataSource, this.restauranteDataSource, this.usuarioDataSource);
         UsuarioGateway usuarioGateway = UsuarioGatewayImpl.getInstance(this.usuarioDataSource, this.restauranteDataSource, this.dataSource);
         TipoUsuario tipoUsuario = AtualizarTipoUsuarioUseCase.getInstance(tipoUsuarioGateway, usuarioGateway).execute(atualizarTipoUsuarioDTO);
 
         return TipoUsuarioPresenter.toDTO(tipoUsuario);
     }
 
+    public Pagina<TipoUsuarioDTO> buscaTiposUsuarioRestaurante(Long idRestaurante, Paginacao page) {
+        TipoUsuarioGateway tipoUsuarioGateway = TipoUsuarioGatewayImpl.getInstance(this.dataSource, this.restauranteDataSource, this.usuarioDataSource);
+        RestauranteGateway restauranteGateway = RestauranteGatewayImpl.getInstance(this.restauranteDataSource);
+        Pagina<TipoUsuario> tiposUsuario = BuscarTipoUsuarioPorRestauranteUseCase.getInstance(tipoUsuarioGateway, restauranteGateway).execute(idRestaurante, page);
+        List<TipoUsuarioDTO> tiposUsuarioDTO = TipoUsuarioPresenter.toDTOs(tiposUsuario.itens());
+        return new Pagina<>(tiposUsuarioDTO, page.pagina(), page.tamanho(), tiposUsuarioDTO.size(), tiposUsuarioDTO.size() / page.tamanho());
+    }
 }

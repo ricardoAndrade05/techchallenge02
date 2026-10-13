@@ -1,5 +1,6 @@
 package com.postech.techchallenge02.core.gateways;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,22 +15,25 @@ import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
 import com.postech.techchallenge02.core.interfaces.RestauranteDataSource;
 import com.postech.techchallenge02.core.interfaces.TipoUsuarioDataSource;
 import com.postech.techchallenge02.core.interfaces.TipoUsuarioGateway;
+import com.postech.techchallenge02.core.interfaces.UsuarioDataSource;
 
 public class TipoUsuarioGatewayImpl implements TipoUsuarioGateway {
 
     private final TipoUsuarioDataSource dataSource;
     private final RestauranteDataSource restauranteDataSource;
+    private final UsuarioDataSource usuarioDataSource;
 
-    private TipoUsuarioGatewayImpl(TipoUsuarioDataSource dataSource, RestauranteDataSource restauranteDataSource) {
+    private TipoUsuarioGatewayImpl(TipoUsuarioDataSource dataSource, RestauranteDataSource restauranteDataSource, UsuarioDataSource usuarioDataSource) {
         this.dataSource = dataSource;
         this.restauranteDataSource = restauranteDataSource;
+        this.usuarioDataSource = usuarioDataSource;
     }
 
-    public static TipoUsuarioGateway getInstance(TipoUsuarioDataSource dataSource, RestauranteDataSource restauranteDataSource) {
-        if (dataSource == null || restauranteDataSource == null) {
+    public static TipoUsuarioGateway getInstance(TipoUsuarioDataSource dataSource, RestauranteDataSource restauranteDataSource  , UsuarioDataSource usuarioDataSource) {
+        if (dataSource == null || restauranteDataSource == null || usuarioDataSource == null) {
             throw new IllegalArgumentException("Os data sources não podem ser nulos");
         }
-        return new TipoUsuarioGatewayImpl(dataSource, restauranteDataSource);
+        return new TipoUsuarioGatewayImpl(dataSource, restauranteDataSource, usuarioDataSource);
     }
 
     @Override
@@ -69,8 +73,7 @@ public class TipoUsuarioGatewayImpl implements TipoUsuarioGateway {
 
     @Override
     public boolean tipoUsuarioEstaVinculado(Long idTipoUsuario) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'tipoUsuarioEstaVinculado'");
+        return this.usuarioDataSource.existeUsuarioComEsteTipoUsuario(idTipoUsuario);
     }
 
     @Override
@@ -79,27 +82,24 @@ public class TipoUsuarioGatewayImpl implements TipoUsuarioGateway {
     }
 
     @Override
-    public Pagina<TipoUsuario> buscaTiposUsuarioPorRestaurante(Long idRestaurante, Paginacao paginacao) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'buscaTiposUsuarioPorRestaurante'");
-    }
-
-    @Override
-    public List<TipoUsuario> buscaTiposUsuarioPorRestaurante(Long idRestaurante) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'buscaTiposUsuarioPorRestaurante'");
+    public Pagina<TipoUsuario> buscaTiposUsuarioPorRestaurante(Restaurante restaurante, Paginacao paginacao) {
+        Pagina<TipoUsuarioDTO> pagina = this.dataSource.buscaTiposUsuarioPorRestaurante(restaurante.getId(),paginacao);
+        List<TipoUsuarioDTO> tiposUsuarioDTO = pagina.itens();
+        List<TipoUsuario> tipoUsuario = new ArrayList<>();
+        for (TipoUsuarioDTO tipo : tiposUsuarioDTO) {
+            tipoUsuario.add(TipoUsuario.criar(restaurante, tipo.nome(), tipo.tipoUsuario()));
+        }
+        return new Pagina<>(tipoUsuario,paginacao.pagina(),paginacao.tamanho(),tipoUsuario.size(),tipoUsuario.size() / paginacao.tamanho());
     }
 
     @Override
     public boolean existeTipoUsuario(String nome, Long idRestaurante, TipoUsuarioEnun tipoUsuarioEnun) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'existeTipoUsuario'");
+        return this.dataSource.existeTipoUsuario(nome,idRestaurante,tipoUsuarioEnun);   
     }
 
     @Override
     public boolean existeTipoUsuario(Long idTipoUsuario, Long idRestaurante, TipoUsuarioEnun tipoUsuarioEnun) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'existeTipoUsuario'");
+        return this.dataSource.existeTipoUsuario(idTipoUsuario,idRestaurante,tipoUsuarioEnun);
     }
 
 }

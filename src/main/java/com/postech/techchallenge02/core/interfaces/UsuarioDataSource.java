@@ -6,4 +6,6 @@ public interface UsuarioDataSource {
 
     public UsuarioDTO buscaUsuarioPorId(Long idUsuario);
 
+    public boolean existeUsuarioComEsteTipoUsuario(Long idTipoUsuario);
+
 }
