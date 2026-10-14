@@ -12,7 +12,6 @@ import com.postech.techchallenge02.core.dtos.TipoUsuarioDTO;
 import com.postech.techchallenge02.core.entities.Restaurante;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
 import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
-import com.postech.techchallenge02.core.interfaces.RestauranteDataSource;
 import com.postech.techchallenge02.core.interfaces.TipoUsuarioDataSource;
 import com.postech.techchallenge02.core.interfaces.TipoUsuarioGateway;
 import com.postech.techchallenge02.core.interfaces.UsuarioDataSource;
@@ -20,20 +19,18 @@ import com.postech.techchallenge02.core.interfaces.UsuarioDataSource;
 public class TipoUsuarioGatewayImpl implements TipoUsuarioGateway {
 
     private final TipoUsuarioDataSource dataSource;
-    private final RestauranteDataSource restauranteDataSource;
     private final UsuarioDataSource usuarioDataSource;
 
-    private TipoUsuarioGatewayImpl(TipoUsuarioDataSource dataSource, RestauranteDataSource restauranteDataSource, UsuarioDataSource usuarioDataSource) {
+    private TipoUsuarioGatewayImpl(TipoUsuarioDataSource dataSource, UsuarioDataSource usuarioDataSource) {
         this.dataSource = dataSource;
-        this.restauranteDataSource = restauranteDataSource;
         this.usuarioDataSource = usuarioDataSource;
     }
 
-    public static TipoUsuarioGateway getInstance(TipoUsuarioDataSource dataSource, RestauranteDataSource restauranteDataSource  , UsuarioDataSource usuarioDataSource) {
-        if (dataSource == null || restauranteDataSource == null || usuarioDataSource == null) {
+    public static TipoUsuarioGateway getInstance(TipoUsuarioDataSource dataSource, UsuarioDataSource usuarioDataSource) {
+        if (dataSource == null || usuarioDataSource == null) {
             throw new IllegalArgumentException("Os data sources não podem ser nulos");
         }
-        return new TipoUsuarioGatewayImpl(dataSource, restauranteDataSource, usuarioDataSource);
+        return new TipoUsuarioGatewayImpl(dataSource, usuarioDataSource);
     }
 
     @Override
