@@ -4,8 +4,8 @@ import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
 
 public record TipoUsuarioDTO(
     Long id,
-    Long idRestaurante,
+    RestauranteDTO restaurante,
     String nome,
-    TipoUsuarioEnun tipoUsuario) {
+    TipoUsuarioEnun tipo) {
 
 }

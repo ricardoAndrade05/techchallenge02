@@ -1,9 +1,12 @@
 package com.postech.techchallenge02.core.usecases;
 
+import java.util.Objects;
+
 import com.postech.techchallenge02.core.dtos.Pagina;
 import com.postech.techchallenge02.core.dtos.Paginacao;
 import com.postech.techchallenge02.core.entities.Restaurante;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
+import com.postech.techchallenge02.core.exceptions.DadosInvalidosException;
 import com.postech.techchallenge02.core.exceptions.RestauranteNaoEncontradoException;
 import com.postech.techchallenge02.core.exceptions.TipoUsuarioNaoEncontradoException;
 import com.postech.techchallenge02.core.interfaces.RestauranteGateway;
@@ -19,8 +22,11 @@ public class BuscarTipoUsuarioPorRestauranteUseCase {
     }
 
     public Pagina<TipoUsuario> execute(Long idRestaurante, Paginacao paginacao) {
+        if (Objects.isNull(idRestaurante)) {
+            throw new DadosInvalidosException("Restaurante inválido");
+        }
         Restaurante restaurante = restauranteGateway.buscaRestaurantePorId(idRestaurante)
-        .orElseThrow(() -> new RestauranteNaoEncontradoException("Restaurante não encontrado"));
+                .orElseThrow(() -> new RestauranteNaoEncontradoException("Restaurante não encontrado"));
 
         final Pagina<TipoUsuario> tiposUsuarios = this.tipoUsuarioGateway.buscaTiposUsuarioPorRestaurante(restaurante, paginacao);
         if (tiposUsuarios.estaVazia()) {
@@ -33,7 +39,7 @@ public class BuscarTipoUsuarioPorRestauranteUseCase {
         return execute(idRestaurante, new Paginacao(0, 10));
     }
 
-    private BuscarTipoUsuarioPorRestauranteUseCase(TipoUsuarioGateway tipoUsuarioGateway,RestauranteGateway restauranteGateway) {
+    private BuscarTipoUsuarioPorRestauranteUseCase(TipoUsuarioGateway tipoUsuarioGateway, RestauranteGateway restauranteGateway) {
         this.tipoUsuarioGateway = tipoUsuarioGateway;
         this.restauranteGateway = restauranteGateway;
     }

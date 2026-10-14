@@ -1,8 +1,15 @@
 package com.postech.techchallenge02.infra.adapters;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 import com.postech.techchallenge02.core.dtos.NovoTipoUsuarioDTO;
 import com.postech.techchallenge02.core.dtos.Pagina;
 import com.postech.techchallenge02.core.dtos.Paginacao;
+import com.postech.techchallenge02.core.dtos.RestauranteDTO;
 import com.postech.techchallenge02.core.dtos.TipoUsuarioDTO;
 import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
 import com.postech.techchallenge02.core.interfaces.TipoUsuarioDataSource;
@@ -28,10 +35,11 @@ public class TipoUsuarioDataSourceAdapter implements TipoUsuarioDataSource {
     public TipoUsuarioDTO buscaTipoUsuarioPorId(Long idTipoUsuario) {
         return this.tipoUsuarioRepository.findById(idTipoUsuario)
                 .map(tipoUsuario -> {
-                    Long idRestaurante = tipoUsuario.getRestaurante() != null ? tipoUsuario.getRestaurante().getId() : null;
+                    Restaurante restaurante = tipoUsuario.getRestaurante();
+                    RestauranteDTO restauranteDTO = new RestauranteDTO(restaurante.getId(), restaurante.getNome());
                     return new TipoUsuarioDTO(
                             tipoUsuario.getId(),
-                            idRestaurante,
+                            restauranteDTO,
                             tipoUsuario.getNome(),
                             tipoUsuario.getTipo());
                 })
@@ -48,33 +56,36 @@ public class TipoUsuarioDataSourceAdapter implements TipoUsuarioDataSource {
     }
 
     @Override
-    public boolean excluirTipoUsuario(Long idTipoUsuario) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'excluirTipoUsuario'");
+    public void excluirTipoUsuario(Long idTipoUsuario) {
+        this.tipoUsuarioRepository.deleteById(idTipoUsuario);
     }
 
     @Override
     public TipoUsuarioDTO atualizar(TipoUsuarioDTO dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'atualizar'");
+        TipoUsuario tipoUsuario = this.tipoUsuarioRepository.findById(dto.id()).get();
+        tipoUsuario.setNome(dto.nome());
+        this.tipoUsuarioRepository.save(tipoUsuario);
+        return this.tipoUsuarioMapper.toDTO(tipoUsuario);
     }
 
     @Override
     public boolean existeTipoUsuario(Long idTipoUsuario, Long idRestaurante, TipoUsuarioEnun tipoUsuarioEnun) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'existeTipoUsuario'");
+        return this.tipoUsuarioRepository.existeTipoUsuario(idTipoUsuario,idRestaurante, tipoUsuarioEnun);
     }
 
     @Override
     public boolean existeTipoUsuario(String nome, Long idRestaurante, TipoUsuarioEnun tipoUsuarioEnun) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'existeTipoUsuario'");
+        return this.tipoUsuarioRepository.existeTipoUsuario(nome,idRestaurante, tipoUsuarioEnun);
     }
 
     @Override
     public Pagina<TipoUsuarioDTO> buscaTiposUsuarioPorRestaurante(Long idRestaurante, Paginacao paginacao) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'buscaTiposUsuarioPorRestaurante'");
+        Pageable pageable = PageRequest.of(paginacao.pagina(), paginacao.tamanho());
+        Page<TipoUsuario> paginaEntity = this.tipoUsuarioRepository.buscaTiposUsuarioPorRestaurante(idRestaurante, pageable);
+        Page<TipoUsuarioDTO> pageDTO = paginaEntity.map(this.tipoUsuarioMapper::toDTO);
+        return new Pagina<TipoUsuarioDTO>(pageDTO.getContent(), pageDTO.getNumber(), pageDTO.getSize(), pageDTO.getTotalElements(), pageDTO.getTotalPages());   
     }
+
+
 
 }

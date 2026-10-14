@@ -1,5 +1,7 @@
 package com.postech.techchallenge02.core.entities;
 
+import java.util.Objects;
+
 import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
 import com.postech.techchallenge02.core.exceptions.TipoUsuarioInvalidoException;
 
@@ -51,7 +53,7 @@ public class TipoUsuario {
     }
 
     private void setNome(String nome) {
-        if (nome == null || nome.isBlank()) {
+        if (Objects.isNull(nome) || nome.isBlank()) {
             throw new TipoUsuarioInvalidoException("Nome inválido");
         }
         this.nome = nome;

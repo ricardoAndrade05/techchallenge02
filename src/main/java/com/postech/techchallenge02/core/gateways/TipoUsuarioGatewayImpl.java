@@ -38,9 +38,10 @@ public class TipoUsuarioGatewayImpl implements TipoUsuarioGateway {
 
     @Override
     public TipoUsuario atualizarTipoUsuario(TipoUsuario tipo) {
-       TipoUsuarioDTO dto = new TipoUsuarioDTO(tipo.getId(),tipo.getIdRestaurante(),tipo.getNome(),tipo.getTipo());
+       RestauranteDTO restauranteDTO = new RestauranteDTO(tipo.getIdRestaurante(), tipo.getRestaurante().getNome());
+       TipoUsuarioDTO dto = new TipoUsuarioDTO(tipo.getId(),restauranteDTO,tipo.getNome(),tipo.getTipo());
        dto = this.dataSource.atualizar(dto);
-       return TipoUsuario.restaurar(dto.id(), tipo.getRestaurante(), dto.nome(), dto.tipoUsuario());
+       return TipoUsuario.restaurar(dto.id(), tipo.getRestaurante(), dto.nome(), dto.tipo());
     }
 
     @Override
@@ -50,7 +51,7 @@ public class TipoUsuarioGatewayImpl implements TipoUsuarioGateway {
             return Optional.empty();
         }
 
-        RestauranteDTO restauranteDTO = this.restauranteDataSource.buscaRestaurantePorId(tipoUsuarioDTO.idRestaurante());
+        RestauranteDTO restauranteDTO = tipoUsuarioDTO.restaurante();
         Restaurante restaurante = (restauranteDTO != null)
                 ? Restaurante.restaurar(restauranteDTO.id(), restauranteDTO.nome())
                 : null;
@@ -59,7 +60,7 @@ public class TipoUsuarioGatewayImpl implements TipoUsuarioGateway {
                 idTipoUsuario,
                 restaurante,
                 tipoUsuarioDTO.nome(),
-                tipoUsuarioDTO.tipoUsuario());
+                tipoUsuarioDTO.tipo());
 
         return Optional.of(tipoUsuario);
     }
@@ -68,7 +69,7 @@ public class TipoUsuarioGatewayImpl implements TipoUsuarioGateway {
     public TipoUsuario cadastraTipoUsuario(TipoUsuario tipoUsuario) {
         NovoTipoUsuarioDTO novoTipoUsuarioDTO = new NovoTipoUsuarioDTO(tipoUsuario.getRestaurante().getId(), tipoUsuario.getNome(), tipoUsuario.getTipo());
         TipoUsuarioDTO tipoUsuarioDTO = this.dataSource.cadastraTipoUsuario(novoTipoUsuarioDTO);
-        return TipoUsuario.restaurar(tipoUsuarioDTO.id(), tipoUsuario.getRestaurante(), tipoUsuarioDTO.nome(), tipoUsuarioDTO.tipoUsuario());
+        return TipoUsuario.restaurar(tipoUsuarioDTO.id(), tipoUsuario.getRestaurante(), tipoUsuarioDTO.nome(), tipoUsuarioDTO.tipo());
     }
 
     @Override
@@ -87,7 +88,7 @@ public class TipoUsuarioGatewayImpl implements TipoUsuarioGateway {
         List<TipoUsuarioDTO> tiposUsuarioDTO = pagina.itens();
         List<TipoUsuario> tipoUsuario = new ArrayList<>();
         for (TipoUsuarioDTO tipo : tiposUsuarioDTO) {
-            tipoUsuario.add(TipoUsuario.criar(restaurante, tipo.nome(), tipo.tipoUsuario()));
+            tipoUsuario.add(TipoUsuario.restaurar(tipo.id(), restaurante, tipo.nome(), tipo.tipo()));
         }
         return new Pagina<>(tipoUsuario,paginacao.pagina(),paginacao.tamanho(),tipoUsuario.size(),tipoUsuario.size() / paginacao.tamanho());
     }

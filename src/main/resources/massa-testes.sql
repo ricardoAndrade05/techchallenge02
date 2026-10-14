@@ -22,3 +22,5 @@ UPDATE tb_usuario SET id_tipo_usuario = 1 WHERE id = 1; -- Carlos vira Gerente/D
 
 INSERT INTO tb_usuario (id, email, nome, login, senha, data_ultima_alteracao, id_tipo_usuario) 
 VALUES (2, 'cliente@email.com', 'Ana Cliente', 'ana.cliente', '123456', '2026-10-13T10:05:00', 2);
+
+ALTER TABLE tb_tipo_usuario ALTER COLUMN id RESTART WITH 3;

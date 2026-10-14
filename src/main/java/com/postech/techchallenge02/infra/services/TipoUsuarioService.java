@@ -19,58 +19,72 @@ import com.postech.techchallenge02.core.interfaces.UsuarioDataSource;
 import com.postech.techchallenge02.infra.adapters.RestauranteDataSourceAdapter;
 import com.postech.techchallenge02.infra.adapters.TipoUsuarioDataSourceAdapter;
 import com.postech.techchallenge02.infra.adapters.UsuarioDataSourceAdapter;
+import com.postech.techchallenge02.infra.dtos.AtualizarTipoDTO;
+import com.postech.techchallenge02.infra.dtos.ExcluiTipoDTO;
+import com.postech.techchallenge02.infra.infra.mappers.RestauranteMapper;
 import com.postech.techchallenge02.infra.infra.mappers.TipoUsuarioMapper;
+import com.postech.techchallenge02.infra.infra.mappers.UsuarioMapper;
 import com.postech.techchallenge02.infra.repositories.RestauranteRepository;
 import com.postech.techchallenge02.infra.repositories.TipoUsuarioRepository;
+import com.postech.techchallenge02.infra.repositories.UsuarioRepository;
 
 @Service
 public class TipoUsuarioService {
 
-    private TipoUsuarioRepository tipoUsuarioRepository;
-    private final TipoUsuarioMapper tipoUsuarioMapper;
+    private final TipoUsuarioRepository tipoUsuarioRepository;
     private final RestauranteRepository restauranteRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public TipoUsuarioService(TipoUsuarioRepository tipoUsuarioRepository, RestauranteRepository restauranteRepository, TipoUsuarioMapper tipoUsuarioMapper) {
+    private final TipoUsuarioMapper tipoUsuarioMapper;
+    private final UsuarioMapper usuarioMapper;
+    private final RestauranteMapper restauranteMapper;
+
+    public TipoUsuarioService(TipoUsuarioRepository tipoUsuarioRepository, RestauranteRepository restauranteRepository, 
+        UsuarioRepository usuarioRepository, TipoUsuarioMapper tipoUsuarioMapper, UsuarioMapper usuarioMapper, 
+        RestauranteMapper restauranteMapper) {
         this.tipoUsuarioRepository = tipoUsuarioRepository;
         this.restauranteRepository = restauranteRepository;
+        this.usuarioRepository = usuarioRepository;
         this.tipoUsuarioMapper = tipoUsuarioMapper;
-    }
+        this.usuarioMapper = usuarioMapper;
+        this.restauranteMapper = restauranteMapper;
+        }
 
     public TipoUsuarioDTO buscarPorId(Long idTipoUsuario) {
         TipoUsuarioDataSource tipoUsuarioDataSource = new TipoUsuarioDataSourceAdapter(tipoUsuarioRepository, restauranteRepository, tipoUsuarioMapper);
-        UsuarioDataSource usuarioDataSource = new UsuarioDataSourceAdapter();
-        RestauranteDataSource restauranteDataSource = new RestauranteDataSourceAdapter();
+        UsuarioDataSource usuarioDataSource = new UsuarioDataSourceAdapter(usuarioRepository,usuarioMapper);
+        RestauranteDataSource restauranteDataSource = new RestauranteDataSourceAdapter(restauranteRepository, restauranteMapper);
         TipoUsuarioDTO tipoUsuarioDTO = TipoUsuarioController.getInstance(tipoUsuarioDataSource, restauranteDataSource, usuarioDataSource).buscaTipoUsuarioPorId(idTipoUsuario);
         return tipoUsuarioDTO;
     }
 
     public TipoUsuarioDTO inserirTipoUsuario(NovoTipoUsuarioDTO novoTipoUsuarioDTO) {
         TipoUsuarioDataSource tipoUsuarioDataSource = new TipoUsuarioDataSourceAdapter(tipoUsuarioRepository, restauranteRepository, tipoUsuarioMapper);
-        UsuarioDataSource usuarioDataSource = new UsuarioDataSourceAdapter();
-        RestauranteDataSource restauranteDataSource = new RestauranteDataSourceAdapter();
+        UsuarioDataSource usuarioDataSource = new UsuarioDataSourceAdapter(usuarioRepository,usuarioMapper);
+        RestauranteDataSource restauranteDataSource = new RestauranteDataSourceAdapter(restauranteRepository, restauranteMapper);
         TipoUsuarioDTO tipoUsuarioDTO = TipoUsuarioController.getInstance(tipoUsuarioDataSource, restauranteDataSource, usuarioDataSource).inserirTipoUsuario(novoTipoUsuarioDTO);
         return tipoUsuarioDTO;
     }
 
-    public void excluiTipoUsuario(ExcluirTipoUsuarioDTO excluirTipoUsuarioDTO) {
+    public void excluiTipoUsuario(Long id, ExcluiTipoDTO excluiTipoDTO) {
         TipoUsuarioDataSource tipoUsuarioDataSource = new TipoUsuarioDataSourceAdapter(tipoUsuarioRepository, restauranteRepository, tipoUsuarioMapper);
-        UsuarioDataSource usuarioDataSource = new UsuarioDataSourceAdapter();
-        RestauranteDataSource restauranteDataSource = new RestauranteDataSourceAdapter();
-        TipoUsuarioController.getInstance(tipoUsuarioDataSource, restauranteDataSource, usuarioDataSource).excluirTipoUsuario(excluirTipoUsuarioDTO);
+        UsuarioDataSource usuarioDataSource = new UsuarioDataSourceAdapter(usuarioRepository,usuarioMapper);
+        RestauranteDataSource restauranteDataSource = new RestauranteDataSourceAdapter(restauranteRepository, restauranteMapper);
+        TipoUsuarioController.getInstance(tipoUsuarioDataSource, restauranteDataSource, usuarioDataSource).excluirTipoUsuario(new ExcluirTipoUsuarioDTO(excluiTipoDTO.idUsuarioLogado(), id));
     }
 
-    public TipoUsuarioDTO atualizaTipoUsuario(AtualizarTipoUsuarioDTO atualizarTipoUsuarioDTO) {
+    public TipoUsuarioDTO atualizaTipoUsuario(Long id, AtualizarTipoDTO atualizarTipoDTO) {
         TipoUsuarioDataSource tipoUsuarioDataSource = new TipoUsuarioDataSourceAdapter(tipoUsuarioRepository, restauranteRepository, tipoUsuarioMapper);
-        UsuarioDataSource usuarioDataSource = new UsuarioDataSourceAdapter();
-        RestauranteDataSource restauranteDataSource = new RestauranteDataSourceAdapter();
-        TipoUsuarioDTO tipoUsuarioDTO = TipoUsuarioController.getInstance(tipoUsuarioDataSource, restauranteDataSource, usuarioDataSource).atualizarTipoUsuario(atualizarTipoUsuarioDTO);
+        UsuarioDataSource usuarioDataSource = new UsuarioDataSourceAdapter(usuarioRepository,usuarioMapper);
+        RestauranteDataSource restauranteDataSource = new RestauranteDataSourceAdapter(restauranteRepository, restauranteMapper);
+        TipoUsuarioDTO tipoUsuarioDTO = TipoUsuarioController.getInstance(tipoUsuarioDataSource, restauranteDataSource, usuarioDataSource).atualizarTipoUsuario(new AtualizarTipoUsuarioDTO(id, atualizarTipoDTO.novoNome(), atualizarTipoDTO.idUsuarioLogado()));
         return tipoUsuarioDTO;
     }
 
     public Page<TipoUsuarioDTO> buscaTiposUsuarioRestaurante(Long idRestaurante, Pageable pageable) {
         TipoUsuarioDataSource tipoUsuarioDataSource = new TipoUsuarioDataSourceAdapter(tipoUsuarioRepository, restauranteRepository, tipoUsuarioMapper);
-        UsuarioDataSource usuarioDataSource = new UsuarioDataSourceAdapter();
-        RestauranteDataSource restauranteDataSource = new RestauranteDataSourceAdapter();
+        UsuarioDataSource usuarioDataSource = new UsuarioDataSourceAdapter(usuarioRepository,usuarioMapper);
+        RestauranteDataSource restauranteDataSource = new RestauranteDataSourceAdapter(restauranteRepository, restauranteMapper);
         Pagina<TipoUsuarioDTO> pagina = TipoUsuarioController.getInstance(tipoUsuarioDataSource, restauranteDataSource, usuarioDataSource).buscaTiposUsuarioRestaurante(idRestaurante, new Paginacao(pageable.getPageNumber(), pageable.getPageSize()));
         return converterParaSpringPage(pagina);
     }
