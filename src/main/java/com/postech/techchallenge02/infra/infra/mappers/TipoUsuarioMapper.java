@@ -7,11 +7,9 @@ import com.postech.techchallenge02.core.dtos.NovoTipoUsuarioDTO;
 import com.postech.techchallenge02.core.dtos.TipoUsuarioDTO;
 import com.postech.techchallenge02.infra.entities.TipoUsuario;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {RestauranteMapper.class})
 public interface TipoUsuarioMapper {
 
-    @Mapping(source = "tipo", target = "tipoUsuario")
-    @Mapping(source = "restaurante.id", target = "idRestaurante")
     TipoUsuarioDTO toDTO(TipoUsuario tipoUsuario);
 
     @Mapping(target = "id", ignore = true)

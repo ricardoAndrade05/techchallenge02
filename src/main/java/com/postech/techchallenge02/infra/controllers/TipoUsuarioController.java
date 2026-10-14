@@ -11,20 +11,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.postech.techchallenge02.core.dtos.AtualizarTipoUsuarioDTO;
-import com.postech.techchallenge02.core.dtos.ExcluirTipoUsuarioDTO;
 import com.postech.techchallenge02.core.dtos.NovoTipoUsuarioDTO;
 import com.postech.techchallenge02.core.dtos.TipoUsuarioDTO;
+import com.postech.techchallenge02.infra.dtos.AtualizarTipoDTO;
+import com.postech.techchallenge02.infra.dtos.ExcluiTipoDTO;
 import com.postech.techchallenge02.infra.services.TipoUsuarioService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping("/tipo-usuario")
+@RequestMapping("/tipos-usuario")
 @Tag(name = "Tipo usuario", description = "Endpoints para gerenciamento de tipo usuario")
 public class TipoUsuarioController implements TipoUsuarioAPI {
 
@@ -47,21 +48,21 @@ public class TipoUsuarioController implements TipoUsuarioAPI {
     }
 
     @PostMapping
-    public ResponseEntity<TipoUsuarioDTO> inserirTipoUsuario(NovoTipoUsuarioDTO novoTipoUsuarioDTO) {
+    public ResponseEntity<TipoUsuarioDTO> inserirTipoUsuario(@RequestBody NovoTipoUsuarioDTO novoTipoUsuarioDTO) {
        TipoUsuarioDTO tipoUsuarioDTO = this.tipoUsuarioService.inserirTipoUsuario(novoTipoUsuarioDTO);
        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(tipoUsuarioDTO.id()).toUri();
        return ResponseEntity.created(uri).body(tipoUsuarioDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirTipoUsuario(ExcluirTipoUsuarioDTO excluirTipoUsuarioDTO) {
-        this.tipoUsuarioService.excluiTipoUsuario(excluirTipoUsuarioDTO);
+    public ResponseEntity<Void> excluirTipoUsuario(@PathVariable Long id, @RequestBody ExcluiTipoDTO excluiTipoDTO) {
+        this.tipoUsuarioService.excluiTipoUsuario(id, excluiTipoDTO);
         return ResponseEntity.noContent().build();
     }
 
-   @PutMapping("/{id}")
-    public ResponseEntity<TipoUsuarioDTO> atualizarTipoUsuario(AtualizarTipoUsuarioDTO atualizarTipoUsuarioDTO) {
-       TipoUsuarioDTO tipoUsuarioDTO = this.tipoUsuarioService.atualizaTipoUsuario(atualizarTipoUsuarioDTO);
+    @PutMapping("/{id}")
+    public ResponseEntity<TipoUsuarioDTO> atualizarTipoUsuario(@PathVariable Long id, @RequestBody AtualizarTipoDTO atualizarTipoDTO) {
+       TipoUsuarioDTO tipoUsuarioDTO = this.tipoUsuarioService.atualizaTipoUsuario(id,atualizarTipoDTO);
        return ResponseEntity.ok().body(tipoUsuarioDTO);
     }
 

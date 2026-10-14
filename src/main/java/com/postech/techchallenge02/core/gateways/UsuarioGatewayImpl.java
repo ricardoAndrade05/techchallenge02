@@ -39,9 +39,9 @@ public class UsuarioGatewayImpl implements UsuarioGateway {
             return Optional.empty();
         }
         TipoUsuarioDTO tipoUsuarioDTO = this.tipoUsuarioDataSource.buscaTipoUsuarioPorId(usuarioDTO.idTipoUsuario());
-        RestauranteDTO restauranteDTO = this.restauranteDataSource.buscaRestaurantePorId(tipoUsuarioDTO.idRestaurante());
+        RestauranteDTO restauranteDTO = tipoUsuarioDTO.restaurante();
         Restaurante restaurante = Restaurante.restaurar(restauranteDTO.id(), restauranteDTO.nome());
-        TipoUsuario tipoUsuario = TipoUsuario.restaurar(tipoUsuarioDTO.id(), restaurante,tipoUsuarioDTO.nome(),tipoUsuarioDTO   .tipoUsuario());
+        TipoUsuario tipoUsuario = TipoUsuario.restaurar(tipoUsuarioDTO.id(), restaurante,tipoUsuarioDTO.nome(),tipoUsuarioDTO   .tipo());
         Usuario usuario = Usuario.restaurar(usuarioDTO.id(), usuarioDTO.nome(),tipoUsuario);
         return Optional.of(usuario);
     }

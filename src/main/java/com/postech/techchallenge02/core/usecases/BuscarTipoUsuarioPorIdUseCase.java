@@ -1,6 +1,9 @@
 package com.postech.techchallenge02.core.usecases;
 
+import java.util.Objects;
+
 import com.postech.techchallenge02.core.entities.TipoUsuario;
+import com.postech.techchallenge02.core.exceptions.DadosInvalidosException;
 import com.postech.techchallenge02.core.exceptions.TipoUsuarioNaoEncontradoException;
 import com.postech.techchallenge02.core.interfaces.TipoUsuarioGateway;
 
@@ -13,6 +16,9 @@ public class BuscarTipoUsuarioPorIdUseCase {
     }
 
     public TipoUsuario execute(Long id) {
+        if (Objects.isNull(id)) {
+            throw new DadosInvalidosException("Tipo de usuário inválido!");
+        }
         return this.tipoUsuarioGateway.buscaTipoUsuarioPorId(id)
                 .orElseThrow(() -> new TipoUsuarioNaoEncontradoException("Não há tipo de usuário com id: " + id));
     }
