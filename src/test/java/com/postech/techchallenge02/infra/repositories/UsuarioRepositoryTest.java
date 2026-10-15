@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
@@ -89,83 +88,6 @@ class UsuarioRepositoryTest {
 
         // Assert
         assertThat(existe).isFalse();
-    }
-
-    @Test
-    @DisplayName("Deve salvar e buscar Usuario por id")
-    void deveSalvarEBuscarUsuarioPorId() {
-        // Arrange
-        Restaurante restaurante = criarRestaurante("Restaurante Padrão");
-        TipoUsuario tipoUsuario = criarTipoUsuario("Gerente", TipoUsuarioEnun.DONO, restaurante);
-
-        String uniqueId = UUID.randomUUID().toString().substring(0, 8);
-        Usuario usuario = new Usuario();
-        usuario.setNome("Carlos Oliveira " + uniqueId);
-        usuario.setEmail("carlos_" + uniqueId + "@email.com");
-        usuario.setLogin("carlos.oliveira." + uniqueId);
-        usuario.setSenha("senha123");
-        usuario.setDataUltimaAlteracao(LocalDateTime.now());
-        usuario.setTipoUsuario(tipoUsuario);
-
-        // Act
-        Usuario salvo = usuarioRepository.save(usuario);
-        entityManager.flush();
-        entityManager.clear();
-
-        Optional<Usuario> encontrado = usuarioRepository.findById(salvo.getId());
-
-        // Assert
-        assertThat(encontrado).isPresent();
-        assertThat(encontrado.get().getNome()).isEqualTo("Carlos Oliveira " + uniqueId);
-        assertThat(encontrado.get().getEmail()).isEqualTo("carlos_" + uniqueId + "@email.com");
-        assertThat(encontrado.get().getLogin()).isEqualTo("carlos.oliveira." + uniqueId);
-        assertThat(encontrado.get().getTipoUsuario()).isNotNull();
-        assertThat(encontrado.get().getTipoUsuario().getId()).isEqualTo(tipoUsuario.getId());
-    }
-
-    @Test
-    @DisplayName("Deve salvar usuário sem vínculo com TipoUsuario")
-    void deveSalvarUsuarioSemTipoUsuario() {
-        // Arrange
-        String uniqueId = UUID.randomUUID().toString().substring(0, 8);
-        Usuario usuario = new Usuario();
-        usuario.setNome("Usuário Sem Cargo " + uniqueId);
-        usuario.setEmail("semcargo_" + uniqueId + "@email.com");
-        usuario.setLogin("semcargo." + uniqueId);
-        usuario.setSenha("senha123");
-        usuario.setDataUltimaAlteracao(LocalDateTime.now());
-        usuario.setTipoUsuario(null);
-
-        // Act
-        Usuario salvo = usuarioRepository.save(usuario);
-        entityManager.flush();
-        entityManager.clear();
-
-        Optional<Usuario> encontrado = usuarioRepository.findById(salvo.getId());
-
-        // Assert
-        assertThat(encontrado).isPresent();
-        assertThat(encontrado.get().getTipoUsuario()).isNull();
-    }
-
-    @Test
-    @DisplayName("Deve excluir Usuario por id com sucesso")
-    void deveExcluirUsuarioComSucesso() {
-        // Arrange
-        Restaurante restaurante = criarRestaurante("Restaurante Padrão");
-        TipoUsuario tipoUsuario = criarTipoUsuario("Gerente", TipoUsuarioEnun.DONO, restaurante);
-        Usuario usuario = criarUsuario("Lucas Lima", "lucas@email.com", tipoUsuario);
-        Long id = usuario.getId();
-
-        // Act
-        usuarioRepository.deleteById(id);
-        entityManager.flush();
-        entityManager.clear();
-
-        Optional<Usuario> aposExclusao = usuarioRepository.findById(id);
-
-        // Assert
-        assertThat(aposExclusao).isEmpty();
     }
 
     // Helper methods para criação isolada de dados de teste

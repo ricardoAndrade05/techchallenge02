@@ -22,9 +22,8 @@ public interface TipoUsuarioRepository extends JpaRepository<TipoUsuario, Long> 
     @Query("SELECT COUNT(tu) > 0 "
         +  "FROM TipoUsuario tu "
         +  "WHERE tu.id = :idTipoUsuario "
-        +  "AND tu.restaurante.id = :idRestaurante "
-        +  "AND tu.tipo = :tipoUsuarioEnun")
-    boolean existeTipoUsuario(Long idTipoUsuario, Long idRestaurante, TipoUsuarioEnun tipoUsuarioEnun);
+        +  "AND tu.restaurante.id = :idRestaurante ")
+    boolean existeTipoUsuario(Long idTipoUsuario, Long idRestaurante);
 
     @Query("SELECT tu FROM TipoUsuario tu WHERE tu.restaurante.id = :idRestaurante")
     Page<TipoUsuario> buscaTiposUsuarioPorRestaurante(@Param("idRestaurante") Long idRestaurante, Pageable pageable);

@@ -141,7 +141,7 @@ class ExcluirTipoUsuarioUseCaseTest {
         void deveLancarExcecao_quandoTipoUsuarioNaoExiste() {
             ExcluirTipoUsuarioDTO dto = new ExcluirTipoUsuarioDTO(ID_USUARIO_LOGADO, ID_TIPO_USUARIO);
             when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO)).thenReturn(Optional.of(usuarioDono));
-            when(tipoUsuarioGateway.existeTipoUsuario(ID_TIPO_USUARIO, ID_RESTAURANTE, TipoUsuarioEnun.DONO)).thenReturn(false);
+            when(tipoUsuarioGateway.existeTipoUsuario(ID_TIPO_USUARIO, ID_RESTAURANTE)).thenReturn(false);
 
             assertThatThrownBy(() -> useCase.execute(dto))
                     .isInstanceOf(TipoUsuarioNaoEncontradoException.class)
@@ -160,7 +160,7 @@ class ExcluirTipoUsuarioUseCaseTest {
         void deveLancarExcecao_quandoTipoUsuarioVinculado() {
             ExcluirTipoUsuarioDTO dto = new ExcluirTipoUsuarioDTO(ID_USUARIO_LOGADO, ID_TIPO_USUARIO);
             when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO)).thenReturn(Optional.of(usuarioDono));
-            when(tipoUsuarioGateway.existeTipoUsuario(ID_TIPO_USUARIO, ID_RESTAURANTE, TipoUsuarioEnun.DONO)).thenReturn(true);
+            when(tipoUsuarioGateway.existeTipoUsuario(ID_TIPO_USUARIO, ID_RESTAURANTE)).thenReturn(true);
             when(tipoUsuarioGateway.tipoUsuarioEstaVinculado(ID_TIPO_USUARIO)).thenReturn(true);
 
             assertThatThrownBy(() -> useCase.execute(dto))
@@ -179,7 +179,7 @@ class ExcluirTipoUsuarioUseCaseTest {
         void deveExcluirComSucesso_quandoDadosValidos() {
             ExcluirTipoUsuarioDTO dto = new ExcluirTipoUsuarioDTO(ID_USUARIO_LOGADO, ID_TIPO_USUARIO);
             when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO)).thenReturn(Optional.of(usuarioDono));
-            when(tipoUsuarioGateway.existeTipoUsuario(ID_TIPO_USUARIO, ID_RESTAURANTE, TipoUsuarioEnun.DONO)).thenReturn(true);
+            when(tipoUsuarioGateway.existeTipoUsuario(ID_TIPO_USUARIO, ID_RESTAURANTE)).thenReturn(true);
             when(tipoUsuarioGateway.tipoUsuarioEstaVinculado(ID_TIPO_USUARIO)).thenReturn(false);
 
             assertThatCode(() -> useCase.execute(dto)).doesNotThrowAnyException();
@@ -192,13 +192,13 @@ class ExcluirTipoUsuarioUseCaseTest {
         void deveInvocarGatewayDeExclusao_comIdCorreto() {
             ExcluirTipoUsuarioDTO dto = new ExcluirTipoUsuarioDTO(ID_USUARIO_LOGADO, ID_TIPO_USUARIO);
             when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO)).thenReturn(Optional.of(usuarioDono));
-            when(tipoUsuarioGateway.existeTipoUsuario(ID_TIPO_USUARIO, ID_RESTAURANTE, TipoUsuarioEnun.DONO)).thenReturn(true);
+            when(tipoUsuarioGateway.existeTipoUsuario(ID_TIPO_USUARIO, ID_RESTAURANTE)).thenReturn(true);
             when(tipoUsuarioGateway.tipoUsuarioEstaVinculado(ID_TIPO_USUARIO)).thenReturn(false);
 
             useCase.execute(dto);
 
             verify(tipoUsuarioGateway).excluirTipoUsuario(ID_TIPO_USUARIO);
-            verify(tipoUsuarioGateway).existeTipoUsuario(ID_TIPO_USUARIO, ID_RESTAURANTE, TipoUsuarioEnun.DONO);
+            verify(tipoUsuarioGateway).existeTipoUsuario(ID_TIPO_USUARIO, ID_RESTAURANTE);
             verify(tipoUsuarioGateway).tipoUsuarioEstaVinculado(ID_TIPO_USUARIO);
         }
     }

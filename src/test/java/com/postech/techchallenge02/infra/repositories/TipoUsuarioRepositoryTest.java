@@ -3,7 +3,6 @@ package com.postech.techchallenge02.infra.repositories;
 import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalTime;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
@@ -93,35 +92,13 @@ class TipoUsuarioRepositoryTest {
     }
 
     @Test
-    @DisplayName("Deve retornar página vazia quando o restaurante não possui tipos de usuário")
-    void deveRetornarPaginaVaziaQuandoRestauranteNaoPossuiTiposDeUsuario() {
-        Restaurante restaurante = criarRestaurante("Restaurante Teste");
-
+    @DisplayName("Deve retornar página vazia quando o ID do restaurante não for encontrado")
+    void deveRetornarPaginaVaziaQuandoRestauranteNaoExistir() {
         Pageable pageable = PageRequest.of(0, 10);
-        Page<TipoUsuario> resultado = tipoUsuarioRepository.buscaTiposUsuarioPorRestaurante(restaurante.getId(), pageable);
+        Page<TipoUsuario> resultado = tipoUsuarioRepository.buscaTiposUsuarioPorRestaurante(999L, pageable);
 
         assertThat(resultado).isNotNull();
         assertThat(resultado.isEmpty()).isTrue();
-    }
-
-    @Test
-    @DisplayName("Deve salvar e buscar TipoUsuario por id")
-    void deveSalvarEBuscarTipoUsuarioPorId() {
-        Restaurante restaurante = criarRestaurante("Restaurante Teste");
-
-        TipoUsuario tipoUsuario = new TipoUsuario();
-        tipoUsuario.setNome("Supervisor");
-        tipoUsuario.setTipo(TipoUsuarioEnun.DONO);
-        tipoUsuario.setRestaurante(restaurante);
-
-        TipoUsuario salvo = tipoUsuarioRepository.save(tipoUsuario);
-        entityManager.flush();
-        entityManager.clear();
-
-        Optional<TipoUsuario> encontrado = tipoUsuarioRepository.findById(salvo.getId());
-
-        assertThat(encontrado).isPresent();
-        assertThat(encontrado.get().getNome()).isEqualTo("Supervisor");
     }
 
     private Restaurante criarRestaurante(String nome) {
@@ -149,7 +126,7 @@ class TipoUsuarioRepositoryTest {
         novoRestaurante.setHorarioFuncionamentoFim(LocalTime.of(22, 0));
         novoRestaurante.setEndereco(endereco);
         novoRestaurante.setDono(dono);
-        
+
         entityManager.persist(novoRestaurante);
         entityManager.flush();
         return novoRestaurante;

@@ -16,7 +16,7 @@ public interface TipoUsuarioDataSource {
 
     TipoUsuarioDTO atualizar(TipoUsuarioDTO dto);
 
-    boolean existeTipoUsuario(Long idTipoUsuario, Long idRestaurante, TipoUsuarioEnun tipoUsuarioEnun);
+    boolean existeTipoUsuario(Long idTipoUsuario, Long idRestaurante);
 
     boolean existeTipoUsuario(String nome, Long idRestaurante, TipoUsuarioEnun tipoUsuarioEnun);
 

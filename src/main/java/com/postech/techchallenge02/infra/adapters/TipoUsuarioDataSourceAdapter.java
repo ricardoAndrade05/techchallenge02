@@ -67,8 +67,8 @@ public class TipoUsuarioDataSourceAdapter implements TipoUsuarioDataSource {
     }
 
     @Override
-    public boolean existeTipoUsuario(Long idTipoUsuario, Long idRestaurante, TipoUsuarioEnun tipoUsuarioEnun) {
-        return this.tipoUsuarioRepository.existeTipoUsuario(idTipoUsuario,idRestaurante, tipoUsuarioEnun);
+    public boolean existeTipoUsuario(Long idTipoUsuario, Long idRestaurante) {
+        return this.tipoUsuarioRepository.existeTipoUsuario(idTipoUsuario,idRestaurante);
     }
 
     @Override
@@ -83,7 +83,4 @@ public class TipoUsuarioDataSourceAdapter implements TipoUsuarioDataSource {
         Page<TipoUsuarioDTO> pageDTO = paginaEntity.map(this.tipoUsuarioMapper::toDTO);
         return new Pagina<TipoUsuarioDTO>(pageDTO.getContent(), pageDTO.getNumber(), pageDTO.getSize(), pageDTO.getTotalElements(), pageDTO.getTotalPages());   
     }
-
-
-
 }

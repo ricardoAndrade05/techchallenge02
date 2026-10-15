@@ -6,16 +6,24 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.7</version>
+        <version>3.5.16</version>
         <relativePath />
     </parent>
     <groupId>com.postech</groupId>
     <artifactId>techchallenge02</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+
     <properties>
         <java.version>21</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <commons-validator.version>1.9.0</commons-validator.version>
+        <springdoc.version>2.6.0</springdoc.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
+
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
     </properties>
+
     <dependencies>
         <!-- Spring Boot Web & Core -->
         <dependency>
@@ -45,12 +53,12 @@
         <dependency>
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
-            <version>1.9.0</version>
+            <version>${commons-validator.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.6.0</version>
+            <version>${springdoc.version}</version>
         </dependency>
 
         <!-- Testes -->
@@ -73,7 +81,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>

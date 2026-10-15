@@ -96,8 +96,8 @@ public class TipoUsuarioGatewayImpl implements TipoUsuarioGateway {
     }
 
     @Override
-    public boolean existeTipoUsuario(Long idTipoUsuario, Long idRestaurante, TipoUsuarioEnun tipoUsuarioEnun) {
-        return this.dataSource.existeTipoUsuario(idTipoUsuario,idRestaurante,tipoUsuarioEnun);
+    public boolean existeTipoUsuario(Long idTipoUsuario, Long idRestaurante) {
+        return this.dataSource.existeTipoUsuario(idTipoUsuario,idRestaurante);
     }
 
 }
