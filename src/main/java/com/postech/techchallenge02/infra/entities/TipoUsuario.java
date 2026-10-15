@@ -11,13 +11,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+
 
 @Entity 
 @Table(name = "tb_tipo_usuario")
-@Getter 
-@Setter
 public class TipoUsuario {
    
     @Id
@@ -32,5 +29,39 @@ public class TipoUsuario {
     @ManyToOne
     @JoinColumn(name="id_restaurante")
     private Restaurante restaurante;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public TipoUsuarioEnun getTipo() {
+        return tipo;
+    }
+
+    public Restaurante getRestaurante() {
+        return restaurante;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setTipo(TipoUsuarioEnun tipo) {
+        this.tipo = tipo;
+    }
+
+    public void setRestaurante(Restaurante restaurante) {
+        this.restaurante = restaurante;
+    }
+    
+
     
 }
