@@ -1,0 +1,54 @@
+services:
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: ${DB_CONTAINER_NAME:-techchallenge02_postgres}
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME:-techchallenge02_db}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-techchallenge02_db}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - techchallenge02-net
+
+  app:
+    build:
+      context: .
+      dockerfile: ${DOCKERFILE_PATH:-Dockerfile}
+    container_name: ${APP_CONTAINER_NAME:-techchallenge02_app}
+    restart: always
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    environment:
+      PROFILE: ${APP_PROFILE:-default}
+      DB_HOST: ${DB_HOST:-postgres-db}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_NAME: ${DB_NAME:-techchallenge02_db}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      JPA_DDL_AUTO: ${JPA_DDL_AUTO:-update}
+      JPA_SHOW_SQL: ${JPA_SHOW_SQL:-true}
+      JPA_FORMAT_SQL: ${JPA_FORMAT_SQL:-false}
+      JPA_DIALECT: ${JPA_DIALECT:-org.hibernate.dialect.PostgreSQLDialect}
+      JPA_DEFER_DATASOURCE_INIT: ${JPA_DEFER_DATASOURCE_INIT:-true}
+      SQL_INIT_MODE: ${SQL_INIT_MODE:-always}
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    networks:
+      - techchallenge02-net
+
+volumes:
+  postgres_data:
+
+networks:
+  techchallenge02-net:
+    driver: bridge
