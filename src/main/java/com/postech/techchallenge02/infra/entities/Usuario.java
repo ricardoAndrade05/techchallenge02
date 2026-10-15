@@ -11,13 +11,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "tb_usuario")
-@Getter
-@Setter 
 public class Usuario {
 
     @Id
@@ -35,5 +31,61 @@ public class Usuario {
     @ManyToOne
     @JoinColumn(name = "id_tipo_usuario")
     private TipoUsuario tipoUsuario;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public LocalDateTime getDataUltimaAlteracao() {
+        return dataUltimaAlteracao;
+    }
+
+    public TipoUsuario getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public void setDataUltimaAlteracao(LocalDateTime dataUltimaAlteracao) {
+        this.dataUltimaAlteracao = dataUltimaAlteracao;
+    }
+
+    public void setTipoUsuario(TipoUsuario tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
+    }
 
 }

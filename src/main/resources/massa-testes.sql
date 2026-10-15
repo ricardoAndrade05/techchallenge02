@@ -1,3 +1,14 @@
+-- Desativa temporariamente as chaves estrangeiras
+SET REFERENTIAL_INTEGRITY FALSE;
+
+DELETE FROM tb_usuario;
+DELETE FROM tb_tipo_usuario;
+DELETE FROM tb_restaurante;
+DELETE FROM tb_endereco;
+
+-- Religa as chaves estrangeiras
+SET REFERENTIAL_INTEGRITY TRUE;
+
 -- 1. Inserir Endereços
 INSERT INTO tb_endereco (id, logradouro, numero, cidade, estado, cep) 
 VALUES (1, 'Rua das Flores', '123', 'Maringá', 'PR', '87020-010');
@@ -17,10 +28,13 @@ VALUES (1, 'Gerente do Estabelecimento', 1, 1);
 INSERT INTO tb_tipo_usuario (id, nome, tipo, id_restaurante) 
 VALUES (2, 'Cliente Frequente', 2, 1);
 
+INSERT INTO tb_tipo_usuario (id, nome, tipo, id_restaurante) 
+VALUES (3, 'Cliente Usual', 2, 1);
+
 -- 5. Atualizar o Dono ou inserir novos usuários vinculados aos cargos do restaurante
 UPDATE tb_usuario SET id_tipo_usuario = 1 WHERE id = 1; -- Carlos vira Gerente/Dono
 
 INSERT INTO tb_usuario (id, email, nome, login, senha, data_ultima_alteracao, id_tipo_usuario) 
 VALUES (2, 'cliente@email.com', 'Ana Cliente', 'ana.cliente', '123456', '2026-10-13T10:05:00', 2);
 
-ALTER TABLE tb_tipo_usuario ALTER COLUMN id RESTART WITH 3;
+ALTER TABLE tb_tipo_usuario ALTER COLUMN id RESTART WITH 4;

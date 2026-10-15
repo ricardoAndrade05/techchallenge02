@@ -18,13 +18,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "tb_restaurante")
-@Getter
-@Setter
+
 public class Restaurante {
 
     @Id
@@ -48,5 +45,62 @@ public class Restaurante {
 
     @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TipoUsuario> tiposUsuario = new ArrayList<>();
+
+    public Long getId() {
+        return id;
+    }
+    public String getNome() {
+        return nome;
+    }
+    public LocalTime getHorarioFuncionamentoInicio() {
+        return horarioFuncionamentoInicio;
+    }
+    public LocalTime getHorarioFuncionamentoFim() {
+        return horarioFuncionamentoFim;
+    }
+    public TipoCozinhaEnun getTipoCozinha() {
+        return tipoCozinha;
+    }
+    public Usuario getDono() {
+        return dono;
+    }
+    public Endereco getEndereco() {
+        return endereco;
+    }
+    public List<TipoUsuario> getTiposUsuario() {
+        return tiposUsuario;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setHorarioFuncionamentoInicio(LocalTime horarioFuncionamentoInicio) {
+        this.horarioFuncionamentoInicio = horarioFuncionamentoInicio;
+    }
+
+    public void setHorarioFuncionamentoFim(LocalTime horarioFuncionamentoFim) {
+        this.horarioFuncionamentoFim = horarioFuncionamentoFim;
+    }
+
+    public void setTipoCozinha(TipoCozinhaEnun tipoCozinha) {
+        this.tipoCozinha = tipoCozinha;
+    }
+
+    public void setDono(Usuario dono) {
+        this.dono = dono;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public void setTiposUsuario(List<TipoUsuario> tiposUsuario) {
+        this.tiposUsuario = tiposUsuario;
+    }
 
 }
