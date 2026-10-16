@@ -3,7 +3,6 @@ package com.postech.techchallenge02.core.usecases;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import com.postech.techchallenge02.core.dtos.ExcluirTipoUsuarioDTO;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
