@@ -9,9 +9,8 @@ import com.postech.techchallenge02.core.entities.Restaurante;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
 import com.postech.techchallenge02.core.entities.Usuario;
 import com.postech.techchallenge02.core.exceptions.DadosInvalidosException;
-import com.postech.techchallenge02.core.exceptions.RestauranteNaoEncontradoException;
+import com.postech.techchallenge02.core.exceptions.RecursoNaoEncontradoException;
 import com.postech.techchallenge02.core.exceptions.TipoUsuarioExistenteException;
-import com.postech.techchallenge02.core.exceptions.UsuarioNaoEncontradoException;
 import com.postech.techchallenge02.core.exceptions.UsuarioSemPermissaoException;
 import com.postech.techchallenge02.core.interfaces.RestauranteGateway;
 import com.postech.techchallenge02.core.interfaces.TipoUsuarioGateway;
@@ -34,12 +33,12 @@ public class CadastrarTipoUsuarioUseCase {
             throw new TipoUsuarioExistenteException("Tipo " + dto.nomeTipo() + " já cadastrado");
         }
         Usuario usuarioCriador = this.usuarioGateway.buscaUsuarioPorId(dto.idUsuarioCriador())
-            .orElseThrow(() -> new UsuarioNaoEncontradoException("Usuário " + dto.idUsuarioCriador() + " não encontrado"));
+            .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário " + dto.idUsuarioCriador() + " não encontrado"));
         if (!usuarioCriador.podeCadastrarTipoUsuario()) {
             throw new UsuarioSemPermissaoException("Usuário " + dto.idUsuarioCriador() + " não tem permissão para criar tipo de usuário");
         }
         Restaurante restaurante = this.restauranteGateway.buscaRestaurantePorId(dto.idRestaurante())
-            .orElseThrow(() -> new RestauranteNaoEncontradoException("Restaurante " + dto.idRestaurante() + " não encontrado"));
+            .orElseThrow(() -> new RecursoNaoEncontradoException("Restaurante " + dto.idRestaurante() + " não encontrado"));
     
         final TipoUsuario novoTipoUsuario = TipoUsuario.criar(restaurante,dto.nomeTipo(),dto.tipoUsuario());
 

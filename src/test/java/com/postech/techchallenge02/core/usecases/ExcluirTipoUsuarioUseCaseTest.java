@@ -1,11 +1,8 @@
 package com.postech.techchallenge02.core.usecases;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.Optional;
 
@@ -23,9 +20,8 @@ import com.postech.techchallenge02.core.entities.TipoUsuario;
 import com.postech.techchallenge02.core.entities.Usuario;
 import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
 import com.postech.techchallenge02.core.exceptions.DadosInvalidosException;
-import com.postech.techchallenge02.core.exceptions.TipoUsuarioNaoEncontradoException;
+import com.postech.techchallenge02.core.exceptions.RecursoNaoEncontradoException;
 import com.postech.techchallenge02.core.exceptions.TipoUsuarioVinculadoException;
-import com.postech.techchallenge02.core.exceptions.UsuarioNaoEncontradoException;
 import com.postech.techchallenge02.core.exceptions.UsuarioSemPermissaoException;
 import com.postech.techchallenge02.core.interfaces.TipoUsuarioGateway;
 import com.postech.techchallenge02.core.interfaces.UsuarioGateway;
@@ -103,13 +99,13 @@ class ExcluirTipoUsuarioUseCaseTest {
     class QuandoUsuarioProblemas {
 
         @Test
-        @DisplayName("Deve lançar UsuarioNaoEncontradoException quando o usuário não for encontrado")
+        @DisplayName("Deve lançar RecursoNaoEncontradoException quando o usuário não for encontrado")
         void deveLancarExcecao_quandoUsuarioNaoEncontrado() {
             ExcluirTipoUsuarioDTO dto = new ExcluirTipoUsuarioDTO(ID_USUARIO_LOGADO, ID_TIPO_USUARIO);
             when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> useCase.execute(dto))
-                    .isInstanceOf(UsuarioNaoEncontradoException.class)
+                    .isInstanceOf(RecursoNaoEncontradoException.class)
                     .hasMessageContaining(String.valueOf(ID_USUARIO_LOGADO));
 
             verify(tipoUsuarioGateway, never()).excluirTipoUsuario(eq(ID_TIPO_USUARIO));
@@ -144,7 +140,7 @@ class ExcluirTipoUsuarioUseCaseTest {
             when(tipoUsuarioGateway.existeTipoUsuario(ID_TIPO_USUARIO, ID_RESTAURANTE)).thenReturn(false);
 
             assertThatThrownBy(() -> useCase.execute(dto))
-                    .isInstanceOf(TipoUsuarioNaoEncontradoException.class)
+                    .isInstanceOf(RecursoNaoEncontradoException.class)
                     .hasMessageContaining(String.valueOf(ID_TIPO_USUARIO));
 
             verify(tipoUsuarioGateway, never()).excluirTipoUsuario(ID_TIPO_USUARIO);

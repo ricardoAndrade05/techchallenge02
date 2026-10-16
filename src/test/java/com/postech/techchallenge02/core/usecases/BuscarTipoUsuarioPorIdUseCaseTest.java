@@ -20,7 +20,7 @@ import com.postech.techchallenge02.core.entities.Restaurante;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
 import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
 import com.postech.techchallenge02.core.exceptions.DadosInvalidosException;
-import com.postech.techchallenge02.core.exceptions.TipoUsuarioNaoEncontradoException;
+import com.postech.techchallenge02.core.exceptions.RecursoNaoEncontradoException;
 import com.postech.techchallenge02.core.interfaces.TipoUsuarioGateway;
 
 @ExtendWith(MockitoExtension.class)
@@ -65,7 +65,7 @@ class BuscarTipoUsuarioPorIdUseCaseTest {
             when(tipoUsuarioGateway.buscaTipoUsuarioPorId(ID_TIPO_USUARIO_INEXISTENTE)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> useCase.execute(ID_TIPO_USUARIO_INEXISTENTE))
-                    .isInstanceOf(TipoUsuarioNaoEncontradoException.class)
+                    .isInstanceOf(RecursoNaoEncontradoException.class)
                     .hasMessageContaining(String.valueOf(ID_TIPO_USUARIO_INEXISTENTE));
         }
     }

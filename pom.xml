@@ -20,6 +20,7 @@
         <commons-validator.version>1.9.0</commons-validator.version>
         <springdoc.version>2.8.5</springdoc.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <jacoco.version>0.8.12</jacoco.version>
 
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
     </properties>
@@ -52,7 +53,7 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Utilitários e Documentação -->
+        <!-- Documentação -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -96,6 +97,37 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- JaCoCo Plugin -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <!-- Exclui a classe principal da aplicação Spring Boot -->
+                                <exclude>com/postech/techchallenge02/*Application.class</exclude>
+                                <!-- Exclui DTOs e Mappers se estiverem em pacotes específicos -->
+                                <exclude>**/dto/**</exclude>
+                                <exclude>**/mapper/**</exclude>
+                                <exclude>**/config/**</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

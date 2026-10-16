@@ -7,8 +7,7 @@ import com.postech.techchallenge02.core.dtos.Paginacao;
 import com.postech.techchallenge02.core.entities.Restaurante;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
 import com.postech.techchallenge02.core.exceptions.DadosInvalidosException;
-import com.postech.techchallenge02.core.exceptions.RestauranteNaoEncontradoException;
-import com.postech.techchallenge02.core.exceptions.TipoUsuarioNaoEncontradoException;
+import com.postech.techchallenge02.core.exceptions.RecursoNaoEncontradoException;
 import com.postech.techchallenge02.core.interfaces.RestauranteGateway;
 import com.postech.techchallenge02.core.interfaces.TipoUsuarioGateway;
 
@@ -26,11 +25,11 @@ public class BuscarTipoUsuarioPorRestauranteUseCase {
             throw new DadosInvalidosException("Restaurante inválido");
         }
         Restaurante restaurante = restauranteGateway.buscaRestaurantePorId(idRestaurante)
-                .orElseThrow(() -> new RestauranteNaoEncontradoException("Restaurante não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Restaurante não encontrado"));
 
         final Pagina<TipoUsuario> tiposUsuarios = this.tipoUsuarioGateway.buscaTiposUsuarioPorRestaurante(restaurante, paginacao);
         if (tiposUsuarios.estaVazia()) {
-            throw new TipoUsuarioNaoEncontradoException("Não há tipos de usuários cadastrados para o restaurante: " + idRestaurante);
+            throw new RecursoNaoEncontradoException("Não há tipos de usuários cadastrados para o restaurante: " + idRestaurante);
         }
         return tiposUsuarios;
     }

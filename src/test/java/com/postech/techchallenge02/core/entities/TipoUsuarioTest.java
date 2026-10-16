@@ -1,7 +1,6 @@
 package com.postech.techchallenge02.core.entities;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -11,7 +10,7 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
-import com.postech.techchallenge02.core.exceptions.TipoUsuarioInvalidoException;
+import com.postech.techchallenge02.core.exceptions.DadosInvalidosException;
 
 @DisplayName("TipoUsuario")
 class TipoUsuarioTest {
@@ -46,28 +45,28 @@ class TipoUsuarioTest {
         }
 
         @Test
-        @DisplayName("Deve lançar TipoUsuarioInvalidoException quando o restaurante for nulo")
+        @DisplayName("Deve lançar DadosInvalidosException quando o restaurante for nulo")
         void deveLancarExcecao_quandoRestauranteNulo() {
             assertThatThrownBy(() -> TipoUsuario.criar(null, NOME_VALIDO, TIPO_VALIDO))
-                    .isInstanceOf(TipoUsuarioInvalidoException.class)
+                    .isInstanceOf(DadosInvalidosException.class)
                     .hasMessageContaining("Restaurante inválido");
         }
 
         @ParameterizedTest(name = "nome = \"{0}\"")
         @NullAndEmptySource
         @ValueSource(strings = {"   ", "\t", "\n"})
-        @DisplayName("Deve lançar TipoUsuarioInvalidoException quando o nome for nulo, vazio ou em branco")
+        @DisplayName("Deve lançar DadosInvalidosException quando o nome for nulo, vazio ou em branco")
         void deveLancarExcecao_quandoNomeInvalido(String nomeInvalido) {
             assertThatThrownBy(() -> TipoUsuario.criar(restauranteValido(), nomeInvalido, TIPO_VALIDO))
-                    .isInstanceOf(TipoUsuarioInvalidoException.class)
+                    .isInstanceOf(DadosInvalidosException.class)
                     .hasMessageContaining("Nome inválido");
         }
 
         @Test
-        @DisplayName("Deve lançar TipoUsuarioInvalidoException quando o tipo de usuário for nulo")
+        @DisplayName("Deve lançar DadosInvalidosException quando o tipo de usuário for nulo")
         void deveLancarExcecao_quandoTipoNulo() {
             assertThatThrownBy(() -> TipoUsuario.criar(restauranteValido(), NOME_VALIDO, null))
-                    .isInstanceOf(TipoUsuarioInvalidoException.class)
+                    .isInstanceOf(DadosInvalidosException.class)
                     .hasMessageContaining("Tipo de usuário inválido");
         }
     }
@@ -102,28 +101,28 @@ class TipoUsuarioTest {
         }
 
         @Test
-        @DisplayName("Deve lançar TipoUsuarioInvalidoException quando o restaurante for nulo")
+        @DisplayName("Deve lançar DadosInvalidosException quando o restaurante for nulo")
         void deveLancarExcecao_quandoRestauranteNulo() {
             assertThatThrownBy(() -> TipoUsuario.restaurar(ID, null, NOME_VALIDO, TIPO_VALIDO))
-                    .isInstanceOf(TipoUsuarioInvalidoException.class)
+                    .isInstanceOf(DadosInvalidosException.class)
                     .hasMessageContaining("Restaurante inválido");
         }
 
         @ParameterizedTest(name = "nome = \"{0}\"")
         @NullAndEmptySource
         @ValueSource(strings = {"   "})
-        @DisplayName("Deve lançar TipoUsuarioInvalidoException quando o nome for nulo, vazio ou em branco")
+        @DisplayName("Deve lançar DadosInvalidosException quando o nome for nulo, vazio ou em branco")
         void deveLancarExcecao_quandoNomeInvalido(String nomeInvalido) {
             assertThatThrownBy(() -> TipoUsuario.restaurar(ID, restauranteValido(), nomeInvalido, TIPO_VALIDO))
-                    .isInstanceOf(TipoUsuarioInvalidoException.class)
+                    .isInstanceOf(DadosInvalidosException.class)
                     .hasMessageContaining("Nome inválido");
         }
 
         @Test
-        @DisplayName("Deve lançar TipoUsuarioInvalidoException quando o tipo de usuário for nulo")
+        @DisplayName("Deve lançar DadosInvalidosException quando o tipo de usuário for nulo")
         void deveLancarExcecao_quandoTipoNulo() {
             assertThatThrownBy(() -> TipoUsuario.restaurar(ID, restauranteValido(), NOME_VALIDO, null))
-                    .isInstanceOf(TipoUsuarioInvalidoException.class)
+                    .isInstanceOf(DadosInvalidosException.class)
                     .hasMessageContaining("Tipo de usuário inválido");
         }
     }
@@ -160,12 +159,12 @@ class TipoUsuarioTest {
         @ParameterizedTest(name = "novoNome = \"{0}\"")
         @NullAndEmptySource
         @ValueSource(strings = {"   "})
-        @DisplayName("Deve lançar TipoUsuarioInvalidoException quando o novo nome for nulo, vazio ou em branco")
+        @DisplayName("Deve lançar DadosInvalidosException quando o novo nome for nulo, vazio ou em branco")
         void deveLancarExcecao_quandoNovoNomeInvalido(String nomeInvalido) {
             TipoUsuario tipo = TipoUsuario.restaurar(ID, restauranteValido(), NOME_VALIDO, TIPO_VALIDO);
 
             assertThatThrownBy(() -> tipo.atualizar(nomeInvalido))
-                    .isInstanceOf(TipoUsuarioInvalidoException.class)
+                    .isInstanceOf(DadosInvalidosException.class)
                     .hasMessageContaining("Nome inválido");
         }
     }
