@@ -32,7 +32,7 @@ public class CadastrarTipoUsuarioUseCase {
         if (existe) {
             throw new TipoUsuarioExistenteException("Tipo " + dto.nomeTipo() + " já cadastrado");
         }
-        Usuario usuarioCriador = this.usuarioGateway.buscaUsuarioPorId(dto.idUsuarioCriador())
+        Usuario usuarioCriador = this.usuarioGateway.buscaUsuarioPorId(dto.idUsuarioCriador(),dto.idRestaurante())
             .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário " + dto.idUsuarioCriador() + " não encontrado"));
         if (!usuarioCriador.podeCadastrarTipoUsuario()) {
             throw new UsuarioSemPermissaoException("Usuário " + dto.idUsuarioCriador() + " não tem permissão para criar tipo de usuário");

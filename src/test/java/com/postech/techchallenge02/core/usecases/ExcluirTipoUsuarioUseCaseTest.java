@@ -18,7 +18,7 @@ import com.postech.techchallenge02.core.dtos.ExcluirTipoUsuarioDTO;
 import com.postech.techchallenge02.core.entities.Restaurante;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
 import com.postech.techchallenge02.core.entities.Usuario;
-import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
+import com.postech.techchallenge02.core.enums.CategoriaEnun;
 import com.postech.techchallenge02.core.exceptions.DadosInvalidosException;
 import com.postech.techchallenge02.core.exceptions.RecursoNaoEncontradoException;
 import com.postech.techchallenge02.core.exceptions.TipoUsuarioVinculadoException;
@@ -49,8 +49,8 @@ class ExcluirTipoUsuarioUseCaseTest {
     @BeforeEach
     void setUp() {
         useCase = ExcluirTipoUsuarioUseCase.getInstance(tipoUsuarioGateway, usuarioGateway);
-        restaurante = Restaurante.criar(ID_RESTAURANTE, "Restaurante Teste");
-        tipoUsuarioDono = TipoUsuario.restaurar(ID_TIPO_USUARIO, restaurante, "Gerente", TipoUsuarioEnun.DONO);
+        restaurante = Restaurante.restaurar(ID_RESTAURANTE, "Restaurante Teste",null,null,null,null,null);
+        tipoUsuarioDono = TipoUsuario.restaurar(ID_TIPO_USUARIO, restaurante, "Gerente", CategoriaEnun.DONO);
         usuarioDono = Usuario.restaurar(ID_USUARIO_LOGADO, "Maria Dona", tipoUsuarioDono);
     }
 
@@ -102,11 +102,12 @@ class ExcluirTipoUsuarioUseCaseTest {
         @DisplayName("Deve lançar RecursoNaoEncontradoException quando o usuário não for encontrado")
         void deveLancarExcecao_quandoUsuarioNaoEncontrado() {
             ExcluirTipoUsuarioDTO dto = new ExcluirTipoUsuarioDTO(ID_USUARIO_LOGADO, ID_TIPO_USUARIO);
-            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO)).thenReturn(Optional.empty());
+            when(tipoUsuarioGateway.buscaTipoUsuarioPorId(ID_TIPO_USUARIO)).thenReturn(Optional.of(tipoUsuarioDono));
+            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO,ID_RESTAURANTE)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> useCase.execute(dto))
                     .isInstanceOf(RecursoNaoEncontradoException.class)
-                    .hasMessageContaining(String.valueOf(ID_USUARIO_LOGADO));
+                    .hasMessageContaining("Usuário não encontrado/inexistente para esse restaurante.");
 
             verify(tipoUsuarioGateway, never()).excluirTipoUsuario(eq(ID_TIPO_USUARIO));
         }
@@ -115,10 +116,11 @@ class ExcluirTipoUsuarioUseCaseTest {
         @DisplayName("Deve lançar UsuarioSemPermissaoException quando o usuário for do tipo CLIENTE")
         void deveLancarExcecao_quandoUsuarioClienteSemPermissao() {
             ExcluirTipoUsuarioDTO dto = new ExcluirTipoUsuarioDTO(ID_USUARIO_LOGADO, ID_TIPO_USUARIO);
-            TipoUsuario tipoCliente = TipoUsuario.criar(restaurante, "Cliente Comum", TipoUsuarioEnun.CLIENTE);
+            TipoUsuario tipoCliente = TipoUsuario.criar(restaurante, "Cliente Comum", CategoriaEnun.CLIENTE);
             Usuario usuarioCliente = Usuario.restaurar(ID_USUARIO_LOGADO, "João Cliente", tipoCliente);
 
-            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO)).thenReturn(Optional.of(usuarioCliente));
+            when(tipoUsuarioGateway.buscaTipoUsuarioPorId(ID_TIPO_USUARIO)).thenReturn(Optional.of(tipoUsuarioDono));
+            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO,ID_RESTAURANTE)).thenReturn(Optional.of(usuarioCliente));
 
             assertThatThrownBy(() -> useCase.execute(dto))
                     .isInstanceOf(UsuarioSemPermissaoException.class)
@@ -133,11 +135,10 @@ class ExcluirTipoUsuarioUseCaseTest {
     class QuandoTipoUsuarioNaoExiste {
 
         @Test
-        @DisplayName("Deve lançar TipoUsuarioNaoEncontradoException quando o tipo não existir para o restaurante")
+        @DisplayName("Deve lançar RecursoNaoEncontradoException quando o tipo não existir para o restaurante")
         void deveLancarExcecao_quandoTipoUsuarioNaoExiste() {
             ExcluirTipoUsuarioDTO dto = new ExcluirTipoUsuarioDTO(ID_USUARIO_LOGADO, ID_TIPO_USUARIO);
-            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO)).thenReturn(Optional.of(usuarioDono));
-            when(tipoUsuarioGateway.existeTipoUsuario(ID_TIPO_USUARIO, ID_RESTAURANTE)).thenReturn(false);
+            when(tipoUsuarioGateway.buscaTipoUsuarioPorId(ID_TIPO_USUARIO)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> useCase.execute(dto))
                     .isInstanceOf(RecursoNaoEncontradoException.class)
@@ -155,8 +156,8 @@ class ExcluirTipoUsuarioUseCaseTest {
         @DisplayName("Deve lançar TipoUsuarioVinculadoException quando o tipo estiver em uso por usuários")
         void deveLancarExcecao_quandoTipoUsuarioVinculado() {
             ExcluirTipoUsuarioDTO dto = new ExcluirTipoUsuarioDTO(ID_USUARIO_LOGADO, ID_TIPO_USUARIO);
-            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO)).thenReturn(Optional.of(usuarioDono));
-            when(tipoUsuarioGateway.existeTipoUsuario(ID_TIPO_USUARIO, ID_RESTAURANTE)).thenReturn(true);
+            when(tipoUsuarioGateway.buscaTipoUsuarioPorId(ID_TIPO_USUARIO)).thenReturn(Optional.of(tipoUsuarioDono));
+            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO,ID_RESTAURANTE)).thenReturn(Optional.of(usuarioDono));
             when(tipoUsuarioGateway.tipoUsuarioEstaVinculado(ID_TIPO_USUARIO)).thenReturn(true);
 
             assertThatThrownBy(() -> useCase.execute(dto))
@@ -174,8 +175,8 @@ class ExcluirTipoUsuarioUseCaseTest {
         @DisplayName("Deve excluir o tipo de usuário com sucesso sem lançar exceção")
         void deveExcluirComSucesso_quandoDadosValidos() {
             ExcluirTipoUsuarioDTO dto = new ExcluirTipoUsuarioDTO(ID_USUARIO_LOGADO, ID_TIPO_USUARIO);
-            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO)).thenReturn(Optional.of(usuarioDono));
-            when(tipoUsuarioGateway.existeTipoUsuario(ID_TIPO_USUARIO, ID_RESTAURANTE)).thenReturn(true);
+            when(tipoUsuarioGateway.buscaTipoUsuarioPorId(ID_TIPO_USUARIO)).thenReturn(Optional.of(tipoUsuarioDono));
+            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO,ID_RESTAURANTE)).thenReturn(Optional.of(usuarioDono));
             when(tipoUsuarioGateway.tipoUsuarioEstaVinculado(ID_TIPO_USUARIO)).thenReturn(false);
 
             assertThatCode(() -> useCase.execute(dto)).doesNotThrowAnyException();
@@ -187,14 +188,13 @@ class ExcluirTipoUsuarioUseCaseTest {
         @DisplayName("Deve invocar o gateway de exclusão exatamente uma vez com o id correto")
         void deveInvocarGatewayDeExclusao_comIdCorreto() {
             ExcluirTipoUsuarioDTO dto = new ExcluirTipoUsuarioDTO(ID_USUARIO_LOGADO, ID_TIPO_USUARIO);
-            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO)).thenReturn(Optional.of(usuarioDono));
-            when(tipoUsuarioGateway.existeTipoUsuario(ID_TIPO_USUARIO, ID_RESTAURANTE)).thenReturn(true);
+            when(tipoUsuarioGateway.buscaTipoUsuarioPorId(ID_TIPO_USUARIO)).thenReturn(Optional.of(tipoUsuarioDono));
+            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO,ID_RESTAURANTE)).thenReturn(Optional.of(usuarioDono));
             when(tipoUsuarioGateway.tipoUsuarioEstaVinculado(ID_TIPO_USUARIO)).thenReturn(false);
 
             useCase.execute(dto);
 
             verify(tipoUsuarioGateway).excluirTipoUsuario(ID_TIPO_USUARIO);
-            verify(tipoUsuarioGateway).existeTipoUsuario(ID_TIPO_USUARIO, ID_RESTAURANTE);
             verify(tipoUsuarioGateway).tipoUsuarioEstaVinculado(ID_TIPO_USUARIO);
         }
     }

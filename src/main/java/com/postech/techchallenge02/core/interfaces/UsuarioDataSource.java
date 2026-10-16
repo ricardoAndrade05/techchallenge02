@@ -4,7 +4,7 @@ import com.postech.techchallenge02.core.dtos.UsuarioDTO;
 
 public interface UsuarioDataSource {
 
-    public UsuarioDTO buscaUsuarioPorId(Long idUsuario);
+    public UsuarioDTO buscaUsuarioPorId(Long idUsuario,Long idRestaurante);
 
     public boolean existeUsuarioComEsteTipoUsuario(Long idTipoUsuario);
 

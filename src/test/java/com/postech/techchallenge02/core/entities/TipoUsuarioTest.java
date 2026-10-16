@@ -9,7 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
+import com.postech.techchallenge02.core.enums.CategoriaEnun;
 import com.postech.techchallenge02.core.exceptions.DadosInvalidosException;
 
 @DisplayName("TipoUsuario")
@@ -17,10 +17,10 @@ class TipoUsuarioTest {
 
     private static final Long ID = 1L;
     private static final String NOME_VALIDO = "Gerente";
-    private static final TipoUsuarioEnun TIPO_VALIDO = TipoUsuarioEnun.DONO;
+    private static final CategoriaEnun TIPO_VALIDO = CategoriaEnun.DONO;
 
     private Restaurante restauranteValido() {
-        return Restaurante.criar(10L, "Restaurante Teste");
+        return Restaurante.restaurar(10L, "Restaurante Teste",null,null,null,null,null);
     }
 
     // -------------------------------------------------------------------------
@@ -40,7 +40,7 @@ class TipoUsuarioTest {
 
             assertThat(tipo.getId()).isNull();
             assertThat(tipo.getNome()).isEqualTo(NOME_VALIDO);
-            assertThat(tipo.getTipo()).isEqualTo(TIPO_VALIDO);
+            assertThat(tipo.getCategoria()).isEqualTo(TIPO_VALIDO);
             assertThat(tipo.getRestaurante()).isEqualTo(restaurante);
         }
 
@@ -88,7 +88,7 @@ class TipoUsuarioTest {
 
             assertThat(tipo.getId()).isEqualTo(ID);
             assertThat(tipo.getNome()).isEqualTo(NOME_VALIDO);
-            assertThat(tipo.getTipo()).isEqualTo(TIPO_VALIDO);
+            assertThat(tipo.getCategoria()).isEqualTo(TIPO_VALIDO);
             assertThat(tipo.getRestaurante()).isEqualTo(restaurante);
         }
 
@@ -153,7 +153,7 @@ class TipoUsuarioTest {
 
             tipo.atualizar("Supervisor");
 
-            assertThat(tipo.getTipo()).isEqualTo(TIPO_VALIDO);
+            assertThat(tipo.getCategoria()).isEqualTo(TIPO_VALIDO);
         }
 
         @ParameterizedTest(name = "novoNome = \"{0}\"")
@@ -180,7 +180,7 @@ class TipoUsuarioTest {
         @Test
         @DisplayName("Deve retornar o id do restaurante quando o restaurante está presente")
         void deveRetornarIdRestaurante_quandoRestaurantePresente() {
-            Restaurante restaurante = Restaurante.criar(10L, "Restaurante Teste");
+            Restaurante restaurante = Restaurante.restaurar(10L, "Restaurante Teste",null,null,null,null,null);
             TipoUsuario tipo = TipoUsuario.criar(restaurante, NOME_VALIDO, TIPO_VALIDO);
 
             assertThat(tipo.getIdRestaurante()).isEqualTo(10L);

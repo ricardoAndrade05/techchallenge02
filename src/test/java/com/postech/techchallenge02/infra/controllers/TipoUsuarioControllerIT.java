@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.postech.techchallenge02.core.dtos.NovoTipoUsuarioDTO;
-import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
+import com.postech.techchallenge02.core.enums.CategoriaEnun;
 import com.postech.techchallenge02.infra.dtos.AtualizarTipoDTO;
 import com.postech.techchallenge02.infra.dtos.ExcluiTipoDTO;
 
@@ -81,7 +81,7 @@ public class TipoUsuarioControllerIT {
     @Test
     @DisplayName("Deve inserir novo tipo de usuário com sucesso (201)")
     void deveInserirTipoUsuarioComSucesso() throws Exception {
-        NovoTipoUsuarioDTO novoDTO = new NovoTipoUsuarioDTO(1L,"Cozinheiro",TipoUsuarioEnun.DONO,1L);
+        NovoTipoUsuarioDTO novoDTO = new NovoTipoUsuarioDTO(1L,"Cozinheiro",CategoriaEnun.DONO,1L);
 
         mockMvc.perform(post("/tipos-usuario")
                         .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
@@ -94,7 +94,7 @@ public class TipoUsuarioControllerIT {
     @Test
     @DisplayName("Deve retornar Not Found ao tentar inserir tipo de usuário para restaurante inexistente (404)")
     void deveRetornarNotFoundAoInserirParaRestauranteInexistente() throws Exception {
-        NovoTipoUsuarioDTO novoDTO = new NovoTipoUsuarioDTO(999L,"Cozinheiro",TipoUsuarioEnun.DONO,1L);
+        NovoTipoUsuarioDTO novoDTO = new NovoTipoUsuarioDTO(999L,"Cozinheiro",CategoriaEnun.DONO,1L);
 
         mockMvc.perform(post("/tipos-usuario")
                         .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
@@ -105,7 +105,7 @@ public class TipoUsuarioControllerIT {
     @Test
     @DisplayName("Deve retornar Conflict ao tentar inserir tipo de usuário já existente (409)")
     void deveRetornarConflictAoInserirTipoUsuarioDuplicado() throws Exception {
-        NovoTipoUsuarioDTO dtoDuplicado = new NovoTipoUsuarioDTO(1L,"Gerente do Estabelecimento",TipoUsuarioEnun.DONO,1L);
+        NovoTipoUsuarioDTO dtoDuplicado = new NovoTipoUsuarioDTO(1L,"Gerente do Estabelecimento",CategoriaEnun.DONO,1L);
 
         mockMvc.perform(post("/tipos-usuario")
                         .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
@@ -116,7 +116,7 @@ public class TipoUsuarioControllerIT {
     @Test
     @DisplayName("Deve retornar Forbidden quando o usuário não tiver permissão para inserir (403)")
     void deveRetornarForbiddenSemPermissao() throws Exception {
-        NovoTipoUsuarioDTO dtoSemPermissao = new NovoTipoUsuarioDTO(1L,"Novo Cargo",TipoUsuarioEnun.DONO,2L);
+        NovoTipoUsuarioDTO dtoSemPermissao = new NovoTipoUsuarioDTO(1L,"Novo Cargo",CategoriaEnun.DONO,2L);
 
         mockMvc.perform(post("/tipos-usuario")
                         .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
@@ -176,7 +176,7 @@ public class TipoUsuarioControllerIT {
     @DisplayName("Deve atualizar tipo de usuário com sucesso (200)")
     void deveAtualizarTipoUsuarioComSucesso() throws Exception {
         Long idParaAtualizar = 2L; 
-        var atualizarDTO = new AtualizarTipoDTO("Cliente VIP",1L );
+        var atualizarDTO = new AtualizarTipoDTO("Cliente VIP",1L,1L );
 
         mockMvc.perform(put("/tipos-usuario/{id}", idParaAtualizar)
                         .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
@@ -190,7 +190,7 @@ public class TipoUsuarioControllerIT {
     @DisplayName("Deve retornar Forbidden ao tentar atualizar sem permissão (403)")
     void deveRetornarForbiddenAoAtualizarSemPermissao() throws Exception {
         Long idParaAtualizar = 2L;
-        var atualizarDTO = new AtualizarTipoDTO("Cliente VIP",2L);
+        var atualizarDTO = new AtualizarTipoDTO("Cliente VIP",2L,1L);
 
         mockMvc.perform(put("/tipos-usuario/{id}", idParaAtualizar)
                         .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
@@ -202,7 +202,7 @@ public class TipoUsuarioControllerIT {
     @DisplayName("Deve retornar Not Found ao tentar atualizar tipo de usuário inexistente (404)")
     void deveRetornarNotFoundAoAtualizarTipoInexistente() throws Exception {
         Long idInexistente = 999L;
-        var atualizarDTO = new AtualizarTipoDTO("Nome Novo",1L);
+        var atualizarDTO = new AtualizarTipoDTO("Nome Novo",1L,1L);
 
         mockMvc.perform(put("/tipos-usuario/{id}", idInexistente)
                         .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
@@ -214,7 +214,7 @@ public class TipoUsuarioControllerIT {
     @DisplayName("Deve retornar Conflict ao atualizar para um tipo de usuário já existente (409)")
     void deveRetornarConflictAoAtualizarParaNomeExistente() throws Exception {
         Long idParaAtualizar = 2L;
-        var atualizarDTO = new AtualizarTipoDTO("Cliente Usual",1L);
+        var atualizarDTO = new AtualizarTipoDTO("Cliente Usual",1L,1L);
 
         mockMvc.perform(put("/tipos-usuario/{id}", idParaAtualizar)
                         .contentType(org.springframework.http.MediaType.APPLICATION_JSON)

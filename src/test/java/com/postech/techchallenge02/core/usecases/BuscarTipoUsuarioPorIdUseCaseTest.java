@@ -18,7 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.postech.techchallenge02.core.entities.Restaurante;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
-import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
+import com.postech.techchallenge02.core.enums.CategoriaEnun;
 import com.postech.techchallenge02.core.exceptions.DadosInvalidosException;
 import com.postech.techchallenge02.core.exceptions.RecursoNaoEncontradoException;
 import com.postech.techchallenge02.core.interfaces.TipoUsuarioGateway;
@@ -77,8 +77,8 @@ class BuscarTipoUsuarioPorIdUseCaseTest {
         @Test
         @DisplayName("Deve retornar o tipo de usuário quando o id for válido e o tipo existir")
         void deveRetornarTipoUsuario_quandoIdValidoETipoExiste() {
-            Restaurante restaurante = Restaurante.criar(10L, "Restaurante Teste");
-            TipoUsuario tipoEsperado = TipoUsuario.restaurar(ID_TIPO_USUARIO_VALIDO, restaurante, "Gerente", TipoUsuarioEnun.DONO);
+            Restaurante restaurante = Restaurante.restaurar (10L, "Restaurante Teste",null,null,null,null,null);
+            TipoUsuario tipoEsperado = TipoUsuario.restaurar(ID_TIPO_USUARIO_VALIDO, restaurante, "Gerente", CategoriaEnun.DONO);
             when(tipoUsuarioGateway.buscaTipoUsuarioPorId(ID_TIPO_USUARIO_VALIDO)).thenReturn(Optional.of(tipoEsperado));
 
             TipoUsuario resultado = useCase.execute(ID_TIPO_USUARIO_VALIDO);
@@ -86,14 +86,14 @@ class BuscarTipoUsuarioPorIdUseCaseTest {
             assertThat(resultado).isNotNull();
             assertThat(resultado.getId()).isEqualTo(ID_TIPO_USUARIO_VALIDO);
             assertThat(resultado.getNome()).isEqualTo("Gerente");
-            assertThat(resultado.getTipo()).isEqualTo(TipoUsuarioEnun.DONO);
+            assertThat(resultado.getCategoria()).isEqualTo(CategoriaEnun.DONO);
         }
 
         @Test
         @DisplayName("Deve invocar o gateway para buscar o tipo de usuário pelo id")
         void deveInvocarGateway_quandoBuscarPorId() {
-            Restaurante restaurante = Restaurante.criar(10L, "Restaurante Teste");
-            TipoUsuario tipo = TipoUsuario.restaurar(ID_TIPO_USUARIO_VALIDO, restaurante, "Gerente", TipoUsuarioEnun.DONO);
+            Restaurante restaurante = Restaurante.restaurar(10L, "Restaurante Teste",null,null,null,null,null);
+            TipoUsuario tipo = TipoUsuario.restaurar(ID_TIPO_USUARIO_VALIDO, restaurante, "Gerente", CategoriaEnun.DONO);
             when(tipoUsuarioGateway.buscaTipoUsuarioPorId(ID_TIPO_USUARIO_VALIDO)).thenReturn(Optional.of(tipo));
 
             useCase.execute(ID_TIPO_USUARIO_VALIDO);

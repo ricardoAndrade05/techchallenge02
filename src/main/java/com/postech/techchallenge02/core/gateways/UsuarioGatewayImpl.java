@@ -30,15 +30,15 @@ public class UsuarioGatewayImpl implements UsuarioGateway {
     }
     
     @Override
-    public Optional<Usuario> buscaUsuarioPorId(Long idUsuario) {
-        UsuarioDTO usuarioDTO = this.dataSource.buscaUsuarioPorId(idUsuario);
+    public Optional<Usuario> buscaUsuarioPorId(Long idUsuario, Long idRestaurante) {
+        UsuarioDTO usuarioDTO = this.dataSource.buscaUsuarioPorId(idUsuario,idRestaurante);
         if (usuarioDTO == null) {
             return Optional.empty();
         }
         TipoUsuarioDTO tipoUsuarioDTO = this.tipoUsuarioDataSource.buscaTipoUsuarioPorId(usuarioDTO.idTipoUsuario());
         RestauranteDTO restauranteDTO = tipoUsuarioDTO.restaurante();
-        Restaurante restaurante = Restaurante.restaurar(restauranteDTO.id(), restauranteDTO.nome());
-        TipoUsuario tipoUsuario = TipoUsuario.restaurar(tipoUsuarioDTO.id(), restaurante,tipoUsuarioDTO.nome(),tipoUsuarioDTO   .tipo());
+        Restaurante restaurante = Restaurante.restaurar(restauranteDTO.id(), restauranteDTO.nome(),null,null,null,null,null);
+        TipoUsuario tipoUsuario = TipoUsuario.restaurar(tipoUsuarioDTO.id(), restaurante,tipoUsuarioDTO.nome(),tipoUsuarioDTO.tipo());
         Usuario usuario = Usuario.restaurar(usuarioDTO.id(), usuarioDTO.nome(),tipoUsuario);
         return Optional.of(usuario);
     }

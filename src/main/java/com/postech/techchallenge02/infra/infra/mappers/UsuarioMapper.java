@@ -4,12 +4,15 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.postech.techchallenge02.core.dtos.UsuarioDTO;
+import com.postech.techchallenge02.infra.entities.TipoUsuario;
 import com.postech.techchallenge02.infra.entities.Usuario;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {TipoUsuarioMapper.class})
 public interface UsuarioMapper {
 
-    @Mapping(source = "tipoUsuario.id", target = "idTipoUsuario")
-    UsuarioDTO toDTO(Usuario usuario);
+    @Mapping(target = "id", source = "usuario.id")
+    @Mapping(target = "nome", source = "usuario.nome")
+    @Mapping(target = "idTipoUsuario", source = "tipoUsuario.id")
+    UsuarioDTO toDTO(Usuario usuario, TipoUsuario tipoUsuario);
 
 }

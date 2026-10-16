@@ -73,11 +73,11 @@ public class TipoUsuarioService {
         TipoUsuarioController.getInstance(tipoUsuarioDataSource, restauranteDataSource, usuarioDataSource).excluirTipoUsuario(new ExcluirTipoUsuarioDTO(excluiTipoDTO.idUsuarioLogado(), id));
     }
 
-    public TipoUsuarioDTO atualizaTipoUsuario(Long id, AtualizarTipoDTO atualizarTipoDTO) {
+    public TipoUsuarioDTO atualizaTipoUsuario(Long id, AtualizarTipoDTO dto) {
         TipoUsuarioDataSource tipoUsuarioDataSource = new TipoUsuarioDataSourceAdapter(tipoUsuarioRepository, restauranteRepository, tipoUsuarioMapper);
         UsuarioDataSource usuarioDataSource = new UsuarioDataSourceAdapter(usuarioRepository,usuarioMapper);
         RestauranteDataSource restauranteDataSource = new RestauranteDataSourceAdapter(restauranteRepository, restauranteMapper);
-        TipoUsuarioDTO tipoUsuarioDTO = TipoUsuarioController.getInstance(tipoUsuarioDataSource, restauranteDataSource, usuarioDataSource).atualizarTipoUsuario(new AtualizarTipoUsuarioDTO(id, atualizarTipoDTO.novoNome(), atualizarTipoDTO.idUsuarioLogado()));
+        TipoUsuarioDTO tipoUsuarioDTO = TipoUsuarioController.getInstance(tipoUsuarioDataSource, restauranteDataSource, usuarioDataSource).atualizarTipoUsuario(new AtualizarTipoUsuarioDTO(id, dto.novoNome(), dto.idUsuarioLogado(),dto.idRestaurante()));
         return tipoUsuarioDTO;
     }
 

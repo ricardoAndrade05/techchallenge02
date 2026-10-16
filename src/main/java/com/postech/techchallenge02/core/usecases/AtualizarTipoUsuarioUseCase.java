@@ -25,14 +25,14 @@ public class AtualizarTipoUsuarioUseCase {
 
     public TipoUsuario execute(AtualizarTipoUsuarioDTO dto) {
         validaDadosEntrada(dto);
-        Usuario usuarioLogado = usuarioGateway.buscaUsuarioPorId(dto.idUsuarioLogado())
+        Usuario usuarioLogado = usuarioGateway.buscaUsuarioPorId(dto.idUsuarioLogado(),dto.idRestaurante())
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Usuario nao encontrado"));
         if (!usuarioLogado.podeAtualizarTipoUsuario()) {
             throw new UsuarioSemPermissaoException("Usuario nao tem permissao para atualizar tipo de usuario");
         }
         TipoUsuario tipoUsuario = this.tipoUsuarioGateway.buscaTipoUsuarioPorId(dto.idTipoUsuario())
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Tipo de usuário não encontrado"));
-        boolean existe = this.tipoUsuarioGateway.existeTipoUsuario(dto.novoNome(), tipoUsuario.getIdRestaurante(), tipoUsuario.getTipo());
+        boolean existe = this.tipoUsuarioGateway.existeTipoUsuario(dto.novoNome(), tipoUsuario.getIdRestaurante(), tipoUsuario.getCategoria());
         if (existe) {
             throw new TipoUsuarioExistenteException("Não é possivel atualizar esse tipo usuario pois o mesmo ja existe!");
         }

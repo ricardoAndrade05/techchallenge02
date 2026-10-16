@@ -1,6 +1,6 @@
 package com.postech.techchallenge02.core.entities;
 
-import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
+import com.postech.techchallenge02.core.enums.CategoriaEnun;
 
 public class Usuario {
 
@@ -13,15 +13,15 @@ public class Usuario {
     }
 
     public boolean podeCadastrarTipoUsuario() {
-        return this.tipoUsuario != null && !TipoUsuarioEnun.CLIENTE.equals(this.tipoUsuario.getTipo());
+        return this.tipoUsuario != null && !CategoriaEnun.CLIENTE.equals(this.tipoUsuario.getCategoria());
     }
 
     public boolean podeExcluirTipoUsuario() {
-        return this.tipoUsuario != null && !TipoUsuarioEnun.CLIENTE.equals(this.tipoUsuario.getTipo());
+        return this.tipoUsuario != null && !CategoriaEnun.CLIENTE.equals(this.tipoUsuario.getCategoria());
     }
 
     public boolean podeAtualizarTipoUsuario() {
-        return this.tipoUsuario != null && !TipoUsuarioEnun.CLIENTE.equals(this.tipoUsuario.getTipo());
+        return this.tipoUsuario != null && !CategoriaEnun.CLIENTE.equals(this.tipoUsuario.getCategoria());
     }
 
     private Usuario(Long id, String nome, TipoUsuario tipoUsuario) {

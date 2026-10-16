@@ -9,7 +9,7 @@ import com.postech.techchallenge02.core.dtos.Pagina;
 import com.postech.techchallenge02.core.dtos.Paginacao;
 import com.postech.techchallenge02.core.dtos.RestauranteDTO;
 import com.postech.techchallenge02.core.dtos.TipoUsuarioDTO;
-import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
+import com.postech.techchallenge02.core.enums.CategoriaEnun;
 import com.postech.techchallenge02.core.interfaces.TipoUsuarioDataSource;
 import com.postech.techchallenge02.infra.entities.Restaurante;
 import com.postech.techchallenge02.infra.entities.TipoUsuario;
@@ -34,7 +34,7 @@ public class TipoUsuarioDataSourceAdapter implements TipoUsuarioDataSource {
         return this.tipoUsuarioRepository.findById(idTipoUsuario)
                 .map(tipoUsuario -> {
                     Restaurante restaurante = tipoUsuario.getRestaurante();
-                    RestauranteDTO restauranteDTO = new RestauranteDTO(restaurante.getId(), restaurante.getNome());
+                    RestauranteDTO restauranteDTO = new RestauranteDTO(restaurante.getId(), restaurante.getNome(),null,null,null,null);
                     return new TipoUsuarioDTO(
                             tipoUsuario.getId(),
                             restauranteDTO,
@@ -72,7 +72,7 @@ public class TipoUsuarioDataSourceAdapter implements TipoUsuarioDataSource {
     }
 
     @Override
-    public boolean existeTipoUsuario(String nome, Long idRestaurante, TipoUsuarioEnun tipoUsuarioEnun) {
+    public boolean existeTipoUsuario(String nome, Long idRestaurante, CategoriaEnun tipoUsuarioEnun) {
         return this.tipoUsuarioRepository.existeTipoUsuario(nome,idRestaurante, tipoUsuarioEnun);
     }
 

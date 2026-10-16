@@ -1,14 +1,14 @@
 package com.postech.techchallenge02.infra.infra.converters;
 
-import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
+import com.postech.techchallenge02.core.enums.CategoriaEnun;
 import com.postech.techchallenge02.core.exceptions.RecursoNaoEncontradoException;
 
 import jakarta.persistence.AttributeConverter;
 
-public class TipoUsuarioConverter implements AttributeConverter<TipoUsuarioEnun, Integer> {
+public class TipoUsuarioConverter implements AttributeConverter<CategoriaEnun, Integer> {
 
 	@Override
-	public Integer convertToDatabaseColumn(TipoUsuarioEnun tipoUsuario) {
+	public Integer convertToDatabaseColumn(CategoriaEnun tipoUsuario) {
 		if (tipoUsuario == null) {
 			throw new RecursoNaoEncontradoException("Tipo usuario inexistente");
 		}
@@ -16,11 +16,11 @@ public class TipoUsuarioConverter implements AttributeConverter<TipoUsuarioEnun,
 	}
 
 	@Override
-	public TipoUsuarioEnun convertToEntityAttribute(Integer codigoUsuario) {
+	public CategoriaEnun convertToEntityAttribute(Integer codigoUsuario) {
 		if (codigoUsuario == null) {
 			throw new RecursoNaoEncontradoException("Tipo usuario inexistente");
 		}
-		return TipoUsuarioEnun.fromCodigo(codigoUsuario);
+		return CategoriaEnun.fromCodigo(codigoUsuario);
 	}
 
 }

@@ -2,7 +2,7 @@ package com.postech.techchallenge02.core.enums;
 
 import com.postech.techchallenge02.core.exceptions.RecursoNaoEncontradoException;
 
-public enum TipoUsuarioEnun {
+public enum CategoriaEnun {
 
     DONO(1, "Dono de Restaurante"),
     CLIENTE(2, "Cliente");
@@ -10,17 +10,17 @@ public enum TipoUsuarioEnun {
     private Integer codigo;
     private String descricao;
 
-    private TipoUsuarioEnun(int codigo, String descricao) {
+    private CategoriaEnun(int codigo, String descricao) {
         this.codigo = codigo;
         this.descricao = descricao;
     }
 
-    public static TipoUsuarioEnun fromCodigo(Integer codigo) {
+    public static CategoriaEnun fromCodigo(Integer codigo) {
         if (codigo == null) {
             return null;
         }
 
-        for (TipoUsuarioEnun tipo : TipoUsuarioEnun.values()) {
+        for (CategoriaEnun tipo : CategoriaEnun.values()) {
             if (tipo.getCodigo().equals(codigo)) {
                 return tipo;
             }

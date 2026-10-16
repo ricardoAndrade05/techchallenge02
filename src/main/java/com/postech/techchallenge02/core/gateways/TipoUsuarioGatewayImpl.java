@@ -11,7 +11,7 @@ import com.postech.techchallenge02.core.dtos.RestauranteDTO;
 import com.postech.techchallenge02.core.dtos.TipoUsuarioDTO;
 import com.postech.techchallenge02.core.entities.Restaurante;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
-import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
+import com.postech.techchallenge02.core.enums.CategoriaEnun;
 import com.postech.techchallenge02.core.interfaces.TipoUsuarioDataSource;
 import com.postech.techchallenge02.core.interfaces.TipoUsuarioGateway;
 import com.postech.techchallenge02.core.interfaces.UsuarioDataSource;
@@ -35,10 +35,11 @@ public class TipoUsuarioGatewayImpl implements TipoUsuarioGateway {
 
     @Override
     public TipoUsuario atualizarTipoUsuario(TipoUsuario tipo) {
-       RestauranteDTO restauranteDTO = new RestauranteDTO(tipo.getIdRestaurante(), tipo.getRestaurante().getNome());
-       TipoUsuarioDTO dto = new TipoUsuarioDTO(tipo.getId(),restauranteDTO,tipo.getNome(),tipo.getTipo());
+       Restaurante restaurante = tipo.getRestaurante();
+       RestauranteDTO restauranteDTO = new RestauranteDTO(restaurante.getId(),restaurante.getNome(),null,null,null,null);
+       TipoUsuarioDTO dto = new TipoUsuarioDTO(tipo.getId(),restauranteDTO,tipo.getNome(),tipo.getCategoria());
        dto = this.dataSource.atualizar(dto);
-       return TipoUsuario.restaurar(dto.id(), tipo.getRestaurante(), dto.nome(), dto.tipo());
+       return TipoUsuario.restaurar(dto.id(), restaurante, dto.nome(), dto.tipo());
     }
 
     @Override
@@ -50,7 +51,7 @@ public class TipoUsuarioGatewayImpl implements TipoUsuarioGateway {
 
         RestauranteDTO restauranteDTO = tipoUsuarioDTO.restaurante();
         Restaurante restaurante = (restauranteDTO != null)
-                ? Restaurante.restaurar(restauranteDTO.id(), restauranteDTO.nome())
+                ? Restaurante.restaurar(restauranteDTO.id(), restauranteDTO.nome(),null,null,null,null,null)
                 : null;
 
         TipoUsuario tipoUsuario = TipoUsuario.restaurar(
@@ -64,7 +65,7 @@ public class TipoUsuarioGatewayImpl implements TipoUsuarioGateway {
 
     @Override
     public TipoUsuario cadastraTipoUsuario(TipoUsuario tipoUsuario) {
-        NovoTipoUsuarioDTO novoTipoUsuarioDTO = new NovoTipoUsuarioDTO(tipoUsuario.getRestaurante().getId(), tipoUsuario.getNome(), tipoUsuario.getTipo());
+        NovoTipoUsuarioDTO novoTipoUsuarioDTO = new NovoTipoUsuarioDTO(tipoUsuario.getRestaurante().getId(), tipoUsuario.getNome(), tipoUsuario.getCategoria());
         TipoUsuarioDTO tipoUsuarioDTO = this.dataSource.cadastraTipoUsuario(novoTipoUsuarioDTO);
         return TipoUsuario.restaurar(tipoUsuarioDTO.id(), tipoUsuario.getRestaurante(), tipoUsuarioDTO.nome(), tipoUsuarioDTO.tipo());
     }
@@ -91,7 +92,7 @@ public class TipoUsuarioGatewayImpl implements TipoUsuarioGateway {
     }
 
     @Override
-    public boolean existeTipoUsuario(String nome, Long idRestaurante, TipoUsuarioEnun tipoUsuarioEnun) {
+    public boolean existeTipoUsuario(String nome, Long idRestaurante, CategoriaEnun tipoUsuarioEnun) {
         return this.dataSource.existeTipoUsuario(nome,idRestaurante,tipoUsuarioEnun);   
     }
 

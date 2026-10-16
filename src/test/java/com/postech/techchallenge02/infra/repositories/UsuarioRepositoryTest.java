@@ -15,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import com.postech.techchallenge02.core.enums.TipoCozinhaEnun;
-import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
+import com.postech.techchallenge02.core.enums.CategoriaEnun;
 import com.postech.techchallenge02.infra.entities.Restaurante;
 import com.postech.techchallenge02.infra.entities.TipoUsuario;
 import com.postech.techchallenge02.infra.entities.Usuario;
@@ -37,7 +37,7 @@ class UsuarioRepositoryTest {
     void deveRetornarTrueQuandoExistirUsuarioComOTipoUsuarioInformado() {
         // Arrange
         Restaurante restaurante = criarRestaurante("Restaurante Padrão");
-        TipoUsuario tipoUsuario = criarTipoUsuario("Gerente", TipoUsuarioEnun.DONO, restaurante);
+        TipoUsuario tipoUsuario = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
         criarUsuario("João Silva", "joao@email.com", tipoUsuario);
 
         // Act
@@ -52,7 +52,7 @@ class UsuarioRepositoryTest {
     void deveRetornarFalseQuandoNaoExistirUsuarioComOTipoUsuarioInformado() {
         // Arrange
         Restaurante restaurante = criarRestaurante("Restaurante Padrão");
-        TipoUsuario tipoUsuario = criarTipoUsuario("Gerente", TipoUsuarioEnun.DONO, restaurante);
+        TipoUsuario tipoUsuario = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
 
         // Act
         boolean existe = usuarioRepository.existeUsuarioComEsteTipoUsuario(tipoUsuario.getId());
@@ -66,8 +66,8 @@ class UsuarioRepositoryTest {
     void deveRetornarFalseQuandoUsuariosExistentesPossuemOutroTipoUsuario() {
         // Arrange
         Restaurante restaurante = criarRestaurante("Restaurante Padrão");
-        TipoUsuario tipoUsuario = criarTipoUsuario("Gerente", TipoUsuarioEnun.DONO, restaurante);
-        TipoUsuario outroTipoUsuario = criarTipoUsuario("Cliente", TipoUsuarioEnun.CLIENTE, restaurante);
+        TipoUsuario tipoUsuario = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
+        TipoUsuario outroTipoUsuario = criarTipoUsuario("Cliente", CategoriaEnun.CLIENTE, restaurante);
         criarUsuario("Maria Souza", "maria@email.com", outroTipoUsuario);
 
         // Act
@@ -82,7 +82,7 @@ class UsuarioRepositoryTest {
     void deveRetornarFalseQuandoIdTipoUsuarioForInexistente() {
         // Arrange
         Restaurante restaurante = criarRestaurante("Restaurante Padrão");
-        TipoUsuario tipoUsuario = criarTipoUsuario("Gerente", TipoUsuarioEnun.DONO, restaurante);
+        TipoUsuario tipoUsuario = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
         criarUsuario("João Silva", "joao@email.com", tipoUsuario);
 
         // Act
@@ -103,7 +103,7 @@ class UsuarioRepositoryTest {
         return entityManager.persistAndFlush(novoRestaurante);
     }
 
-    private TipoUsuario criarTipoUsuario(String nome, TipoUsuarioEnun tipo, Restaurante rest) {
+    private TipoUsuario criarTipoUsuario(String nome, CategoriaEnun tipo, Restaurante rest) {
         TipoUsuario novoTipo = new TipoUsuario();
         novoTipo.setNome(nome);
         novoTipo.setTipo(tipo);
@@ -119,7 +119,7 @@ class UsuarioRepositoryTest {
         usuario.setLogin(nome.toLowerCase().replace(" ", ".") + "." + uniqueId);
         usuario.setSenha("123456");
         usuario.setDataUltimaAlteracao(LocalDateTime.now());
-        usuario.setTipoUsuario(tpUsuario);
+        usuario.addTiposUsuario(tpUsuario);
         return entityManager.persistAndFlush(usuario);
     }
 }

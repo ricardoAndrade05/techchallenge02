@@ -3,8 +3,10 @@ package com.postech.techchallenge02.core.usecases;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import com.postech.techchallenge02.core.dtos.ExcluirTipoUsuarioDTO;
+import com.postech.techchallenge02.core.entities.TipoUsuario;
 import com.postech.techchallenge02.core.entities.Usuario;
 import com.postech.techchallenge02.core.exceptions.DadosInvalidosException;
 import com.postech.techchallenge02.core.exceptions.RecursoNaoEncontradoException;
@@ -22,26 +24,25 @@ public class ExcluirTipoUsuarioUseCase {
         return new ExcluirTipoUsuarioUseCase(tipoUsuarioGateway, usuarioGateway);
     }
 
-    public void execute(ExcluirTipoUsuarioDTO excluirTipoUsuarioDTO) {
-        this.validaDadosEntrada(excluirTipoUsuarioDTO);
-        Usuario usuarioLogado = this.usuarioGateway.buscaUsuarioPorId(excluirTipoUsuarioDTO.idUsuarioLogado())
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado/inexistente: " + excluirTipoUsuarioDTO.idUsuarioLogado()));
+    public void execute(ExcluirTipoUsuarioDTO dto) {
+        this.validaDadosEntrada(dto);
+        
+        TipoUsuario tipoUsuario = this.tipoUsuarioGateway.buscaTipoUsuarioPorId(dto.idTipoUsuario())
+            .orElseThrow(() -> new RecursoNaoEncontradoException("Tipo de usuário não encontrado/inexistente: " + dto.idTipoUsuario()));
+        
+        Usuario usuarioLogado = this.usuarioGateway.buscaUsuarioPorId(dto.idUsuarioLogado(),tipoUsuario.getIdRestaurante())
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado/inexistente para esse restaurante."));
 
         if (!usuarioLogado.podeExcluirTipoUsuario()) {
-            throw new UsuarioSemPermissaoException("Usuário " + excluirTipoUsuarioDTO.idUsuarioLogado() + " não tem permissão para excluir tipo de usuário");
+            throw new UsuarioSemPermissaoException("Usuário " + dto.idUsuarioLogado() + " não tem permissão para excluir tipo de usuário");
         }
 
-        boolean existeTipoUsuario = this.tipoUsuarioGateway.existeTipoUsuario(excluirTipoUsuarioDTO.idTipoUsuario(), usuarioLogado.getTipoUsuario().getIdRestaurante());
-        if (!existeTipoUsuario) {
-            throw new RecursoNaoEncontradoException("Tipo de usuário não encontrado/inexistente: " + excluirTipoUsuarioDTO.idTipoUsuario());
-        }
-
-        boolean estaVinculado = this.tipoUsuarioGateway.tipoUsuarioEstaVinculado(excluirTipoUsuarioDTO.idTipoUsuario());
+        boolean estaVinculado = this.tipoUsuarioGateway.tipoUsuarioEstaVinculado(dto.idTipoUsuario());
         if (estaVinculado) {
             throw new TipoUsuarioVinculadoException("O tipo de usuário está vinculado a um ou mais usuários.");
         }
 
-        this.tipoUsuarioGateway.excluirTipoUsuario(excluirTipoUsuarioDTO.idTipoUsuario());
+        this.tipoUsuarioGateway.excluirTipoUsuario(dto.idTipoUsuario());
     }
 
     private void validaDadosEntrada(ExcluirTipoUsuarioDTO dto) {

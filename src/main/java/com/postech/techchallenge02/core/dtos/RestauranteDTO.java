@@ -1,5 +1,13 @@
 package com.postech.techchallenge02.core.dtos;
 
-public record RestauranteDTO(Long id, String nome) {
+import com.postech.techchallenge02.core.enums.TipoCozinhaEnun;
+
+public record RestauranteDTO(
+    Long id, 
+    String nome,
+    TipoCozinhaEnun tipoCozinha, 
+    String horarioFuncionamento, 
+    EnderecoDTO endereco,
+    UsuarioDTO dono) {
 
 }
