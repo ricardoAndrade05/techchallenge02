@@ -1,12 +1,8 @@
 package com.postech.techchallenge02.core.usecases;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.Optional;
 
@@ -24,9 +20,8 @@ import com.postech.techchallenge02.core.entities.TipoUsuario;
 import com.postech.techchallenge02.core.entities.Usuario;
 import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
 import com.postech.techchallenge02.core.exceptions.DadosInvalidosException;
-import com.postech.techchallenge02.core.exceptions.RestauranteNaoEncontradoException;
+import com.postech.techchallenge02.core.exceptions.RecursoNaoEncontradoException;
 import com.postech.techchallenge02.core.exceptions.TipoUsuarioExistenteException;
-import com.postech.techchallenge02.core.exceptions.UsuarioNaoEncontradoException;
 import com.postech.techchallenge02.core.exceptions.UsuarioSemPermissaoException;
 import com.postech.techchallenge02.core.interfaces.RestauranteGateway;
 import com.postech.techchallenge02.core.interfaces.TipoUsuarioGateway;
@@ -121,14 +116,14 @@ class CadastrarTipoUsuarioUseCaseTest {
     class QuandoUsuarioProblemas {
 
         @Test
-        @DisplayName("Deve lançar UsuarioNaoEncontradoException quando o usuário criador não for encontrado")
+        @DisplayName("Deve lançar RecursoNaoEncontradoException quando o usuário criador não for encontrado")
         void deveLancarExcecao_quandoUsuarioNaoEncontrado() {
             NovoTipoUsuarioDTO dto = new NovoTipoUsuarioDTO(ID_RESTAURANTE, NOME_TIPO, TIPO_USUARIO, ID_USUARIO_CRIADOR);
             when(tipoUsuarioGateway.existeTipoUsuario(NOME_TIPO, ID_RESTAURANTE, TIPO_USUARIO)).thenReturn(false);
             when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_CRIADOR)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> useCase.execute(dto))
-                    .isInstanceOf(UsuarioNaoEncontradoException.class)
+                    .isInstanceOf(RecursoNaoEncontradoException.class)
                     .hasMessageContaining(String.valueOf(ID_USUARIO_CRIADOR));
         }
 
@@ -154,7 +149,7 @@ class CadastrarTipoUsuarioUseCaseTest {
     class QuandoRestauranteNaoExiste {
 
         @Test
-        @DisplayName("Deve lançar RestauranteNaoEncontradoException quando o restaurante não for encontrado")
+        @DisplayName("Deve lançar RecursoNaoEncontradoException quando o restaurante não for encontrado")
         void deveLancarExcecao_quandoRestauranteNaoEncontrado() {
             NovoTipoUsuarioDTO dto = new NovoTipoUsuarioDTO(ID_RESTAURANTE, NOME_TIPO, TIPO_USUARIO, ID_USUARIO_CRIADOR);
             Restaurante restaurante = Restaurante.criar(ID_RESTAURANTE, "Restaurante Teste");
@@ -166,7 +161,7 @@ class CadastrarTipoUsuarioUseCaseTest {
             when(restauranteGateway.buscaRestaurantePorId(ID_RESTAURANTE)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> useCase.execute(dto))
-                    .isInstanceOf(RestauranteNaoEncontradoException.class)
+                    .isInstanceOf(RecursoNaoEncontradoException.class)
                     .hasMessageContaining(String.valueOf(ID_RESTAURANTE));
         }
     }

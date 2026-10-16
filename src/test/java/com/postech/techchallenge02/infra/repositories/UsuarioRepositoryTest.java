@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import com.postech.techchallenge02.core.enums.TipoCozinhaEnun;
@@ -21,6 +22,7 @@ import com.postech.techchallenge02.infra.entities.Usuario;
 
 @DataJpaTest
 @TestPropertySource(properties = "spring.sql.init.mode=never")
+@ActiveProfiles("test")
 @DisplayName("Testes de Integração - UsuarioRepository")
 class UsuarioRepositoryTest {
 

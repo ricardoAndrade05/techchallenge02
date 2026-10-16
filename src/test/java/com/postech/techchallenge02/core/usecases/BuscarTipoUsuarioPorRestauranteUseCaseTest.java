@@ -1,12 +1,8 @@
 package com.postech.techchallenge02.core.usecases;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,8 +21,7 @@ import com.postech.techchallenge02.core.entities.Restaurante;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
 import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
 import com.postech.techchallenge02.core.exceptions.DadosInvalidosException;
-import com.postech.techchallenge02.core.exceptions.RestauranteNaoEncontradoException;
-import com.postech.techchallenge02.core.exceptions.TipoUsuarioNaoEncontradoException;
+import com.postech.techchallenge02.core.exceptions.RecursoNaoEncontradoException;
 import com.postech.techchallenge02.core.interfaces.RestauranteGateway;
 import com.postech.techchallenge02.core.interfaces.TipoUsuarioGateway;
 
@@ -83,13 +78,13 @@ class BuscarTipoUsuarioPorRestauranteUseCaseTest {
     class QuandoRestauranteNaoExiste {
 
         @Test
-        @DisplayName("Deve lançar RestauranteNaoEncontradoException quando o restaurante não for encontrado")
+        @DisplayName("Deve lançar RecursoNaoEncontradoException quando o restaurante não for encontrado")
         void deveLancarExcecao_quandoRestauranteNaoEncontrado() {
             Paginacao paginacao = new Paginacao(0, 10);
             when(restauranteGateway.buscaRestaurantePorId(ID_RESTAURANTE_INEXISTENTE)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> useCase.execute(ID_RESTAURANTE_INEXISTENTE, paginacao))
-                    .isInstanceOf(RestauranteNaoEncontradoException.class);
+                    .isInstanceOf(RecursoNaoEncontradoException.class);
 
             verify(tipoUsuarioGateway, never()).buscaTiposUsuarioPorRestaurante(any(), any());
         }
@@ -110,7 +105,7 @@ class BuscarTipoUsuarioPorRestauranteUseCaseTest {
                     .thenReturn(paginaVazia);
 
             assertThatThrownBy(() -> useCase.execute(ID_RESTAURANTE, paginacao))
-                    .isInstanceOf(TipoUsuarioNaoEncontradoException.class)
+                    .isInstanceOf(RecursoNaoEncontradoException.class)
                     .hasMessageContaining(String.valueOf(ID_RESTAURANTE));
         }
     }
