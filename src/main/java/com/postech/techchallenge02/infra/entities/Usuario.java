@@ -1,7 +1,9 @@
 package com.postech.techchallenge02.infra.entities;
 
 import java.time.LocalDateTime;
-
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,7 +11,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,20 +20,27 @@ import jakarta.persistence.Table;
 public class Usuario {
 
     @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column(unique = true, nullable = false)
-	private String email;
-	
-	private String nome;
-	private String login;
-	private String senha;
-	private LocalDateTime dataUltimaAlteracao;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @Column(unique = true, nullable = false)
+    private String email;
+    
+    private String nome;
+    private String login;
+    private String senha;
+    private LocalDateTime dataUltimaAlteracao;
 
-    @ManyToOne
-    @JoinColumn(name = "id_tipo_usuario")
-    private TipoUsuario tipoUsuario;
+    @ManyToMany
+    @JoinTable(
+        name = "tb_usuario_tipo_usuario",
+        joinColumns = @JoinColumn(name = "id_usuario"),
+        inverseJoinColumns = @JoinColumn(name = "id_tipo_usuario")
+    )
+    private Set<TipoUsuario> tiposUsuario = new HashSet<>();
+
+    public Usuario() {
+    }
 
     public Long getId() {
         return id;
@@ -56,8 +66,8 @@ public class Usuario {
         return dataUltimaAlteracao;
     }
 
-    public TipoUsuario getTipoUsuario() {
-        return tipoUsuario;
+    public Set<TipoUsuario> getTiposUsuario() {
+        return tiposUsuario;
     }
 
     public void setId(Long id) {
@@ -84,35 +94,22 @@ public class Usuario {
         this.dataUltimaAlteracao = dataUltimaAlteracao;
     }
 
-    public void setTipoUsuario(TipoUsuario tipoUsuario) {
-        this.tipoUsuario = tipoUsuario;
+    public void addTiposUsuario(TipoUsuario tiposUsuario) {
+        this.tiposUsuario.add(tiposUsuario);
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        return result;
+        return Objects.hash(id);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
+        if (obj == null || getClass() != obj.getClass())
             return false;
         Usuario other = (Usuario) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        return true;
+        return Objects.equals(id, other.id);
     }
-
-    
-
 }

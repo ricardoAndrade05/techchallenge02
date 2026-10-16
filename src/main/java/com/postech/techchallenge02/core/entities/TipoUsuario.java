@@ -2,7 +2,7 @@ package com.postech.techchallenge02.core.entities;
 
 import java.util.Objects;
 
-import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
+import com.postech.techchallenge02.core.enums.CategoriaEnun;
 import com.postech.techchallenge02.core.exceptions.DadosInvalidosException;
 
 public class TipoUsuario {
@@ -10,19 +10,19 @@ public class TipoUsuario {
     private Long id;
     private String nome;
     private Restaurante restaurante;
-    private TipoUsuarioEnun tipo;
+    private CategoriaEnun categoria;
 
-    public static TipoUsuario criar(Restaurante restaurante, String nome, TipoUsuarioEnun tipo) {
+    public static TipoUsuario criar(Restaurante restaurante, String nome, CategoriaEnun tipo) {
         return new TipoUsuario(null, restaurante, nome, tipo);
     }
 
-    public static TipoUsuario restaurar(Long id, Restaurante restaurante, String nome, TipoUsuarioEnun tipo) {
+    public static TipoUsuario restaurar(Long id, Restaurante restaurante, String nome, CategoriaEnun tipo) {
         return new TipoUsuario(id, restaurante, nome, tipo);
     }
 
     public void atualizar(String novoNomeTipo) {
         setNome(novoNomeTipo);
-        setTipo(tipo);
+        setCategoria(categoria);
     }
 
     public Long getId() {
@@ -41,15 +41,15 @@ public class TipoUsuario {
         return nome;
     }
 
-    public TipoUsuarioEnun getTipo() {
-        return tipo;
+    public CategoriaEnun getCategoria() {
+        return categoria;
     }
 
-    private TipoUsuario(Long id, Restaurante restaurante, String nome, TipoUsuarioEnun tipo) {
+    private TipoUsuario(Long id, Restaurante restaurante, String nome, CategoriaEnun tipo) {
         this.id = id;
         setRestaurante(restaurante);
         setNome(nome);
-        setTipo(tipo);
+        setCategoria(tipo);
     }
 
     private void setNome(String nome) {
@@ -66,11 +66,11 @@ public class TipoUsuario {
         this.restaurante = restaurante;
     }
 
-    private void setTipo(TipoUsuarioEnun tipo) {
-        if (tipo == null) {
+    private void setCategoria(CategoriaEnun categoria) {
+        if (categoria == null) {
             throw new DadosInvalidosException("Tipo de usuário inválido");
         }
-        this.tipo = tipo;
+        this.categoria = categoria;
     }
 
 }

@@ -1,6 +1,6 @@
 package com.postech.techchallenge02.infra.entities;
 
-import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
+import com.postech.techchallenge02.core.enums.CategoriaEnun;
 import com.postech.techchallenge02.infra.infra.converters.TipoUsuarioConverter;
 
 import jakarta.persistence.Convert;
@@ -24,7 +24,7 @@ public class TipoUsuario {
     private String nome;
 
     @Convert(converter = TipoUsuarioConverter.class)
-    private TipoUsuarioEnun tipo;
+    private CategoriaEnun tipo;
     
     @ManyToOne
     @JoinColumn(name="id_restaurante")
@@ -38,7 +38,7 @@ public class TipoUsuario {
         return nome;
     }
 
-    public TipoUsuarioEnun getTipo() {
+    public CategoriaEnun getTipo() {
         return tipo;
     }
 
@@ -54,7 +54,7 @@ public class TipoUsuario {
         this.nome = nome;
     }
 
-    public void setTipo(TipoUsuarioEnun tipo) {
+    public void setTipo(CategoriaEnun tipo) {
         this.tipo = tipo;
     }
 

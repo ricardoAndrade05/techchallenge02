@@ -19,7 +19,7 @@ import com.postech.techchallenge02.core.dtos.Pagina;
 import com.postech.techchallenge02.core.dtos.Paginacao;
 import com.postech.techchallenge02.core.entities.Restaurante;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
-import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
+import com.postech.techchallenge02.core.enums.CategoriaEnun;
 import com.postech.techchallenge02.core.exceptions.DadosInvalidosException;
 import com.postech.techchallenge02.core.exceptions.RecursoNaoEncontradoException;
 import com.postech.techchallenge02.core.interfaces.RestauranteGateway;
@@ -45,7 +45,7 @@ class BuscarTipoUsuarioPorRestauranteUseCaseTest {
     @BeforeEach
     void setUp() {
         useCase = BuscarTipoUsuarioPorRestauranteUseCase.getInstance(tipoUsuarioGateway, restauranteGateway);
-        restaurante = Restaurante.criar(ID_RESTAURANTE, "Restaurante Teste");
+        restaurante = Restaurante.restaurar (ID_RESTAURANTE, "Restaurante Teste",null,null,null,null,null);
     }
 
     @Nested
@@ -118,7 +118,7 @@ class BuscarTipoUsuarioPorRestauranteUseCaseTest {
         @DisplayName("Deve retornar a página de tipos de usuário quando o restaurante tiver tipos cadastrados")
         void deveRetornarPagina_quandoRestaurantePossuiTiposDeUsuario() {
             Paginacao paginacao = new Paginacao(0, 10);
-            TipoUsuario tipo = TipoUsuario.restaurar(1L, restaurante, "Gerente", TipoUsuarioEnun.DONO);
+            TipoUsuario tipo = TipoUsuario.restaurar(1L, restaurante, "Gerente", CategoriaEnun.DONO);
             Pagina<TipoUsuario> paginaComItens = new Pagina<>(List.of(tipo), 0, 10, 1, 1);
 
             when(restauranteGateway.buscaRestaurantePorId(ID_RESTAURANTE)).thenReturn(Optional.of(restaurante));
@@ -136,7 +136,7 @@ class BuscarTipoUsuarioPorRestauranteUseCaseTest {
         @Test
         @DisplayName("Deve usar paginação padrão (página 0, tamanho 10) quando chamado sem paginação explícita")
         void deveUsarPaginacaoPadrao_quandoChamadoSemPaginacao() {
-            TipoUsuario tipo = TipoUsuario.restaurar(1L, restaurante, "Gerente", TipoUsuarioEnun.DONO);
+            TipoUsuario tipo = TipoUsuario.restaurar(1L, restaurante, "Gerente", CategoriaEnun.DONO);
             Pagina<TipoUsuario> paginaComItens = new Pagina<>(List.of(tipo), 0, 10, 1, 1);
 
             when(restauranteGateway.buscaRestaurantePorId(ID_RESTAURANTE)).thenReturn(Optional.of(restaurante));
@@ -153,8 +153,8 @@ class BuscarTipoUsuarioPorRestauranteUseCaseTest {
         @DisplayName("Deve retornar múltiplos tipos de usuário quando o restaurante tiver vários cadastrados")
         void deveRetornarMultiplosTipos_quandoRestaurantePossuiVarios() {
             Paginacao paginacao = new Paginacao(0, 10);
-            TipoUsuario tipoGerente = TipoUsuario.restaurar(1L, restaurante, "Gerente", TipoUsuarioEnun.DONO);
-            TipoUsuario tipoCaixa = TipoUsuario.restaurar(2L, restaurante, "Caixa", TipoUsuarioEnun.DONO);
+            TipoUsuario tipoGerente = TipoUsuario.restaurar(1L, restaurante, "Gerente", CategoriaEnun.DONO);
+            TipoUsuario tipoCaixa = TipoUsuario.restaurar(2L, restaurante, "Caixa", CategoriaEnun.DONO);
             Pagina<TipoUsuario> paginaComItens = new Pagina<>(List.of(tipoGerente, tipoCaixa), 0, 10, 2, 1);
 
             when(restauranteGateway.buscaRestaurantePorId(ID_RESTAURANTE)).thenReturn(Optional.of(restaurante));

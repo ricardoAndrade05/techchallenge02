@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
+import com.postech.techchallenge02.core.enums.CategoriaEnun;
 import com.postech.techchallenge02.infra.entities.TipoUsuario;
 
 public interface TipoUsuarioRepository extends JpaRepository<TipoUsuario, Long> {
@@ -16,7 +16,7 @@ public interface TipoUsuarioRepository extends JpaRepository<TipoUsuario, Long> 
         +  "WHERE tu.restaurante.id = :idRestaurante "
         +  "AND tu.tipo = :tipoUsuarioEnun "
         +  "AND tu.nome = :nome")
-    boolean existeTipoUsuario(String nome ,Long idRestaurante, TipoUsuarioEnun tipoUsuarioEnun);
+    boolean existeTipoUsuario(String nome ,Long idRestaurante, CategoriaEnun tipoUsuarioEnun);
 
 
     @Query("SELECT COUNT(tu) > 0 "

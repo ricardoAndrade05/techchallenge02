@@ -28,7 +28,7 @@ public class RestauranteGatewayImpl implements RestauranteGateway  {
         if (restauranteDTO == null) {
             return Optional.empty();
         }
-        Restaurante restaurante = Restaurante.restaurar(restauranteDTO.id(), restauranteDTO.nome());
+        Restaurante restaurante = Restaurante.restaurar(restauranteDTO.id(), restauranteDTO.nome(),null,null,null,null,null);
         return Optional.of(restaurante);
     }
 

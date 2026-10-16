@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import com.postech.techchallenge02.core.dtos.TipoUsuarioDTO;
 import com.postech.techchallenge02.core.entities.Restaurante;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
-import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
+import com.postech.techchallenge02.core.enums.CategoriaEnun;
 
 @DisplayName("TipoUsuarioPresenter")
 class TipoUsuarioPresenterTest {
@@ -22,14 +22,14 @@ class TipoUsuarioPresenterTest {
     private static final Long ID_RESTAURANTE = 10L;
     private static final String NOME_RESTAURANTE = "Restaurante Sabor & Arte";
     private static final String NOME_TIPO = "Gerente";
-    private static final TipoUsuarioEnun TIPO = TipoUsuarioEnun.DONO;
+    private static final CategoriaEnun TIPO = CategoriaEnun.DONO;
 
     private Restaurante restaurante;
     private TipoUsuario tipoUsuario;
 
     @BeforeEach
     void setUp() {
-        restaurante = Restaurante.criar(ID_RESTAURANTE, NOME_RESTAURANTE);
+        restaurante = Restaurante.restaurar(ID_RESTAURANTE, NOME_RESTAURANTE,null,null,null,null,null);
         tipoUsuario = TipoUsuario.restaurar(ID_TIPO_USUARIO, restaurante, NOME_TIPO, TIPO);
     }
 
@@ -61,11 +61,11 @@ class TipoUsuarioPresenterTest {
         @Test
         @DisplayName("Deve converter corretamente para o tipo CLIENTE")
         void deveConverterParaDTO_comTipoCliente() {
-            TipoUsuario tipoCliente = TipoUsuario.restaurar(2L, restaurante, "Comprador", TipoUsuarioEnun.CLIENTE);
+            TipoUsuario tipoCliente = TipoUsuario.restaurar(2L, restaurante, "Comprador", CategoriaEnun.CLIENTE);
 
             TipoUsuarioDTO dto = TipoUsuarioPresenter.toDTO(tipoCliente);
 
-            assertThat(dto.tipo()).isEqualTo(TipoUsuarioEnun.CLIENTE);
+            assertThat(dto.tipo()).isEqualTo(CategoriaEnun.CLIENTE);
             assertThat(dto.nome()).isEqualTo("Comprador");
             assertThat(dto.id()).isEqualTo(2L);
         }
@@ -109,9 +109,9 @@ class TipoUsuarioPresenterTest {
         @Test
         @DisplayName("Deve converter uma lista com múltiplos elementos mantendo a ordem")
         void deveConverterListaComMultiplosElementos_mantendoOrdem() {
-            TipoUsuario tipoGerente = TipoUsuario.restaurar(1L, restaurante, "Gerente", TipoUsuarioEnun.DONO);
-            TipoUsuario tipoCaixa = TipoUsuario.restaurar(2L, restaurante, "Caixa", TipoUsuarioEnun.DONO);
-            TipoUsuario tipoAtendente = TipoUsuario.restaurar(3L, restaurante, "Atendente", TipoUsuarioEnun.DONO);
+            TipoUsuario tipoGerente = TipoUsuario.restaurar(1L, restaurante, "Gerente", CategoriaEnun.DONO);
+            TipoUsuario tipoCaixa = TipoUsuario.restaurar(2L, restaurante, "Caixa", CategoriaEnun.DONO);
+            TipoUsuario tipoAtendente = TipoUsuario.restaurar(3L, restaurante, "Atendente", CategoriaEnun.DONO);
 
             List<TipoUsuarioDTO> dtos = TipoUsuarioPresenter.toDTOs(List.of(tipoGerente, tipoCaixa, tipoAtendente));
 
@@ -132,8 +132,8 @@ class TipoUsuarioPresenterTest {
         @Test
         @DisplayName("Deve preencher o RestauranteDTO em todos os elementos convertidos")
         void devePreencherRestauranteDTOEmTodosOsElementos() {
-            TipoUsuario tipoA = TipoUsuario.restaurar(1L, restaurante, "Gerente", TipoUsuarioEnun.DONO);
-            TipoUsuario tipoB = TipoUsuario.restaurar(2L, restaurante, "Caixa", TipoUsuarioEnun.DONO);
+            TipoUsuario tipoA = TipoUsuario.restaurar(1L, restaurante, "Gerente", CategoriaEnun.DONO);
+            TipoUsuario tipoB = TipoUsuario.restaurar(2L, restaurante, "Caixa", CategoriaEnun.DONO);
 
             List<TipoUsuarioDTO> dtos = TipoUsuarioPresenter.toDTOs(List.of(tipoA, tipoB));
 

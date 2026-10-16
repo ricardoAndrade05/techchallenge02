@@ -6,6 +6,6 @@ import com.postech.techchallenge02.core.entities.Usuario;
 
 public interface UsuarioGateway {
 
-    Optional<Usuario> buscaUsuarioPorId(Long id);
+    Optional<Usuario> buscaUsuarioPorId(Long idUsuario,Long idRestaurante);
 
 }

@@ -1,10 +1,7 @@
 package com.postech.techchallenge02.infra.adapters;
 
-import java.util.Optional;
-
 import com.postech.techchallenge02.core.dtos.UsuarioDTO;
 import com.postech.techchallenge02.core.interfaces.UsuarioDataSource;
-import com.postech.techchallenge02.infra.entities.Usuario;
 import com.postech.techchallenge02.infra.infra.mappers.UsuarioMapper;
 import com.postech.techchallenge02.infra.repositories.UsuarioRepository;
 
@@ -19,17 +16,18 @@ public class UsuarioDataSourceAdapter implements UsuarioDataSource {
     }
 
     @Override
-    public UsuarioDTO buscaUsuarioPorId(Long idUsuario) {
-        Optional<Usuario> usuarioOptional = this.usuarioRepository.findById(idUsuario);
-        if (usuarioOptional.isEmpty()) {
-            return null;
-        }
-        return this.usuarioMapper.toDTO(usuarioOptional.get());
+    public UsuarioDTO buscaUsuarioPorId(Long idUsuario, Long idRestaurante) {
+        return this.usuarioRepository.findById(idUsuario)
+                .flatMap(usuario -> usuario.getTiposUsuario().stream()
+                        .filter(tu -> tu.getRestaurante() != null && idRestaurante.equals(tu.getRestaurante().getId()))
+                        .findFirst()
+                        .map(tipoUsuario -> this.usuarioMapper.toDTO(usuario, tipoUsuario)))
+                .orElse(null);
     }
 
     @Override
     public boolean existeUsuarioComEsteTipoUsuario(Long idTipoUsuario) {
-       return this.usuarioRepository.existeUsuarioComEsteTipoUsuario(idTipoUsuario);
+        return this.usuarioRepository.existeUsuarioComEsteTipoUsuario(idTipoUsuario);
     }
 
 }

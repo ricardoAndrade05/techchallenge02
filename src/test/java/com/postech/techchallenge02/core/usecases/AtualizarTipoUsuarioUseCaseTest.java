@@ -18,7 +18,7 @@ import com.postech.techchallenge02.core.dtos.AtualizarTipoUsuarioDTO;
 import com.postech.techchallenge02.core.entities.Restaurante;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
 import com.postech.techchallenge02.core.entities.Usuario;
-import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
+import com.postech.techchallenge02.core.enums.CategoriaEnun;
 import com.postech.techchallenge02.core.exceptions.DadosInvalidosException;
 import com.postech.techchallenge02.core.exceptions.RecursoNaoEncontradoException;
 import com.postech.techchallenge02.core.exceptions.TipoUsuarioExistenteException;
@@ -50,9 +50,9 @@ class AtualizarTipoUsuarioUseCaseTest {
     @BeforeEach
     void setUp() {
         useCase = AtualizarTipoUsuarioUseCase.getInstance(tipoUsuarioGateway, usuarioGateway);
-        restaurante = Restaurante.criar(ID_RESTAURANTE, "Restaurante Teste");
-        tipoUsuario = TipoUsuario.restaurar(ID_TIPO_USUARIO, restaurante, "Gerente", TipoUsuarioEnun.DONO);
-        TipoUsuario tipoUsuarioDono = TipoUsuario.criar(restaurante, "Tipo Dono", TipoUsuarioEnun.DONO);
+        restaurante = Restaurante.restaurar (ID_RESTAURANTE, "Restaurante Teste",null,null,null,null,null);
+        tipoUsuario = TipoUsuario.restaurar(ID_TIPO_USUARIO, restaurante, "Gerente", CategoriaEnun.DONO);
+        TipoUsuario tipoUsuarioDono = TipoUsuario.criar(restaurante, "Tipo Dono", CategoriaEnun.DONO);
         usuarioDono = Usuario.restaurar(ID_USUARIO_LOGADO, "Maria Dona", tipoUsuarioDono);
     }
 
@@ -63,7 +63,7 @@ class AtualizarTipoUsuarioUseCaseTest {
         @Test
         @DisplayName("Deve lançar DadosInvalidosException quando idTipoUsuario for nulo")
         void deveLancarExcecao_quandoIdTipoUsuarioNulo() {
-            AtualizarTipoUsuarioDTO dto = new AtualizarTipoUsuarioDTO(null, NOVO_NOME, ID_USUARIO_LOGADO);
+            AtualizarTipoUsuarioDTO dto = new AtualizarTipoUsuarioDTO(null, NOVO_NOME, ID_USUARIO_LOGADO,ID_RESTAURANTE);
 
             assertThatThrownBy(() -> useCase.execute(dto))
                     .isInstanceOf(DadosInvalidosException.class)
@@ -75,7 +75,7 @@ class AtualizarTipoUsuarioUseCaseTest {
         @Test
         @DisplayName("Deve lançar DadosInvalidosException quando idUsuarioLogado for nulo")
         void deveLancarExcecao_quandoIdUsuarioLogadoNulo() {
-            AtualizarTipoUsuarioDTO dto = new AtualizarTipoUsuarioDTO(ID_TIPO_USUARIO, NOVO_NOME, null);
+            AtualizarTipoUsuarioDTO dto = new AtualizarTipoUsuarioDTO(ID_TIPO_USUARIO, NOVO_NOME, null,ID_RESTAURANTE);
 
             assertThatThrownBy(() -> useCase.execute(dto))
                     .isInstanceOf(DadosInvalidosException.class)
@@ -87,7 +87,7 @@ class AtualizarTipoUsuarioUseCaseTest {
         @Test
         @DisplayName("Deve lançar DadosInvalidosException com ambos os erros quando ambos os ids forem nulos")
         void deveLancarExcecao_quandoAmbosOsIdsNulos() {
-            AtualizarTipoUsuarioDTO dto = new AtualizarTipoUsuarioDTO(null, NOVO_NOME, null);
+            AtualizarTipoUsuarioDTO dto = new AtualizarTipoUsuarioDTO(null, NOVO_NOME, null,ID_RESTAURANTE);
 
             assertThatThrownBy(() -> useCase.execute(dto))
                     .isInstanceOf(DadosInvalidosException.class)
@@ -103,8 +103,8 @@ class AtualizarTipoUsuarioUseCaseTest {
         @Test
         @DisplayName("Deve lançar RecursoNaoEncontradoException quando o usuário logado não for encontrado")
         void deveLancarExcecao_quandoUsuarioNaoEncontrado() {
-            AtualizarTipoUsuarioDTO dto = new AtualizarTipoUsuarioDTO(ID_TIPO_USUARIO, NOVO_NOME, ID_USUARIO_LOGADO);
-            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO)).thenReturn(Optional.empty());
+            AtualizarTipoUsuarioDTO dto = new AtualizarTipoUsuarioDTO(ID_TIPO_USUARIO, NOVO_NOME, ID_USUARIO_LOGADO,ID_RESTAURANTE);
+            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO,ID_RESTAURANTE)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> useCase.execute(dto))
                     .isInstanceOf(RecursoNaoEncontradoException.class);
@@ -115,11 +115,11 @@ class AtualizarTipoUsuarioUseCaseTest {
         @Test
         @DisplayName("Deve lançar UsuarioSemPermissaoException quando o usuário for do tipo CLIENTE")
         void deveLancarExcecao_quandoUsuarioSemPermissao() {
-            AtualizarTipoUsuarioDTO dto = new AtualizarTipoUsuarioDTO(ID_TIPO_USUARIO, NOVO_NOME, ID_USUARIO_LOGADO);
-            TipoUsuario tipoCliente = TipoUsuario.criar(restaurante, "Cliente Comum", TipoUsuarioEnun.CLIENTE);
+            AtualizarTipoUsuarioDTO dto = new AtualizarTipoUsuarioDTO(ID_TIPO_USUARIO, NOVO_NOME, ID_USUARIO_LOGADO,ID_RESTAURANTE);
+            TipoUsuario tipoCliente = TipoUsuario.criar(restaurante, "Cliente Comum", CategoriaEnun.CLIENTE);
             Usuario usuarioCliente = Usuario.restaurar(ID_USUARIO_LOGADO, "João Cliente", tipoCliente);
 
-            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO)).thenReturn(Optional.of(usuarioCliente));
+            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO,ID_RESTAURANTE)).thenReturn(Optional.of(usuarioCliente));
 
             assertThatThrownBy(() -> useCase.execute(dto))
                     .isInstanceOf(UsuarioSemPermissaoException.class);
@@ -135,8 +135,8 @@ class AtualizarTipoUsuarioUseCaseTest {
         @Test
         @DisplayName("Deve lançar TipoUsuarioNaoEncontradoException quando o tipo de usuário não for encontrado")
         void deveLancarExcecao_quandoTipoUsuarioNaoEncontrado() {
-            AtualizarTipoUsuarioDTO dto = new AtualizarTipoUsuarioDTO(ID_TIPO_USUARIO, NOVO_NOME, ID_USUARIO_LOGADO);
-            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO)).thenReturn(Optional.of(usuarioDono));
+            AtualizarTipoUsuarioDTO dto = new AtualizarTipoUsuarioDTO(ID_TIPO_USUARIO, NOVO_NOME, ID_USUARIO_LOGADO,ID_RESTAURANTE);
+            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO,ID_RESTAURANTE  )).thenReturn(Optional.of(usuarioDono));
             when(tipoUsuarioGateway.buscaTipoUsuarioPorId(ID_TIPO_USUARIO)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> useCase.execute(dto))
@@ -148,10 +148,10 @@ class AtualizarTipoUsuarioUseCaseTest {
         @Test
         @DisplayName("Deve lançar TipoUsuarioExistenteException quando já existe tipo com o novo nome no restaurante")
         void deveLancarExcecao_quandoTipoJaExisteComNovoNome() {
-            AtualizarTipoUsuarioDTO dto = new AtualizarTipoUsuarioDTO(ID_TIPO_USUARIO, NOVO_NOME, ID_USUARIO_LOGADO);
-            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO)).thenReturn(Optional.of(usuarioDono));
+            AtualizarTipoUsuarioDTO dto = new AtualizarTipoUsuarioDTO(ID_TIPO_USUARIO, NOVO_NOME, ID_USUARIO_LOGADO,ID_RESTAURANTE);
+            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO,ID_RESTAURANTE)).thenReturn(Optional.of(usuarioDono));
             when(tipoUsuarioGateway.buscaTipoUsuarioPorId(ID_TIPO_USUARIO)).thenReturn(Optional.of(tipoUsuario));
-            when(tipoUsuarioGateway.existeTipoUsuario(NOVO_NOME, ID_RESTAURANTE, TipoUsuarioEnun.DONO)).thenReturn(true);
+            when(tipoUsuarioGateway.existeTipoUsuario(NOVO_NOME, ID_RESTAURANTE, CategoriaEnun.DONO)).thenReturn(true);
 
             assertThatThrownBy(() -> useCase.execute(dto))
                     .isInstanceOf(TipoUsuarioExistenteException.class);
@@ -167,12 +167,12 @@ class AtualizarTipoUsuarioUseCaseTest {
         @Test
         @DisplayName("Deve atualizar o tipo de usuário com sucesso e retornar o tipo atualizado")
         void deveAtualizarComSucesso_quandoDadosValidos() {
-            AtualizarTipoUsuarioDTO dto = new AtualizarTipoUsuarioDTO(ID_TIPO_USUARIO, NOVO_NOME, ID_USUARIO_LOGADO);
-            TipoUsuario tipoAtualizado = TipoUsuario.restaurar(ID_TIPO_USUARIO, restaurante, NOVO_NOME, TipoUsuarioEnun.DONO);
+            AtualizarTipoUsuarioDTO dto = new AtualizarTipoUsuarioDTO(ID_TIPO_USUARIO, NOVO_NOME, ID_USUARIO_LOGADO,ID_RESTAURANTE);
+            TipoUsuario tipoAtualizado = TipoUsuario.restaurar(ID_TIPO_USUARIO, restaurante, NOVO_NOME, CategoriaEnun.DONO);
 
-            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO)).thenReturn(Optional.of(usuarioDono));
+            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO,ID_RESTAURANTE)).thenReturn(Optional.of(usuarioDono));
             when(tipoUsuarioGateway.buscaTipoUsuarioPorId(ID_TIPO_USUARIO)).thenReturn(Optional.of(tipoUsuario));
-            when(tipoUsuarioGateway.existeTipoUsuario(NOVO_NOME, ID_RESTAURANTE, TipoUsuarioEnun.DONO)).thenReturn(false);
+            when(tipoUsuarioGateway.existeTipoUsuario(NOVO_NOME, ID_RESTAURANTE, CategoriaEnun.DONO)).thenReturn(false);
             when(tipoUsuarioGateway.atualizarTipoUsuario(any(TipoUsuario.class))).thenReturn(tipoAtualizado);
 
             TipoUsuario resultado = useCase.execute(dto);
@@ -185,12 +185,12 @@ class AtualizarTipoUsuarioUseCaseTest {
         @Test
         @DisplayName("Deve invocar o gateway de atualização de tipo de usuário")
         void deveInvocarGatewayDeAtualizacao_quandoDadosValidos() {
-            AtualizarTipoUsuarioDTO dto = new AtualizarTipoUsuarioDTO(ID_TIPO_USUARIO, NOVO_NOME, ID_USUARIO_LOGADO);
-            TipoUsuario tipoAtualizado = TipoUsuario.restaurar(ID_TIPO_USUARIO, restaurante, NOVO_NOME, TipoUsuarioEnun.DONO);
+            AtualizarTipoUsuarioDTO dto = new AtualizarTipoUsuarioDTO(ID_TIPO_USUARIO, NOVO_NOME, ID_USUARIO_LOGADO,ID_RESTAURANTE );
+            TipoUsuario tipoAtualizado = TipoUsuario.restaurar(ID_TIPO_USUARIO, restaurante, NOVO_NOME, CategoriaEnun.DONO);
 
-            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO)).thenReturn(Optional.of(usuarioDono));
+            when(usuarioGateway.buscaUsuarioPorId(ID_USUARIO_LOGADO,ID_RESTAURANTE)).thenReturn(Optional.of(usuarioDono));
             when(tipoUsuarioGateway.buscaTipoUsuarioPorId(ID_TIPO_USUARIO)).thenReturn(Optional.of(tipoUsuario));
-            when(tipoUsuarioGateway.existeTipoUsuario(NOVO_NOME, ID_RESTAURANTE, TipoUsuarioEnun.DONO)).thenReturn(false);
+            when(tipoUsuarioGateway.existeTipoUsuario(NOVO_NOME, ID_RESTAURANTE, CategoriaEnun.DONO)).thenReturn(false);
             when(tipoUsuarioGateway.atualizarTipoUsuario(any(TipoUsuario.class))).thenReturn(tipoAtualizado);
 
             useCase.execute(dto);

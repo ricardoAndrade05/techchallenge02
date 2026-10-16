@@ -6,7 +6,7 @@ import com.postech.techchallenge02.core.dtos.Pagina;
 import com.postech.techchallenge02.core.dtos.Paginacao;
 import com.postech.techchallenge02.core.entities.Restaurante;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
-import com.postech.techchallenge02.core.enums.TipoUsuarioEnun;
+import com.postech.techchallenge02.core.enums.CategoriaEnun;
 
 public interface TipoUsuarioGateway {
 
@@ -22,7 +22,7 @@ public interface TipoUsuarioGateway {
 
     void excluirTipoUsuario(Long idTipoUsuario);
 
-    boolean existeTipoUsuario(String nome, Long idRestaurante, TipoUsuarioEnun tipoUsuarioEnun);
+    boolean existeTipoUsuario(String nome, Long idRestaurante, CategoriaEnun tipoUsuarioEnun);
 
     boolean existeTipoUsuario(Long idTipoUsuario, Long idRestaurante);
 
