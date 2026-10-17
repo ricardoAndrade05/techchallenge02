@@ -17,14 +17,20 @@ VALUES
     (12, 'Avenida Pedro Álvares Cabral', '500', 'São Paulo', 'SP', '04094-050')
 ON CONFLICT (id) DO NOTHING;
 
-INSERT INTO tb_usuario (id, nome, email, login, senha, data_ultima_alteracao, id_tipo_usuario)
+-- 1. Inserção de todos os Usuários (sem a coluna id_tipo_usuario)
+INSERT INTO tb_usuario (id, nome, email, login, senha, data_ultima_alteracao)
 VALUES 
-    (1, 'Carlos Silva', 'carlos.dono@email.com', 'carlosdono', 'senha123', NOW(), NULL),
-    (2, 'Ana Oliveira', 'ana.dona@email.com', 'anadona', 'senha123', NOW(), NULL),
-    (3, 'Roberto Santos', 'roberto.dono@email.com', 'robertodono', 'senha123', NOW(), NULL),
-    (4, 'Mariana Costa', 'mariana.dona@email.com', 'marianadona', 'senha123', NOW(), NULL)
+    (1, 'Carlos Silva', 'carlos.dono@email.com', 'carlosdono', 'senha123', NOW()),
+    (2, 'Ana Oliveira', 'ana.dona@email.com', 'anadona', 'senha123', NOW()),
+    (3, 'Roberto Santos', 'roberto.dono@email.com', 'robertodono', 'senha123', NOW()),
+    (4, 'Mariana Costa', 'mariana.dona@email.com', 'marianadona', 'senha123', NOW()),
+    (5, 'Lucas Pereira', 'lucas.cliente@email.com', 'lucascliente', 'senha123', NOW()),
+    (6, 'Fernanda Lima', 'fernanda.cliente@email.com', 'fernandacliente', 'senha123', NOW()),
+    (7, 'Gabriel Souza', 'gabriel.cliente@email.com', 'gabrielcliente', 'senha123', NOW()),
+    (8, 'Beatriz Alves', 'beatriz.cliente@email.com', 'beatrizcliente', 'senha123', NOW())
 ON CONFLICT (id) DO NOTHING;
 
+-- 2. Inserção dos Restaurantes
 INSERT INTO tb_restaurante (id, nome, horario_funcionamento_inicio, horario_funcionamento_fim, tipo_cozinha, id_usuario_dono, id_endereco)
 VALUES 
     (1, 'Trattoria Bella Italia', '11:30:00', '23:00:00', 2, 1, 9),
@@ -33,6 +39,7 @@ VALUES
     (4, 'Sabor Arabe', '11:30:00', '21:30:00', 7, 4, 12)
 ON CONFLICT (id) DO NOTHING;
 
+-- 3. Inserção dos Tipos de Usuário
 INSERT INTO tb_tipo_usuario (id, nome, tipo, id_restaurante)
 VALUES 
     -- Restaurante 1 (Trattoria)
@@ -50,27 +57,29 @@ VALUES
     (8, 'Maitre', 1, 3),
     (9, 'Cliente Regular', 2, 3),
 
-    -- Restaurante 4 (Sabor do Sertão)
+    -- Restaurante 4 (Sabor Arabe)
     (10, 'Proprietário', 1, 4),
     (11, 'Gerente Geral', 1, 4),
     (12, 'Cliente', 2, 4)
 ON CONFLICT (id) DO NOTHING;
 
-UPDATE tb_usuario SET id_tipo_usuario = 1 WHERE id = 1;
-UPDATE tb_usuario SET id_tipo_usuario = 4 WHERE id = 2;
-UPDATE tb_usuario SET id_tipo_usuario = 7 WHERE id = 3;
-UPDATE tb_usuario SET id_tipo_usuario = 10 WHERE id = 4;
-
-INSERT INTO tb_usuario (id, nome, email, login, senha, data_ultima_alteracao, id_tipo_usuario)
+-- 4. Associação de Usuários e Tipos na tabela intermediária
+INSERT INTO tb_usuario_tipo_usuario (id_usuario, id_tipo_usuario)
 VALUES 
-    (5, 'Lucas Pereira', 'lucas.cliente@email.com', 'lucascliente', 'senha123', NOW(), 3),
-    (6, 'Fernanda Lima', 'fernanda.cliente@email.com', 'fernandacliente', 'senha123', NOW(), 6),
-    (7, 'Gabriel Souza', 'gabriel.cliente@email.com', 'gabrielcliente', 'senha123', NOW(), 9),
-    (8, 'Beatriz Alves', 'beatriz.cliente@email.com', 'beatrizcliente', 'senha123', NOW(), 12)
-ON CONFLICT (id) DO NOTHING;
+    -- Proprietários
+    (1, 1),
+    (2, 4),
+    (3, 7),
+    (4, 10),
+    -- Clientes
+    (5, 3),
+    (6, 6),
+    (7, 9),
+    (8, 12)
+ON CONFLICT (id_usuario, id_tipo_usuario) DO NOTHING;
 
+-- 5. Atualização das Sequences do PostgreSQL
 SELECT setval('tb_endereco_id_seq', (SELECT MAX(id) FROM tb_endereco));
 SELECT setval('tb_usuario_id_seq', (SELECT MAX(id) FROM tb_usuario));
 SELECT setval('tb_restaurante_id_seq', (SELECT MAX(id) FROM tb_restaurante));
 SELECT setval('tb_tipo_usuario_id_seq', (SELECT MAX(id) FROM tb_tipo_usuario));
-
