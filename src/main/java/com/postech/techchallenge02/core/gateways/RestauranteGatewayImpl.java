@@ -32,4 +32,21 @@ public class RestauranteGatewayImpl implements RestauranteGateway  {
         return Optional.of(restaurante);
     }
 
+    @Override
+    public void excluirRestaurante(Long idRestaurante) {
+        this.dataSource.excluirRestaurante(idRestaurante);
+    }
+
+    @Override
+    public Restaurante cadastrar(Restaurante restaurante) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'cadastrar'");
+    }
+
+    @Override
+    public Restaurante atualizar(Restaurante restaurante) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'atualizar'");
+    }
+
 }

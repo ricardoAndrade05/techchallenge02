@@ -2,7 +2,7 @@ package com.postech.techchallenge02.core.presenters;
 
 import com.postech.techchallenge02.core.dtos.EnderecoDTO;
 import com.postech.techchallenge02.core.dtos.RestauranteDTO;
-import com.postech.techchallenge02.core.dtos.UsuarioDTO;
+import com.postech.techchallenge02.core.dtos.UsuarioDonoDTO;
 import com.postech.techchallenge02.core.entities.Endereco;
 import com.postech.techchallenge02.core.entities.Restaurante;
 import com.postech.techchallenge02.core.entities.Usuario;
@@ -46,12 +46,12 @@ public class RestaurantePresenter {
         );
     }
 
-    private static UsuarioDTO toUsuarioDTO(Usuario usuario) {
+    private static UsuarioDonoDTO toUsuarioDTO(Usuario usuario) {
         if (usuario == null) {
             return null;
         }
 
-        return new UsuarioDTO(
+        return new UsuarioDonoDTO(
             usuario.getId(),
             usuario.getNome(),
             null

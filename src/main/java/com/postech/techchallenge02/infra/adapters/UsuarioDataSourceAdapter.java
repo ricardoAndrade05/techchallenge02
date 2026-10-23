@@ -1,6 +1,6 @@
 package com.postech.techchallenge02.infra.adapters;
 
-import com.postech.techchallenge02.core.dtos.UsuarioDTO;
+import com.postech.techchallenge02.core.dtos.UsuarioDonoDTO;
 import com.postech.techchallenge02.core.interfaces.UsuarioDataSource;
 import com.postech.techchallenge02.infra.infra.mappers.UsuarioMapper;
 import com.postech.techchallenge02.infra.repositories.UsuarioRepository;
@@ -16,7 +16,7 @@ public class UsuarioDataSourceAdapter implements UsuarioDataSource {
     }
 
     @Override
-    public UsuarioDTO buscaUsuarioPorId(Long idUsuario, Long idRestaurante) {
+    public UsuarioDonoDTO buscaUsuarioPorId(Long idUsuario, Long idRestaurante) {
         return this.usuarioRepository.findById(idUsuario)
                 .flatMap(usuario -> usuario.getTiposUsuario().stream()
                         .filter(tu -> tu.getRestaurante() != null && idRestaurante.equals(tu.getRestaurante().getId()))
@@ -28,6 +28,12 @@ public class UsuarioDataSourceAdapter implements UsuarioDataSource {
     @Override
     public boolean existeUsuarioComEsteTipoUsuario(Long idTipoUsuario) {
         return this.usuarioRepository.existeUsuarioComEsteTipoUsuario(idTipoUsuario);
+    }
+
+    @Override
+    public UsuarioDonoDTO buscaUsuarioPorId(Long idUsuario) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'buscaUsuarioPorId'");
     }
 
 }

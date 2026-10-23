@@ -34,7 +34,7 @@ public class CadastrarTipoUsuarioUseCase {
         }
         Usuario usuarioCriador = this.usuarioGateway.buscaUsuarioPorId(dto.idUsuarioCriador(),dto.idRestaurante())
             .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário " + dto.idUsuarioCriador() + " não encontrado"));
-        if (!usuarioCriador.podeCadastrarTipoUsuario()) {
+        if (!usuarioCriador.podeCadastrar()) {
             throw new UsuarioSemPermissaoException("Usuário " + dto.idUsuarioCriador() + " não tem permissão para criar tipo de usuário");
         }
         Restaurante restaurante = this.restauranteGateway.buscaRestaurantePorId(dto.idRestaurante())

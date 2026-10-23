@@ -29,4 +29,10 @@ public class RestauranteDataSourceAdapter implements RestauranteDataSource {
         return restauranteMapper.toDTO(restauranteOptional.get());
     }
 
+    @Override
+    public void excluirRestaurante(Long idRestaurante) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'excluirRestaurante'");
+    }
+
 }

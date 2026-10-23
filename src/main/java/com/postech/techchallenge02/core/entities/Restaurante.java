@@ -16,11 +16,28 @@ public class Restaurante {
     Usuario dono;
 
     public static Restaurante restaurar(Long id, String nome, TipoCozinhaEnun tipoCozinha, LocalTime horarioAbertura, LocalTime horarioFechamento, Endereco endereco, Usuario dono) {
-        return new Restaurante(id,nome, tipoCozinha, horarioAbertura, horarioFechamento, endereco, dono);  
+        return new Restaurante(id, nome, tipoCozinha, horarioAbertura, horarioFechamento, endereco, dono);
     }
 
     public static Restaurante criar(String nome, TipoCozinhaEnun tipoCozinha, LocalTime horarioAbertura, LocalTime horarioFechamento, Endereco endereco, Usuario dono) {
         return new Restaurante(nome, tipoCozinha, horarioAbertura, horarioFechamento, endereco, dono);
+    }
+
+    public void atualizar(String nome, TipoCozinhaEnun tipoCozinha, LocalTime horaAbertura, LocalTime horaFechamento, Usuario usuarioDono) {
+        if (nome != null && !nome.isBlank()) {
+            this.setNome(nome);
+        }
+        if (tipoCozinha != null) {
+            this.setTipoCozinha(tipoCozinha);
+        }
+        LocalTime abertura = horaAbertura != null ? horaAbertura : this.horarioAbertura;
+        LocalTime fechamento = horaFechamento != null ? horaFechamento : this.horarioFechamento;
+
+        this.validaHorarioFuncionamento(abertura, fechamento);
+
+        if (usuarioDono != null) {
+            this.setDono(usuarioDono);
+        }
     }
 
     public Long getId() {
@@ -51,7 +68,7 @@ public class Restaurante {
         return dono;
     }
 
-    private Restaurante(Long id, String nome, TipoCozinhaEnun tipoCozinha, LocalTime horarioAbertura, LocalTime horarioFechamento, Endereco endereco, Usuario dono) { 
+    private Restaurante(Long id, String nome, TipoCozinhaEnun tipoCozinha, LocalTime horarioAbertura, LocalTime horarioFechamento, Endereco endereco, Usuario dono) {
         this.id = id;
         this.nome = nome;
         this.tipoCozinha = tipoCozinha;

@@ -27,7 +27,7 @@ public class AtualizarTipoUsuarioUseCase {
         validaDadosEntrada(dto);
         Usuario usuarioLogado = usuarioGateway.buscaUsuarioPorId(dto.idUsuarioLogado(),dto.idRestaurante())
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Usuario nao encontrado"));
-        if (!usuarioLogado.podeAtualizarTipoUsuario()) {
+        if (!usuarioLogado.podeAtualizar()) {
             throw new UsuarioSemPermissaoException("Usuario nao tem permissao para atualizar tipo de usuario");
         }
         TipoUsuario tipoUsuario = this.tipoUsuarioGateway.buscaTipoUsuarioPorId(dto.idTipoUsuario())
