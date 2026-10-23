@@ -8,6 +8,6 @@ public record RestauranteDTO(
     TipoCozinhaEnun tipoCozinha, 
     String horarioFuncionamento, 
     EnderecoDTO endereco,
-    UsuarioDTO dono) {
+    UsuarioDonoDTO dono) {
 
 }

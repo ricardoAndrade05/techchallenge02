@@ -12,15 +12,15 @@ public class Usuario {
         return new Usuario(id, nome, tipoUsuario);
     }
 
-    public boolean podeCadastrarTipoUsuario() {
+    public boolean podeCadastrar() {
         return this.tipoUsuario != null && !CategoriaEnun.CLIENTE.equals(this.tipoUsuario.getCategoria());
     }
 
-    public boolean podeExcluirTipoUsuario() {
+    public boolean podeExcluir() {
         return this.tipoUsuario != null && !CategoriaEnun.CLIENTE.equals(this.tipoUsuario.getCategoria());
     }
 
-    public boolean podeAtualizarTipoUsuario() {
+    public boolean podeAtualizar() {
         return this.tipoUsuario != null && !CategoriaEnun.CLIENTE.equals(this.tipoUsuario.getCategoria());
     }
 

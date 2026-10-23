@@ -8,4 +8,12 @@ public interface UsuarioGateway {
 
     Optional<Usuario> buscaUsuarioPorId(Long idUsuario,Long idRestaurante);
 
+    Optional<Usuario> buscaUsuarioPorId(Long idUsuarioLogado);
+
+    Usuario vincularUsuarioAoTipo(Long idUsuario,Long idTipoUsuario);
+
+    boolean usuarioVinculadoAoRestaurante(Long idUsuario,Long idRestaurante);
+
+    Usuario desvincularUsuarioAoTipo(Long idUsuario, Long idTipoUsuario);
+
 }

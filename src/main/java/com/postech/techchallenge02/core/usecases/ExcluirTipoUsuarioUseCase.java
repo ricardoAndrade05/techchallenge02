@@ -32,7 +32,7 @@ public class ExcluirTipoUsuarioUseCase {
         Usuario usuarioLogado = this.usuarioGateway.buscaUsuarioPorId(dto.idUsuarioLogado(),tipoUsuario.getIdRestaurante())
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado/inexistente para esse restaurante."));
 
-        if (!usuarioLogado.podeExcluirTipoUsuario()) {
+        if (!usuarioLogado.podeExcluir()) {
             throw new UsuarioSemPermissaoException("Usuário " + dto.idUsuarioLogado() + " não tem permissão para excluir tipo de usuário");
         }
 
