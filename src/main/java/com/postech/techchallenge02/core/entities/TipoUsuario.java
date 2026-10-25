@@ -17,7 +17,12 @@ public class TipoUsuario {
     }
 
     public static TipoUsuario restaurar(Long id, Restaurante restaurante, String nome, CategoriaEnun tipo) {
-        return new TipoUsuario(id, restaurante, nome, tipo);
+        TipoUsuario tipoUsuario = new TipoUsuario();
+        tipoUsuario.id = id;
+        tipoUsuario.restaurante = restaurante;
+        tipoUsuario.nome = nome;
+        tipoUsuario.categoria = tipo;
+        return tipoUsuario;
     }
 
     public void atualizar(String novoNomeTipo) {
@@ -43,6 +48,9 @@ public class TipoUsuario {
 
     public CategoriaEnun getCategoria() {
         return categoria;
+    }
+
+    private TipoUsuario(){
     }
 
     private TipoUsuario(Long id, Restaurante restaurante, String nome, CategoriaEnun tipo) {

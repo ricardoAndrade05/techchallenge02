@@ -2,12 +2,15 @@ package com.postech.techchallenge02.infra.adapters;
 
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
 import com.postech.techchallenge02.core.dtos.RestauranteDTO;
 import com.postech.techchallenge02.core.interfaces.RestauranteDataSource;
 import com.postech.techchallenge02.infra.entities.Restaurante;
 import com.postech.techchallenge02.infra.infra.mappers.RestauranteMapper;
 import com.postech.techchallenge02.infra.repositories.RestauranteRepository;
 
+@Component 
 public class RestauranteDataSourceAdapter implements RestauranteDataSource {
 
 
