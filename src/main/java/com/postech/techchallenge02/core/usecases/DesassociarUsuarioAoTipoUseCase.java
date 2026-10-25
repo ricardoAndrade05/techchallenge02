@@ -16,19 +16,17 @@ public class DesassociarUsuarioAoTipoUseCase {
 
     public void execute(DesassociarUsuarioTipoDTO dto) {
 
-        Usuario usuarioLogado = this.usuarioGateway.buscaUsuarioPorId(dto.idUsuarioLogado(), dto.idRestaurante())
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Usuario não encontrado."));
+        Usuario usuarioLogado = this.usuarioGateway.buscaUsuarioPorId(dto.idUsuarioLogado(), dto.idRestaurante()).orElseThrow(() -> new RecursoNaoEncontradoException("Usuario não encontrado."));
         if (!usuarioLogado.podeAtualizar()) {
             throw new UsuarioSemPermissaoException("Usuário não tem permissão para realizar esta ação.");
         }
 
-        Usuario usuarioADesassociar = this.usuarioGateway.buscaUsuarioPorId(dto.idUsuarioADesassociar(),dto.idRestaurante())
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Usuario a ser desassociado não encontrado."));
+        Usuario usuarioADesassociar = this.usuarioGateway.buscaUsuarioPorId(dto.idUsuarioADesassociar(),dto.idRestaurante()).orElseThrow(() -> new RecursoNaoEncontradoException("Usuario a ser desassociado não encontrado."));
         boolean usuarioJaVinculado = this.usuarioGateway.usuarioVinculadoAoRestaurante(dto.idUsuarioADesassociar(), dto.idRestaurante());
         if (!usuarioJaVinculado) {
-            throw new UsuarioSemPermissaoException("Usuario já possui um tipo de usuario cadastrado para este restaurante.");
+            throw new RecursoNaoEncontradoException("Usuario não possui tipo com o restaurante para ser desassociado.");
         }
-        usuarioADesassociar = this.usuarioGateway.desvincularUsuarioAoTipo(usuarioADesassociar.getId(), usuarioADesassociar.getTipoUsuario().getId());
+        this.usuarioGateway.desvincularUsuarioAoTipo(usuarioADesassociar.getId(), usuarioADesassociar.getTipoUsuario().getId());
     }
 
     private DesassociarUsuarioAoTipoUseCase(UsuarioGateway usuarioGateway) {

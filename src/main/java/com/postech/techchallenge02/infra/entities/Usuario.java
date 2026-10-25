@@ -98,6 +98,10 @@ public class Usuario {
         this.tiposUsuario.add(tiposUsuario);
     }
 
+    public void removeTiposUsuario(TipoUsuario tiposUsuario) {
+        this.tiposUsuario.remove(tiposUsuario);
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(id);

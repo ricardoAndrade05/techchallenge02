@@ -3,6 +3,7 @@ package com.postech.techchallenge02.infra.adapters;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 
 import com.postech.techchallenge02.core.dtos.NovoTipoUsuarioDTO;
 import com.postech.techchallenge02.core.dtos.Pagina;
@@ -17,6 +18,7 @@ import com.postech.techchallenge02.infra.infra.mappers.TipoUsuarioMapper;
 import com.postech.techchallenge02.infra.repositories.RestauranteRepository;
 import com.postech.techchallenge02.infra.repositories.TipoUsuarioRepository;
 
+@Component 
 public class TipoUsuarioDataSourceAdapter implements TipoUsuarioDataSource {
 
     private final TipoUsuarioRepository tipoUsuarioRepository;

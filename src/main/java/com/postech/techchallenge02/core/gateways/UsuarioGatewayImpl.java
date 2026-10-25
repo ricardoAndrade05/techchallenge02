@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.postech.techchallenge02.core.dtos.RestauranteDTO;
 import com.postech.techchallenge02.core.dtos.TipoUsuarioDTO;
+import com.postech.techchallenge02.core.dtos.UsuarioDTO;
 import com.postech.techchallenge02.core.dtos.UsuarioDonoDTO;
 import com.postech.techchallenge02.core.entities.Restaurante;
 import com.postech.techchallenge02.core.entities.TipoUsuario;
@@ -55,20 +56,21 @@ public class UsuarioGatewayImpl implements UsuarioGateway {
 
     @Override
     public Usuario vincularUsuarioAoTipo(Long idUsuario, Long idTipoUsuario) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'vincularUsuarioAoTipo'");
+        UsuarioDTO usuarioDTO = this.dataSource.vincularUsuarioAoTipo(idUsuario, idTipoUsuario);
+        TipoUsuarioDTO tipoUsuarioDTO = usuarioDTO.tipoUsuario();
+        TipoUsuario tipoUsuario = TipoUsuario.restaurar(tipoUsuarioDTO.id(), null, tipoUsuarioDTO.nome(), tipoUsuarioDTO.tipo());
+        Usuario usuario = Usuario.restaurar(usuarioDTO.id(), usuarioDTO.nome(),tipoUsuario);
+        return usuario;
     }
 
     @Override
     public boolean usuarioVinculadoAoRestaurante(Long idUsuario, Long idRestaurante) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'usuarioVinculadoAoRestaurante'");
+       return this.dataSource.usuarioEstaVinculadoAoRestaurante(idUsuario, idRestaurante);
     }
 
     @Override
-    public Usuario desvincularUsuarioAoTipo(Long id, Long id2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'desvincularUsuarioAoTipo'");
+    public void desvincularUsuarioAoTipo(Long idUsuario, Long idTipoUsuario) {
+        this.dataSource.desvincularUsuarioAoTipo(idUsuario, idTipoUsuario);
     }
 
 }

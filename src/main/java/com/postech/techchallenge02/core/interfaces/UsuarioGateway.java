@@ -14,6 +14,6 @@ public interface UsuarioGateway {
 
     boolean usuarioVinculadoAoRestaurante(Long idUsuario,Long idRestaurante);
 
-    Usuario desvincularUsuarioAoTipo(Long idUsuario, Long idTipoUsuario);
+    void desvincularUsuarioAoTipo(Long idUsuario, Long idTipoUsuario);
 
 }
