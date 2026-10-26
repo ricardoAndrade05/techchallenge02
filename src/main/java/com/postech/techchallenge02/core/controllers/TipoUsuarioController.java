@@ -56,8 +56,9 @@ public class TipoUsuarioController {
         TipoUsuarioGateway tipoUsuarioGateway = TipoUsuarioGatewayImpl.getInstance(this.tipoUsuariodataSource,this.usuarioDataSource);
         UsuarioGateway usuarioGateway = UsuarioGatewayImpl.getInstance(this.usuarioDataSource,this.tipoUsuariodataSource);
         RestauranteGateway restauranteGateway = RestauranteGatewayImpl.getInstance(this.restauranteDataSource);
-        TipoUsuario tipoUsuario = CadastrarTipoUsuarioUseCase.getInstance(tipoUsuarioGateway, usuarioGateway, restauranteGateway).execute(novoTipoUsuarioDTO);
-
+        TipoUsuario tipoUsuario = CadastrarTipoUsuarioUseCase
+                .getInstance(tipoUsuarioGateway, usuarioGateway, restauranteGateway)
+                .execute(novoTipoUsuarioDTO);
         return TipoUsuarioPresenter.toDTO(tipoUsuario);
     }
 

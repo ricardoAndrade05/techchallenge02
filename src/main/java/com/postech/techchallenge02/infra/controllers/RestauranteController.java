@@ -17,8 +17,11 @@ import com.postech.techchallenge02.infra.dtos.AtualizaRestauranteDTO;
 import com.postech.techchallenge02.infra.dtos.ExcluiRestauranteDTO;
 import com.postech.techchallenge02.infra.services.RestauranteService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/restaurantes")
+@Tag(name = "Restaurante", description = "Endpoints para gerenciamento do restaurante")
 public class RestauranteController implements RestauranteAPI {
 
     private final RestauranteService restauranteService;

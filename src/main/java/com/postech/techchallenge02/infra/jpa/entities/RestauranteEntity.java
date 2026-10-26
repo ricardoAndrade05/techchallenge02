@@ -1,4 +1,4 @@
-package com.postech.techchallenge02.infra.entities;
+package com.postech.techchallenge02.infra.jpa.entities;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_restaurante")
-public class Restaurante {
+public class RestauranteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,7 +43,7 @@ public class Restaurante {
     private Endereco endereco;
 
     @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TipoUsuario> tiposUsuario = new ArrayList<>();
+    private List<TipoUsuarioEntity> tiposUsuario = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -66,7 +66,7 @@ public class Restaurante {
     public Endereco getEndereco() {
         return endereco;
     }
-    public List<TipoUsuario> getTiposUsuario() {
+    public List<TipoUsuarioEntity> getTiposUsuario() {
         return tiposUsuario;
     }
 
@@ -98,7 +98,7 @@ public class Restaurante {
         this.endereco = endereco;
     }
 
-    public void setTiposUsuario(List<TipoUsuario> tiposUsuario) {
+    public void setTiposUsuario(List<TipoUsuarioEntity> tiposUsuario) {
         this.tiposUsuario = tiposUsuario;
     }
     @Override
@@ -116,7 +116,7 @@ public class Restaurante {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Restaurante other = (Restaurante) obj;
+        RestauranteEntity other = (RestauranteEntity) obj;
         if (id == null) {
             if (other.id != null)
                 return false;

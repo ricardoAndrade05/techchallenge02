@@ -17,10 +17,11 @@ import org.springframework.test.context.TestPropertySource;
 
 import com.postech.techchallenge02.core.enums.TipoCozinhaEnun;
 import com.postech.techchallenge02.core.enums.CategoriaEnun;
-import com.postech.techchallenge02.infra.entities.Endereco;
-import com.postech.techchallenge02.infra.entities.Restaurante;
-import com.postech.techchallenge02.infra.entities.TipoUsuario;
-import com.postech.techchallenge02.infra.entities.Usuario;
+import com.postech.techchallenge02.infra.jpa.entities.Endereco;
+import com.postech.techchallenge02.infra.jpa.entities.RestauranteEntity;
+import com.postech.techchallenge02.infra.jpa.entities.TipoUsuarioEntity;
+import com.postech.techchallenge02.infra.jpa.entities.Usuario;
+import com.postech.techchallenge02.infra.jpa.repositories.TipoUsuarioRepository;
 
 @DataJpaTest
 @TestPropertySource(properties = "spring.sql.init.mode=never")
@@ -37,7 +38,7 @@ class TipoUsuarioRepositoryTest {
     @Test
     @DisplayName("Deve retornar true quando existir TipoUsuario com o mesmo nome, restaurante e tipo")
     void deveRetornarTrueQuandoExistirTipoUsuarioComMesmoNomeRestauranteETipo() {
-        Restaurante restaurante = criarRestaurante("Restaurante Teste");
+        RestauranteEntity restaurante = criarRestaurante("Restaurante Teste");
         criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
 
         boolean existe = tipoUsuarioRepository.existeTipoUsuario("Gerente", restaurante.getId(), CategoriaEnun.DONO);
@@ -48,7 +49,7 @@ class TipoUsuarioRepositoryTest {
     @Test
     @DisplayName("Deve retornar false quando o nome for diferente")
     void deveRetornarFalseQuandoNomeForDiferente() {
-        Restaurante restaurante = criarRestaurante("Restaurante Teste");
+        RestauranteEntity restaurante = criarRestaurante("Restaurante Teste");
         criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
 
         boolean existe = tipoUsuarioRepository.existeTipoUsuario("Atendente", restaurante.getId(), CategoriaEnun.DONO);
@@ -59,8 +60,8 @@ class TipoUsuarioRepositoryTest {
     @Test
     @DisplayName("Deve retornar false quando o restaurante for diferente")
     void deveRetornarFalseQuandoRestauranteForDiferente() {
-        Restaurante restaurante = criarRestaurante("Restaurante Teste");
-        Restaurante outroRestaurante = criarRestaurante("Outro Restaurante");
+        RestauranteEntity restaurante = criarRestaurante("Restaurante Teste");
+        RestauranteEntity outroRestaurante = criarRestaurante("Outro Restaurante");
         criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
 
         boolean existe = tipoUsuarioRepository.existeTipoUsuario("Gerente", outroRestaurante.getId(), CategoriaEnun.DONO);
@@ -71,7 +72,7 @@ class TipoUsuarioRepositoryTest {
     @Test
     @DisplayName("Deve retornar false quando o tipo enum for diferente")
     void deveRetornarFalseQuandoTipoUsuarioForDiferente() {
-        Restaurante restaurante = criarRestaurante("Restaurante Teste");
+        RestauranteEntity restaurante = criarRestaurante("Restaurante Teste");
         criarTipoUsuario("Cliente VIP", CategoriaEnun.CLIENTE, restaurante);
 
         boolean existe = tipoUsuarioRepository.existeTipoUsuario("Cliente VIP", restaurante.getId(), CategoriaEnun.DONO);
@@ -82,12 +83,12 @@ class TipoUsuarioRepositoryTest {
     @Test
     @DisplayName("Deve retornar página com os tipos de usuário vinculados ao restaurante informado")
     void deveRetornarPaginaComTiposDeUsuarioDoRestaurante() {
-        Restaurante restaurante = criarRestaurante("Restaurante Teste");
+        RestauranteEntity restaurante = criarRestaurante("Restaurante Teste");
         criarTipoUsuario("Administrador", CategoriaEnun.DONO, restaurante);
         criarTipoUsuario("Cliente Comum", CategoriaEnun.CLIENTE, restaurante);
 
         Pageable pageable = PageRequest.of(0, 10);
-        Page<TipoUsuario> resultado = tipoUsuarioRepository.buscaTiposUsuarioPorRestaurante(restaurante.getId(), pageable);
+        Page<TipoUsuarioEntity> resultado = tipoUsuarioRepository.buscaTiposUsuarioPorRestaurante(restaurante.getId(), pageable);
 
         assertThat(resultado).isNotNull();
         assertThat(resultado.getTotalElements()).isEqualTo(2);
@@ -97,7 +98,7 @@ class TipoUsuarioRepositoryTest {
     @DisplayName("Deve retornar página vazia quando o ID do restaurante não for encontrado")
     void deveRetornarPaginaVaziaQuandoRestauranteNaoExistir() {
         Pageable pageable = PageRequest.of(0, 10);
-        Page<TipoUsuario> resultado = tipoUsuarioRepository.buscaTiposUsuarioPorRestaurante(999L, pageable);
+        Page<TipoUsuarioEntity> resultado = tipoUsuarioRepository.buscaTiposUsuarioPorRestaurante(999L, pageable);
 
         assertThat(resultado).isNotNull();
         assertThat(resultado.isEmpty()).isTrue();
@@ -106,8 +107,8 @@ class TipoUsuarioRepositoryTest {
     @Test
     @DisplayName("existeTipoUsuario por ID - Deve retornar true quando o tipo de usuário pertencer ao restaurante informado")
     void deveRetornarTrueQuandoExistirTipoUsuarioComIdERestaurante() {
-        Restaurante restaurante = criarRestaurante("Restaurante Teste");
-        TipoUsuario tipoUsuario = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
+        RestauranteEntity restaurante = criarRestaurante("Restaurante Teste");
+        TipoUsuarioEntity tipoUsuario = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
 
         boolean existe = tipoUsuarioRepository.existeTipoUsuario(tipoUsuario.getId(), restaurante.getId());
 
@@ -117,9 +118,9 @@ class TipoUsuarioRepositoryTest {
     @Test
     @DisplayName("existeTipoUsuario por ID - Deve retornar false quando o tipo de usuário pertencer a outro restaurante")
     void deveRetornarFalseQuandoIdRestauranteForDiferenteAoBuscarPorIdTipoERestaurante() {
-        Restaurante restaurante1 = criarRestaurante("Restaurante 1");
-        Restaurante restaurante2 = criarRestaurante("Restaurante 2");
-        TipoUsuario tipoUsuario = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante1);
+        RestauranteEntity restaurante1 = criarRestaurante("Restaurante 1");
+        RestauranteEntity restaurante2 = criarRestaurante("Restaurante 2");
+        TipoUsuarioEntity tipoUsuario = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante1);
 
         boolean existe = tipoUsuarioRepository.existeTipoUsuario(tipoUsuario.getId(), restaurante2.getId());
 
@@ -129,14 +130,14 @@ class TipoUsuarioRepositoryTest {
     @Test
     @DisplayName("existeTipoUsuario por ID - Deve retornar false quando o ID do tipo de usuário não existir")
     void deveRetornarFalseQuandoIdTipoUsuarioNaoExistirAoBuscarPorIdTipoERestaurante() {
-        Restaurante restaurante = criarRestaurante("Restaurante Teste");
+        RestauranteEntity restaurante = criarRestaurante("Restaurante Teste");
 
         boolean existe = tipoUsuarioRepository.existeTipoUsuario(9999L, restaurante.getId());
 
         assertThat(existe).isFalse();
     }
 
-    private Restaurante criarRestaurante(String nome) {
+    private RestauranteEntity criarRestaurante(String nome) {
         Endereco endereco = new Endereco();
         endereco.setLogradouro("Rua Teste");
         endereco.setNumero("123");
@@ -154,7 +155,7 @@ class TipoUsuarioRepositoryTest {
         dono.setSenha("123456");
         entityManager.persist(dono);
 
-        Restaurante novoRestaurante = new Restaurante();
+        RestauranteEntity novoRestaurante = new RestauranteEntity();
         novoRestaurante.setNome(nome + " " + uniqueId);
         novoRestaurante.setTipoCozinha(TipoCozinhaEnun.ITALIANA);
         novoRestaurante.setHorarioFuncionamentoInicio(LocalTime.of(10, 0));
@@ -167,8 +168,8 @@ class TipoUsuarioRepositoryTest {
         return novoRestaurante;
     }
 
-    private TipoUsuario criarTipoUsuario(String nome, CategoriaEnun tipo, Restaurante rest) {
-        TipoUsuario novoTipo = new TipoUsuario();
+    private TipoUsuarioEntity criarTipoUsuario(String nome, CategoriaEnun tipo, RestauranteEntity rest) {
+        TipoUsuarioEntity novoTipo = new TipoUsuarioEntity();
         novoTipo.setNome(nome);
         novoTipo.setTipo(tipo);
         novoTipo.setRestaurante(rest);

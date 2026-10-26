@@ -1,4 +1,4 @@
-package com.postech.techchallenge02.infra.entities;
+package com.postech.techchallenge02.infra.jpa.entities;
 
 import com.postech.techchallenge02.core.enums.CategoriaEnun;
 import com.postech.techchallenge02.infra.infra.converters.TipoUsuarioConverter;
@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 
 @Entity 
 @Table(name = "tb_tipo_usuario")
-public class TipoUsuario {
+public class TipoUsuarioEntity {
    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class TipoUsuario {
     
     @ManyToOne
     @JoinColumn(name="id_restaurante")
-    private Restaurante restaurante;
+    private RestauranteEntity restaurante;
 
     public Long getId() {
         return id;
@@ -42,7 +42,7 @@ public class TipoUsuario {
         return tipo;
     }
 
-    public Restaurante getRestaurante() {
+    public RestauranteEntity getRestaurante() {
         return restaurante;
     }
 
@@ -58,7 +58,7 @@ public class TipoUsuario {
         this.tipo = tipo;
     }
 
-    public void setRestaurante(Restaurante restaurante) {
+    public void setRestaurante(RestauranteEntity restaurante) {
         this.restaurante = restaurante;
     }
 
@@ -80,7 +80,7 @@ public class TipoUsuario {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        TipoUsuario other = (TipoUsuario) obj;
+        TipoUsuarioEntity other = (TipoUsuarioEntity) obj;
         if (nome == null) {
             if (other.nome != null)
                 return false;

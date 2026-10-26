@@ -3,7 +3,7 @@ package com.postech.techchallenge02.infra.infra.mappers;
 import org.springframework.stereotype.Component;
 
 import com.postech.techchallenge02.core.dtos.EnderecoDTO;
-import com.postech.techchallenge02.infra.entities.Endereco;
+import com.postech.techchallenge02.infra.jpa.entities.Endereco;
 
 @Component
 public class EnderecoMapper {

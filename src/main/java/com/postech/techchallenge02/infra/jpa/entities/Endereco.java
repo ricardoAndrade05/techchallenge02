@@ -1,4 +1,4 @@
-package com.postech.techchallenge02.infra.entities;
+package com.postech.techchallenge02.infra.jpa.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

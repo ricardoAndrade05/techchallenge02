@@ -1,4 +1,4 @@
-package com.postech.techchallenge02.infra.entities;
+package com.postech.techchallenge02.infra.jpa.entities;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -37,7 +37,7 @@ public class Usuario {
         joinColumns = @JoinColumn(name = "id_usuario"),
         inverseJoinColumns = @JoinColumn(name = "id_tipo_usuario")
     )
-    private Set<TipoUsuario> tiposUsuario = new HashSet<>();
+    private Set<TipoUsuarioEntity> tiposUsuario = new HashSet<>();
 
     public Usuario() {
     }
@@ -66,7 +66,7 @@ public class Usuario {
         return dataUltimaAlteracao;
     }
 
-    public Set<TipoUsuario> getTiposUsuario() {
+    public Set<TipoUsuarioEntity> getTiposUsuario() {
         return tiposUsuario;
     }
 
@@ -94,11 +94,11 @@ public class Usuario {
         this.dataUltimaAlteracao = dataUltimaAlteracao;
     }
 
-    public void addTiposUsuario(TipoUsuario tiposUsuario) {
+    public void addTiposUsuario(TipoUsuarioEntity tiposUsuario) {
         this.tiposUsuario.add(tiposUsuario);
     }
 
-    public void removeTiposUsuario(TipoUsuario tiposUsuario) {
+    public void removeTiposUsuario(TipoUsuarioEntity tiposUsuario) {
         this.tiposUsuario.remove(tiposUsuario);
     }
 
