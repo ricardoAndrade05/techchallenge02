@@ -200,6 +200,117 @@
           "response": []
         }
       ]
+    },
+    {
+      "name": "Restaurantes",
+      "item": [
+        {
+          "name": "Novo Restaurante",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"The American Burger & Grill\",\n  \"endereco\": {\n    \"id\": null,\n    \"logradouro\": \"Avenida Juscelino Kubitscheck\",\n    \"numero\": \"1200\",\n    \"cidade\": \"Maringá\",\n    \"estado\": \"PR\",\n    \"cep\": \"87010-000\"\n  },\n  \"tipoCozinha\": 4,\n  \"horarioAbertura\": \"18:00:00\",\n  \"horarioFechamento\": \"23:30:00\",\n  \"idUsuarioLogado\": 7\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/restaurantes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "restaurantes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Busca por Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/restaurantes/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "restaurantes",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Excluir",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"idUsuarioLogado\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/restaurantes/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "restaurantes",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar Restaurante",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"La Taperia & Taberna Espanhola\",\n  \"logradouro\": \"Rua Oscar Freire\",\n  \"numero\": \"950\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"cep\": \"01426-001\",\n  \"tipoCozinha\": 5,\n  \"inicioFuncionamento\": \"12:00:00\",\n  \"fimFuncionamento\": \"23:30:00\",\n  \"idDonoRestaurante\": 4,\n  \"idUsuarioLogado\": 4\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/restaurantes/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "restaurantes",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
     }
   ]
 }
