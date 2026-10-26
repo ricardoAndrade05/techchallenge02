@@ -24,8 +24,7 @@ public class CadastrarRestauranteUseCase {
     }
 
     public Restaurante execute(NovoRestauranteDTO dto) {
-        Usuario usuario = this.usuarioGateway.buscaUsuarioPorId(dto.idUsuarioLogado())
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado"));
+        Usuario usuario = this.usuarioGateway.buscaUsuarioPorId(dto.idUsuarioLogado()).orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado"));
         EnderecoDTO enderecoDTO = dto.endereco();
         Endereco endereco = Endereco.criar(enderecoDTO.logradouro(), enderecoDTO.numero(),enderecoDTO.cidade(),enderecoDTO.estado(),enderecoDTO.cep());
         TipoCozinhaEnun tipoCozinha = TipoCozinhaEnun.fromCodigo(dto.tipoCozinha());
@@ -38,7 +37,7 @@ public class CadastrarRestauranteUseCase {
 
         this.usuarioGateway.vincularUsuarioAoTipo(usuario.getId(), tipoUsuario.getId());
 
-        return restaurante;
+        return this.restauranteGateway.buscaRestaurantePorId(restaurante.getId()).orElseThrow(() -> new RecursoNaoEncontradoException("Erro ao recuperar o restaurante cadastrado"));
     }
 
     private CadastrarRestauranteUseCase(RestauranteGateway restauranteGateway, UsuarioGateway usuarioGateway, TipoUsuarioGateway tipoUsuarioGateway) {

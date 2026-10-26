@@ -2,9 +2,11 @@ package com.postech.techchallenge02.core.presenters;
 
 import com.postech.techchallenge02.core.dtos.EnderecoDTO;
 import com.postech.techchallenge02.core.dtos.RestauranteDTO;
+import com.postech.techchallenge02.core.dtos.TipoUsuarioDonoDTO;
 import com.postech.techchallenge02.core.dtos.UsuarioDonoDTO;
 import com.postech.techchallenge02.core.entities.Endereco;
 import com.postech.techchallenge02.core.entities.Restaurante;
+import com.postech.techchallenge02.core.entities.TipoUsuario;
 import com.postech.techchallenge02.core.entities.Usuario;
 
 public class RestaurantePresenter {
@@ -18,17 +20,11 @@ public class RestaurantePresenter {
             restaurante.getId(),
             restaurante.getNome(),
             restaurante.getTipoCozinha(),
-            formatarHorarioFuncionamento(restaurante),
+            restaurante.getHorarioAbertura(),
+            restaurante.getHorarioFechamento(),
             toEnderecoDTO(restaurante.getEndereco()),
             toUsuarioDTO(restaurante.getDono())
         );
-    }
-
-    private static String formatarHorarioFuncionamento(Restaurante restaurante) {
-        if (restaurante.getHorarioAbertura() == null || restaurante.getHorarioFechamento() == null) {
-            return null;
-        }
-        return restaurante.getHorarioAbertura() + " - " + restaurante.getHorarioFechamento();
     }
 
     private static EnderecoDTO toEnderecoDTO(Endereco endereco) {
@@ -50,11 +46,19 @@ public class RestaurantePresenter {
         if (usuario == null) {
             return null;
         }
-
+        TipoUsuarioDonoDTO tipoUsuarioDonoDTO = null;
+        TipoUsuario tipoUsuario = usuario.getTipoUsuario();
+        if (tipoUsuario != null) {
+             tipoUsuarioDonoDTO = new TipoUsuarioDonoDTO(
+                tipoUsuario.getId(),
+                tipoUsuario.getNome(),
+                tipoUsuario.getCategoria()
+             );
+        }
         return new UsuarioDonoDTO(
             usuario.getId(),
             usuario.getNome(),
-            null
+            tipoUsuarioDonoDTO
         );
     }
 }

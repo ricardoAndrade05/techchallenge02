@@ -24,17 +24,9 @@ import com.postech.techchallenge02.infra.dtos.ExcluiTipoDTO;
 public class TipoUsuarioService {
 
     private final TipoUsuarioController tipoUsuarioController;
-    
-    public TipoUsuarioService(
-            TipoUsuarioDataSource tipoUsuarioDataSource, 
-            RestauranteDataSource restauranteDataSource, 
-            UsuarioDataSource usuarioDataSource) {
-        
-        this.tipoUsuarioController = TipoUsuarioController.getInstance(
-            tipoUsuarioDataSource, 
-            restauranteDataSource, 
-            usuarioDataSource
-        );
+
+    public TipoUsuarioService(TipoUsuarioDataSource tipoUsuarioDataSource, RestauranteDataSource restauranteDataSource, UsuarioDataSource usuarioDataSource) {
+        this.tipoUsuarioController = TipoUsuarioController.getInstance(tipoUsuarioDataSource, restauranteDataSource, usuarioDataSource);
     }
 
     @Transactional(readOnly = true)
@@ -50,23 +42,20 @@ public class TipoUsuarioService {
     @Transactional
     public void excluiTipoUsuario(Long id, ExcluiTipoDTO excluiTipoDTO) {
         this.tipoUsuarioController.excluirTipoUsuario(
-            new ExcluirTipoUsuarioDTO(excluiTipoDTO.idUsuarioLogado(), id)
-        );
+                new ExcluirTipoUsuarioDTO(excluiTipoDTO.idUsuarioLogado(), id));
     }
 
     @Transactional
     public TipoUsuarioDTO atualizaTipoUsuario(Long id, AtualizarTipoDTO dto) {
         return this.tipoUsuarioController.atualizarTipoUsuario(
-            new AtualizarTipoUsuarioDTO(id, dto.novoNome(), dto.idUsuarioLogado(), dto.idRestaurante())
-        );
+                new AtualizarTipoUsuarioDTO(id, dto.novoNome(), dto.idUsuarioLogado(), dto.idRestaurante()));
     }
 
     @Transactional(readOnly = true)
     public Page<TipoUsuarioDTO> buscaTiposUsuarioRestaurante(Long idRestaurante, Pageable pageable) {
         Pagina<TipoUsuarioDTO> pagina = this.tipoUsuarioController.buscaTiposUsuarioRestaurante(
-            idRestaurante, 
-            new Paginacao(pageable.getPageNumber(), pageable.getPageSize())
-        );
+                idRestaurante,
+                new Paginacao(pageable.getPageNumber(), pageable.getPageSize()));
         return converterParaSpringPage(pagina);
     }
 

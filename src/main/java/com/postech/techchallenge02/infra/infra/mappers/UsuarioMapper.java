@@ -1,29 +1,77 @@
 package com.postech.techchallenge02.infra.infra.mappers;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 
+import com.postech.techchallenge02.core.dtos.TipoUsuarioDTO;
+import com.postech.techchallenge02.core.dtos.TipoUsuarioDonoDTO;
 import com.postech.techchallenge02.core.dtos.UsuarioDTO;
 import com.postech.techchallenge02.core.dtos.UsuarioDonoDTO;
 import com.postech.techchallenge02.infra.entities.TipoUsuario;
 import com.postech.techchallenge02.infra.entities.Usuario;
 
-@Mapper(componentModel = "spring", uses = {TipoUsuarioMapper.class})
-public interface UsuarioMapper {
+@Component
+public class UsuarioMapper {
 
-    @Mapping(target = "id", source = "usuario.id")
-    @Mapping(target = "nome", source = "usuario.nome")
-    @Mapping(target = "idTipoUsuario", source = "tipoUsuario.id")
-    UsuarioDonoDTO toUsuarioDonoDTO(Usuario usuario, TipoUsuario tipoUsuario);
+    private final TipoUsuarioMapper tipoUsuarioMapper;
 
-    @Mapping(target = "id", source = "usuario.id")
-    @Mapping(target = "nome", source = "usuario.nome")
-    @Mapping(target = "idTipoUsuario",ignore = true)
-    UsuarioDonoDTO toUsuarioDonoDTO(Usuario usuario);
+    UsuarioMapper(TipoUsuarioMapper tipoUsuarioMapper) {
+        this.tipoUsuarioMapper = tipoUsuarioMapper;
+    }
 
-    @Mapping(target = "id", source = "usuario.id")
-    @Mapping(target = "nome", source = "usuario.nome")
-    @Mapping(target = "tipoUsuario", source = "tipoUsuario")
-    UsuarioDTO toDTO(Usuario usuario, TipoUsuario tipoUsuario);
+    public UsuarioDonoDTO toUsuarioDonoDTO(Usuario usuario, TipoUsuario tipoUsuario) {
+        if (usuario == null && tipoUsuario == null) {
+            return null;
+        }
+
+        Long id = null;
+        String nome = null;
+        if (usuario != null) {
+            id = usuario.getId();
+            nome = usuario.getNome();
+        }
+        TipoUsuarioDonoDTO tipoUsuario1 = null;
+        tipoUsuario1 = tipoUsuarioMapper.toTipoUsuarioRetornoDTO(tipoUsuario);
+
+        UsuarioDonoDTO usuarioDonoDTO = new UsuarioDonoDTO(id, nome, tipoUsuario1);
+
+        return usuarioDonoDTO;
+    }
+
+    public UsuarioDonoDTO toUsuarioDonoDTO(Usuario usuario) {
+        if (usuario == null) {
+            return null;
+        }
+
+        Long id = null;
+        String nome = null;
+
+        id = usuario.getId();
+        nome = usuario.getNome();
+
+        TipoUsuarioDonoDTO tipoUsuario = null;
+
+        UsuarioDonoDTO usuarioDonoDTO = new UsuarioDonoDTO(id, nome, tipoUsuario);
+
+        return usuarioDonoDTO;
+    }
+
+    public UsuarioDTO toDTO(Usuario usuario, TipoUsuario tipoUsuario) {
+        if (usuario == null && tipoUsuario == null) {
+            return null;
+        }
+
+        Long id = null;
+        String nome = null;
+        if (usuario != null) {
+            id = usuario.getId();
+            nome = usuario.getNome();
+        }
+        TipoUsuarioDTO tipoUsuario1 = null;
+        tipoUsuario1 = tipoUsuarioMapper.toDTO(tipoUsuario);
+
+        UsuarioDTO usuarioDTO = new UsuarioDTO(id, nome, tipoUsuario1);
+
+        return usuarioDTO;
+    }
 
 }
