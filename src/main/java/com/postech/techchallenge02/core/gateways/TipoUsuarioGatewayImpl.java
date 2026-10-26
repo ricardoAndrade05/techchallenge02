@@ -36,7 +36,7 @@ public class TipoUsuarioGatewayImpl implements TipoUsuarioGateway {
     @Override
     public TipoUsuario atualizarTipoUsuario(TipoUsuario tipo) {
        Restaurante restaurante = tipo.getRestaurante();
-       RestauranteDTO restauranteDTO = new RestauranteDTO(restaurante.getId(),restaurante.getNome(),null,null,null,null);
+       RestauranteDTO restauranteDTO = new RestauranteDTO(restaurante.getId(),restaurante.getNome(),null,null,null,null,null);
        TipoUsuarioDTO dto = new TipoUsuarioDTO(tipo.getId(),restauranteDTO,tipo.getNome(),tipo.getCategoria());
        dto = this.dataSource.atualizar(dto);
        return TipoUsuario.restaurar(dto.id(), restaurante, dto.nome(), dto.tipo());

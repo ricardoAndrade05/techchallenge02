@@ -20,14 +20,16 @@ public class AtualizarRestauranteUseCase {
     }
 
     public Restaurante execute(AtualizarRestauranteDTO dto) {
-        Usuario usuarioLogado = this.usuarioGateway.buscaUsuarioPorId(dto.usuarioLogado().id(), dto.idRestaurante())
+        Usuario usuarioLogado = this.usuarioGateway.buscaUsuarioPorId(dto.idUsuarioLogado(), dto.idRestaurante())
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário logado não encontrado para o restaurante informado."));
-        
-        if (!usuarioLogado.podeAtualizar()) {
-            throw new UsuarioSemPermissaoException("Usuário não tem permissão para editar/atualizar o restaurante.");
-        }
+
         Restaurante restaurante = this.restauranteGateway.buscaRestaurantePorId(dto.idRestaurante())
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Restaurante não encontrado para o id informado."));
+
+        Usuario dono = restaurante.getDono();
+        if (!usuarioLogado.podeAtualizar() || !dono.getId().equals(usuarioLogado.getId())) {
+            throw new UsuarioSemPermissaoException("Usuário não tem permissão para editar/atualizar o restaurante.");
+        }
 
         EnderecoDTO enderecoDto = dto.endereco();
         if (enderecoDto != null) {
@@ -36,12 +38,11 @@ public class AtualizarRestauranteUseCase {
                     enderecoDto.numero(),
                     enderecoDto.cidade(),
                     enderecoDto.estado(),
-                    enderecoDto.cep()
-            );
+                    enderecoDto.cep());
         }
         Usuario novoUsuarioDono = null;
-        if (dto.dono() != null && dto.dono().id() != null) {
-            novoUsuarioDono = processarTrocaDeDono(restaurante, dto.dono().id());
+        if (dto.idDono() != null) {
+            novoUsuarioDono = processarTrocaDeDono(restaurante, dto.idDono());
         }
         restaurante.atualizar(dto.nome(), dto.tipoCozinha(), dto.horaAbertura(), dto.horaFechamento(), novoUsuarioDono);
         return this.restauranteGateway.atualizar(restaurante);
@@ -53,8 +54,7 @@ public class AtualizarRestauranteUseCase {
         if (donoAntigo != null && donoAntigo.getId().equals(idNovoDono)) {
             return donoAntigo;
         }
-        Usuario novoDono = this.usuarioGateway.buscaUsuarioPorId(idNovoDono)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Novo proprietário não encontrado."));
+        Usuario novoDono = this.usuarioGateway.buscaUsuarioPorId(idNovoDono).orElseThrow(() -> new RecursoNaoEncontradoException("Novo proprietário não encontrado."));
         Usuario donoAntigoComContexto = esteUsuarioTemTipoNoRestaurante(donoAntigo.getId(), restaurante.getId());
         TipoUsuario tipoProprietario = donoAntigoComContexto != null ? donoAntigoComContexto.getTipoUsuario() : null;
 

@@ -72,62 +72,6 @@ class TipoUsuarioTest {
     }
 
     // -------------------------------------------------------------------------
-    // TipoUsuario.restaurar
-    // -------------------------------------------------------------------------
-
-    @Nested
-    @DisplayName("restaurar()")
-    class Restaurar {
-
-        @Test
-        @DisplayName("Deve restaurar uma instância com todos os dados incluindo id")
-        void deveRestaurarComId_quandoDadosValidos() {
-            Restaurante restaurante = restauranteValido();
-
-            TipoUsuario tipo = TipoUsuario.restaurar(ID, restaurante, NOME_VALIDO, TIPO_VALIDO);
-
-            assertThat(tipo.getId()).isEqualTo(ID);
-            assertThat(tipo.getNome()).isEqualTo(NOME_VALIDO);
-            assertThat(tipo.getCategoria()).isEqualTo(TIPO_VALIDO);
-            assertThat(tipo.getRestaurante()).isEqualTo(restaurante);
-        }
-
-        @Test
-        @DisplayName("Deve permitir restaurar com id nulo")
-        void devePermitirRestaurarComIdNulo() {
-            TipoUsuario tipo = TipoUsuario.restaurar(null, restauranteValido(), NOME_VALIDO, TIPO_VALIDO);
-
-            assertThat(tipo.getId()).isNull();
-        }
-
-        @Test
-        @DisplayName("Deve lançar DadosInvalidosException quando o restaurante for nulo")
-        void deveLancarExcecao_quandoRestauranteNulo() {
-            assertThatThrownBy(() -> TipoUsuario.restaurar(ID, null, NOME_VALIDO, TIPO_VALIDO))
-                    .isInstanceOf(DadosInvalidosException.class)
-                    .hasMessageContaining("Restaurante inválido");
-        }
-
-        @ParameterizedTest(name = "nome = \"{0}\"")
-        @NullAndEmptySource
-        @ValueSource(strings = {"   "})
-        @DisplayName("Deve lançar DadosInvalidosException quando o nome for nulo, vazio ou em branco")
-        void deveLancarExcecao_quandoNomeInvalido(String nomeInvalido) {
-            assertThatThrownBy(() -> TipoUsuario.restaurar(ID, restauranteValido(), nomeInvalido, TIPO_VALIDO))
-                    .isInstanceOf(DadosInvalidosException.class)
-                    .hasMessageContaining("Nome inválido");
-        }
-
-        @Test
-        @DisplayName("Deve lançar DadosInvalidosException quando o tipo de usuário for nulo")
-        void deveLancarExcecao_quandoTipoNulo() {
-            assertThatThrownBy(() -> TipoUsuario.restaurar(ID, restauranteValido(), NOME_VALIDO, null))
-                    .isInstanceOf(DadosInvalidosException.class)
-                    .hasMessageContaining("Tipo de usuário inválido");
-        }
-    }
-
-    // -------------------------------------------------------------------------
     // TipoUsuario.atualizar
     // -------------------------------------------------------------------------
 

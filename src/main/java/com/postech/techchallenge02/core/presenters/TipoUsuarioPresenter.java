@@ -10,7 +10,7 @@ import com.postech.techchallenge02.core.entities.TipoUsuario;
 public class TipoUsuarioPresenter { 
 
     public static TipoUsuarioDTO toDTO(TipoUsuario tipoUsuario) {
-        RestauranteDTO restauranteDTO = new RestauranteDTO(tipoUsuario.getIdRestaurante(), tipoUsuario.getRestaurante().getNome(),null,null,null,null);
+        RestauranteDTO restauranteDTO = new RestauranteDTO(tipoUsuario.getIdRestaurante(), tipoUsuario.getRestaurante().getNome(),null,null,null,null,null);
         return new TipoUsuarioDTO(tipoUsuario.getId(), restauranteDTO, tipoUsuario.getNome(), tipoUsuario.getCategoria());
     }
 

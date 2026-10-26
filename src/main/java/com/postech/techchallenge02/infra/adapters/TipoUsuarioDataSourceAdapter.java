@@ -36,7 +36,7 @@ public class TipoUsuarioDataSourceAdapter implements TipoUsuarioDataSource {
         return this.tipoUsuarioRepository.findById(idTipoUsuario)
                 .map(tipoUsuario -> {
                     Restaurante restaurante = tipoUsuario.getRestaurante();
-                    RestauranteDTO restauranteDTO = new RestauranteDTO(restaurante.getId(), restaurante.getNome(),null,null,null,null);
+                    RestauranteDTO restauranteDTO = new RestauranteDTO(restaurante.getId(), restaurante.getNome(),null,null,null,null,null);
                     return new TipoUsuarioDTO(
                             tipoUsuario.getId(),
                             restauranteDTO,

@@ -19,8 +19,9 @@ public class BuscarRestaurantePorIdUseCase {
         if (Objects.isNull(id)) {
             throw new DadosInvalidosException("Restaurante inválido.");
         }
-        return this.restauranteGateway.buscaRestaurantePorId(id)
+        Restaurante restaurante = this.restauranteGateway.buscaRestaurantePorId(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Não há restaurante com id: " + id));
+        return restaurante;
     }
 
     private BuscarRestaurantePorIdUseCase(RestauranteGateway restauranteGateway) {

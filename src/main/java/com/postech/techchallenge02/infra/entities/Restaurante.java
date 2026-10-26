@@ -21,7 +21,6 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_restaurante")
-
 public class Restaurante {
 
     @Id

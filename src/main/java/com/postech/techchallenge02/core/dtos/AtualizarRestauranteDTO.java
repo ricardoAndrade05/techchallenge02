@@ -12,9 +12,9 @@ public record AtualizarRestauranteDTO(
         LocalTime horaAbertura,
         LocalTime horaFechamento,
 
-        UsuarioDonoDTO dono,
+        Long idDono,
 
-        UsuarioDTO usuarioLogado
+        Long idUsuarioLogado
 
 ) {
 

@@ -36,7 +36,7 @@ public class UsuarioGatewayImpl implements UsuarioGateway {
         if (usuarioDTO == null) {
             return Optional.empty();
         }
-        TipoUsuarioDTO tipoUsuarioDTO = this.tipoUsuarioDataSource.buscaTipoUsuarioPorId(usuarioDTO.idTipoUsuario());
+        TipoUsuarioDTO tipoUsuarioDTO = this.tipoUsuarioDataSource.buscaTipoUsuarioPorId(usuarioDTO.tipoUsuario().id());
         RestauranteDTO restauranteDTO = tipoUsuarioDTO.restaurante();
         Restaurante restaurante = Restaurante.restaurar(restauranteDTO.id(), restauranteDTO.nome(),null,null,null,null,null);
         TipoUsuario tipoUsuario = TipoUsuario.restaurar(tipoUsuarioDTO.id(), restaurante,tipoUsuarioDTO.nome(),tipoUsuarioDTO.tipo());

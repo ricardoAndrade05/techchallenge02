@@ -63,8 +63,8 @@ public class ControllerHandler {
     @ExceptionHandler(UsuarioSemPermissaoException.class)
     public ResponseEntity<ErroPadraoDTO> handleUsuarioSemPermissaoException(UsuarioSemPermissaoException ex, HttpServletRequest request) {
         ErroPadraoDTO erro = new ErroPadraoDTO(
-                "acesso-negado",
-                "Acesso Negado",
+                "permissao-insuficiente",
+                "Permissão Insuficiente",
                 HttpStatus.FORBIDDEN.value(),
                 ex.getMessage(),
                 URI.create(request.getRequestURI()),
