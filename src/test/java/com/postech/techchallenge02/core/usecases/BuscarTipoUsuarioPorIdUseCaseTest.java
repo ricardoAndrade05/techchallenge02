@@ -10,7 +10,6 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -40,65 +39,56 @@ class BuscarTipoUsuarioPorIdUseCaseTest {
         useCase = BuscarTipoUsuarioPorIdUseCase.getInstance(tipoUsuarioGateway);
     }
 
-    @Nested
-    @DisplayName("Dado que o id fornecido é inválido")
-    class QuandoIdInvalido {
+    // --- ID Inválido ---
 
-        @Test
-        @DisplayName("Deve lançar DadosInvalidosException quando o id for nulo")
-        void deveLancarExcecao_quandoIdNulo() {
-            assertThatThrownBy(() -> useCase.execute(null))
-                    .isInstanceOf(DadosInvalidosException.class)
-                    .hasMessageContaining("Tipo de usuário inválido");
+    @Test
+    @DisplayName("idInvalido - Deve lançar DadosInvalidosException quando o id for nulo")
+    void deveLancarExcecao_quandoIdNulo() {
+        assertThatThrownBy(() -> useCase.execute(null))
+                .isInstanceOf(DadosInvalidosException.class)
+                .hasMessageContaining("Tipo de usuário inválido");
 
-            verify(tipoUsuarioGateway, never()).buscaTipoUsuarioPorId(null);
-        }
+        verify(tipoUsuarioGateway, never()).buscaTipoUsuarioPorId(null);
     }
 
-    @Nested
-    @DisplayName("Dado que o tipo de usuário não existe")
-    class QuandoTipoUsuarioNaoExiste {
+    // --- TipoUsuario Inexistente ---
 
-        @Test
-        @DisplayName("Deve lançar TipoUsuarioNaoEncontradoException quando o tipo não for encontrado")
-        void deveLancarExcecao_quandoTipoUsuarioNaoEncontrado() {
-            when(tipoUsuarioGateway.buscaTipoUsuarioPorId(ID_TIPO_USUARIO_INEXISTENTE)).thenReturn(Optional.empty());
+    @Test
+    @DisplayName("tipoUsuarioInexistente - Deve lançar TipoUsuarioNaoEncontradoException quando o tipo não for encontrado")
+    void deveLancarExcecao_quandoTipoUsuarioNaoEncontrado() {
+        when(tipoUsuarioGateway.buscaTipoUsuarioPorId(ID_TIPO_USUARIO_INEXISTENTE)).thenReturn(Optional.empty());
 
-            assertThatThrownBy(() -> useCase.execute(ID_TIPO_USUARIO_INEXISTENTE))
-                    .isInstanceOf(RecursoNaoEncontradoException.class)
-                    .hasMessageContaining(String.valueOf(ID_TIPO_USUARIO_INEXISTENTE));
-        }
+        assertThatThrownBy(() -> useCase.execute(ID_TIPO_USUARIO_INEXISTENTE))
+                .isInstanceOf(RecursoNaoEncontradoException.class)
+                .hasMessageContaining(String.valueOf(ID_TIPO_USUARIO_INEXISTENTE));
     }
 
-    @Nested
-    @DisplayName("Dado que o tipo de usuário existe")
-    class QuandoTipoUsuarioExiste {
+    // --- TipoUsuario Existente ---
 
-        @Test
-        @DisplayName("Deve retornar o tipo de usuário quando o id for válido e o tipo existir")
-        void deveRetornarTipoUsuario_quandoIdValidoETipoExiste() {
-            Restaurante restaurante = Restaurante.restaurar (10L, "Restaurante Teste",null,null,null,null,null);
-            TipoUsuario tipoEsperado = TipoUsuario.restaurar(ID_TIPO_USUARIO_VALIDO, restaurante, "Gerente", CategoriaEnun.DONO);
-            when(tipoUsuarioGateway.buscaTipoUsuarioPorId(ID_TIPO_USUARIO_VALIDO)).thenReturn(Optional.of(tipoEsperado));
+    @Test
+    @DisplayName("tipoUsuarioExiste - Deve retornar o tipo de usuário quando o id for válido e o tipo existir")
+    void deveRetornarTipoUsuario_quandoIdValidoETipoExiste() {
+        Restaurante restaurante = Restaurante.restaurar(10L, "Restaurante Teste", null, null, null, null, null);
+        TipoUsuario tipoEsperado = TipoUsuario.restaurar(ID_TIPO_USUARIO_VALIDO, restaurante, "Gerente", CategoriaEnun.DONO);
+        when(tipoUsuarioGateway.buscaTipoUsuarioPorId(ID_TIPO_USUARIO_VALIDO)).thenReturn(Optional.of(tipoEsperado));
 
-            TipoUsuario resultado = useCase.execute(ID_TIPO_USUARIO_VALIDO);
+        TipoUsuario resultado = useCase.execute(ID_TIPO_USUARIO_VALIDO);
 
-            assertThat(resultado).isNotNull();
-            assertThat(resultado.getId()).isEqualTo(ID_TIPO_USUARIO_VALIDO);
-            assertThat(resultado.getNome()).isEqualTo("Gerente");
-            assertThat(resultado.getCategoria()).isEqualTo(CategoriaEnun.DONO);
-        }
+        assertThat(resultado).isNotNull();
+        assertThat(resultado.getId()).isEqualTo(ID_TIPO_USUARIO_VALIDO);
+        assertThat(resultado.getNome()).isEqualTo("Gerente");
+        assertThat(resultado.getCategoria()).isEqualTo(CategoriaEnun.DONO);
+    }
 
-        @Test
-        @DisplayName("Deve invocar o gateway para buscar o tipo de usuário pelo id")
-        void deveInvocarGateway_quandoBuscarPorId() {
-            Restaurante restaurante = Restaurante.restaurar(10L, "Restaurante Teste",null,null,null,null,null);
-            TipoUsuario tipo = TipoUsuario.restaurar(ID_TIPO_USUARIO_VALIDO, restaurante, "Gerente", CategoriaEnun.DONO);
-            when(tipoUsuarioGateway.buscaTipoUsuarioPorId(ID_TIPO_USUARIO_VALIDO)).thenReturn(Optional.of(tipo));
+    @Test
+    @DisplayName("tipoUsuarioExiste - Deve invocar o gateway para buscar o tipo de usuário pelo id")
+    void deveInvocarGateway_quandoBuscarPorId() {
+        Restaurante restaurante = Restaurante.restaurar(10L, "Restaurante Teste", null, null, null, null, null);
+        TipoUsuario tipo = TipoUsuario.restaurar(ID_TIPO_USUARIO_VALIDO, restaurante, "Gerente", CategoriaEnun.DONO);
+        when(tipoUsuarioGateway.buscaTipoUsuarioPorId(ID_TIPO_USUARIO_VALIDO)).thenReturn(Optional.of(tipo));
 
-            useCase.execute(ID_TIPO_USUARIO_VALIDO);
+        useCase.execute(ID_TIPO_USUARIO_VALIDO);
 
-            verify(tipoUsuarioGateway).buscaTipoUsuarioPorId(ID_TIPO_USUARIO_VALIDO);
-        }
+        verify(tipoUsuarioGateway).buscaTipoUsuarioPorId(ID_TIPO_USUARIO_VALIDO);
     }
 }

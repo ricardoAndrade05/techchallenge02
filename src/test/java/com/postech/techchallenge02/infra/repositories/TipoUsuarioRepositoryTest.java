@@ -103,6 +103,39 @@ class TipoUsuarioRepositoryTest {
         assertThat(resultado.isEmpty()).isTrue();
     }
 
+    @Test
+    @DisplayName("existeTipoUsuario por ID - Deve retornar true quando o tipo de usuário pertencer ao restaurante informado")
+    void deveRetornarTrueQuandoExistirTipoUsuarioComIdERestaurante() {
+        Restaurante restaurante = criarRestaurante("Restaurante Teste");
+        TipoUsuario tipoUsuario = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
+
+        boolean existe = tipoUsuarioRepository.existeTipoUsuario(tipoUsuario.getId(), restaurante.getId());
+
+        assertThat(existe).isTrue();
+    }
+
+    @Test
+    @DisplayName("existeTipoUsuario por ID - Deve retornar false quando o tipo de usuário pertencer a outro restaurante")
+    void deveRetornarFalseQuandoIdRestauranteForDiferenteAoBuscarPorIdTipoERestaurante() {
+        Restaurante restaurante1 = criarRestaurante("Restaurante 1");
+        Restaurante restaurante2 = criarRestaurante("Restaurante 2");
+        TipoUsuario tipoUsuario = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante1);
+
+        boolean existe = tipoUsuarioRepository.existeTipoUsuario(tipoUsuario.getId(), restaurante2.getId());
+
+        assertThat(existe).isFalse();
+    }
+
+    @Test
+    @DisplayName("existeTipoUsuario por ID - Deve retornar false quando o ID do tipo de usuário não existir")
+    void deveRetornarFalseQuandoIdTipoUsuarioNaoExistirAoBuscarPorIdTipoERestaurante() {
+        Restaurante restaurante = criarRestaurante("Restaurante Teste");
+
+        boolean existe = tipoUsuarioRepository.existeTipoUsuario(9999L, restaurante.getId());
+
+        assertThat(existe).isFalse();
+    }
+
     private Restaurante criarRestaurante(String nome) {
         Endereco endereco = new Endereco();
         endereco.setLogradouro("Rua Teste");
