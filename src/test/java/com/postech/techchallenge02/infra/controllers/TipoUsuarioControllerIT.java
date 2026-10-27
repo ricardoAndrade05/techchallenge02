@@ -232,4 +232,40 @@ public class TipoUsuarioControllerIT {
                 .content(objectMapper.writeValueAsString(atualizarDTO)))
                 .andExpect(status().isConflict());
     }
+
+    @Test
+    @DisplayName("Deve retornar Bad Request ao tentar inserir tipo de usuário com dados inválidos (400)")
+    void deveRetornarBadRequestAoInserirTipoUsuarioComDadosInvalidos() throws Exception {
+        // idRestaurante nulo
+        NovoTipoUsuarioDTO dtoInvalido = new NovoTipoUsuarioDTO(null, "Novo Cargo", CategoriaEnun.DONO, 1L);
+
+        mockMvc.perform(post("/tipos-usuario")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(dtoInvalido)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("Deve retornar Bad Request ao tentar excluir tipo de usuário com dados inválidos (400)")
+    void deveRetornarBadRequestAoExcluirTipoUsuarioComDadosInvalidos() throws Exception {
+        // idUsuarioLogado nulo
+        var excluiDTOInvalido = new ExcluiTipoDTO(null);
+
+        mockMvc.perform(delete("/tipos-usuario/{id}", 2L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(excluiDTOInvalido)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("Deve retornar Bad Request ao tentar atualizar tipo de usuário com dados inválidos (400)")
+    void deveRetornarBadRequestAoAtualizarTipoUsuarioComDadosInvalidos() throws Exception {
+        // idUsuarioLogado nulo
+        var atualizarDTOInvalido = new AtualizarTipoDTO("Novo Nome", null, 1L);
+
+        mockMvc.perform(put("/tipos-usuario/{id}", 2L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(atualizarDTOInvalido)))
+                .andExpect(status().isBadRequest());
+    }
 }

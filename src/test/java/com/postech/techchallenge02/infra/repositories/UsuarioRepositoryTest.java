@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
@@ -92,6 +93,94 @@ class UsuarioRepositoryTest {
         assertThat(existe).isFalse();
     }
 
+    // --- usuarioEstaVinculadoAoRestaurante ---
+
+    @Test
+    @DisplayName("usuarioEstaVinculadoAoRestaurante - Deve retornar true quando o usuário tiver tipo vinculado ao restaurante")
+    void deveRetornarTrueQuandoUsuarioEstiverVinculadoAoRestaurante() {
+        Restaurante restaurante = criarRestaurante("Restaurante Padrão");
+        TipoUsuario tipoUsuario = criarTipoUsuario("Garçom", CategoriaEnun.DONO, restaurante);
+        Usuario usuario = criarUsuario("Carlos Santos", "carlos@email.com", tipoUsuario);
+
+        boolean vinculado = usuarioRepository.usuarioEstaVinculadoAoRestaurante(usuario.getId(), restaurante.getId());
+
+        assertThat(vinculado).isTrue();
+    }
+
+    @Test
+    @DisplayName("usuarioEstaVinculadoAoRestaurante - Deve retornar false quando o usuário tiver tipo vinculado a outro restaurante")
+    void deveRetornarFalseQuandoUsuarioEstiverVinculadoAOutroRestaurante() {
+        Restaurante restaurante1 = criarRestaurante("Restaurante 1");
+        Restaurante restaurante2 = criarRestaurante("Restaurante 2");
+        TipoUsuario tipoUsuario1 = criarTipoUsuario("Garçom", CategoriaEnun.DONO, restaurante1);
+        Usuario usuario = criarUsuario("Carlos Santos", "carlos@email.com", tipoUsuario1);
+
+        boolean vinculado = usuarioRepository.usuarioEstaVinculadoAoRestaurante(usuario.getId(), restaurante2.getId());
+
+        assertThat(vinculado).isFalse();
+    }
+
+    @Test
+    @DisplayName("usuarioEstaVinculadoAoRestaurante - Deve retornar false quando o usuário não tiver nenhum tipo de usuário vinculado")
+    void deveRetornarFalseQuandoUsuarioNaoPossuirTiposVinculados() {
+        Restaurante restaurante = criarRestaurante("Restaurante Padrão");
+        Usuario usuarioSemTipo = criarUsuarioSemTipo("Ana Paula", "ana@email.com");
+
+        boolean vinculado = usuarioRepository.usuarioEstaVinculadoAoRestaurante(usuarioSemTipo.getId(), restaurante.getId());
+
+        assertThat(vinculado).isFalse();
+    }
+
+    @Test
+    @DisplayName("usuarioEstaVinculadoAoRestaurante - Deve retornar false quando o ID do usuário não existir")
+    void deveRetornarFalseQuandoIdUsuarioInexistenteAoVerificarVinculo() {
+        Restaurante restaurante = criarRestaurante("Restaurante Padrão");
+
+        boolean vinculado = usuarioRepository.usuarioEstaVinculadoAoRestaurante(9999L, restaurante.getId());
+
+        assertThat(vinculado).isFalse();
+    }
+
+    // --- findAllByTiposUsuarioIn ---
+
+    @Test
+    @DisplayName("findAllByTiposUsuarioIn - Deve retornar usuários associados aos tipos de usuário informados")
+    void deveRetornarUsuariosQuandoPertenceremAosTiposInformados() {
+        Restaurante restaurante = criarRestaurante("Restaurante Padrão");
+        TipoUsuario tipoGerente = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
+        TipoUsuario tipoGarcom = criarTipoUsuario("Garçom", CategoriaEnun.DONO, restaurante);
+        TipoUsuario tipoOutro = criarTipoUsuario("Outro", CategoriaEnun.DONO, restaurante);
+
+        Usuario usuario1 = criarUsuario("User Gerente", "gerente@email.com", tipoGerente);
+        Usuario usuario2 = criarUsuario("User Garçom", "garcom@email.com", tipoGarcom);
+        Usuario usuario3 = criarUsuario("User Outro", "outro@email.com", tipoOutro);
+
+        List<Usuario> resultado = usuarioRepository.findAllByTiposUsuarioIn(List.of(tipoGerente, tipoGarcom));
+
+        assertThat(resultado).isNotNull().hasSize(2);
+        assertThat(resultado).extracting(Usuario::getId).contains(usuario1.getId(), usuario2.getId());
+        assertThat(resultado).extracting(Usuario::getId).doesNotContain(usuario3.getId());
+    }
+
+    @Test
+    @DisplayName("findAllByTiposUsuarioIn - Deve retornar lista vazia quando nenhum usuário pertencer aos tipos informados")
+    void deveRetornarListaVaziaQuandoNenhumUsuarioPertencerAosTiposInformados() {
+        Restaurante restaurante = criarRestaurante("Restaurante Padrão");
+        TipoUsuario tipoSemUsuarios = criarTipoUsuario("Sem Usuários", CategoriaEnun.DONO, restaurante);
+
+        List<Usuario> resultado = usuarioRepository.findAllByTiposUsuarioIn(List.of(tipoSemUsuarios));
+
+        assertThat(resultado).isNotNull().isEmpty();
+    }
+
+    @Test
+    @DisplayName("findAllByTiposUsuarioIn - Deve retornar lista vazia quando a lista de tipos for vazia")
+    void deveRetornarListaVaziaQuandoListaDeTiposForVazia() {
+        List<Usuario> resultado = usuarioRepository.findAllByTiposUsuarioIn(List.of());
+
+        assertThat(resultado).isNotNull().isEmpty();
+    }
+
     // Helper methods para criação isolada de dados de teste
     private Restaurante criarRestaurante(String nome) {
         String uniqueId = UUID.randomUUID().toString().substring(0, 8);
@@ -120,6 +209,17 @@ class UsuarioRepositoryTest {
         usuario.setSenha("123456");
         usuario.setDataUltimaAlteracao(LocalDateTime.now());
         usuario.addTiposUsuario(tpUsuario);
+        return entityManager.persistAndFlush(usuario);
+    }
+
+    private Usuario criarUsuarioSemTipo(String nome, String email) {
+        String uniqueId = UUID.randomUUID().toString().substring(0, 8);
+        Usuario usuario = new Usuario();
+        usuario.setNome(nome + " " + uniqueId);
+        usuario.setEmail(uniqueId + "_" + email);
+        usuario.setLogin(nome.toLowerCase().replace(" ", ".") + "." + uniqueId);
+        usuario.setSenha("123456");
+        usuario.setDataUltimaAlteracao(LocalDateTime.now());
         return entityManager.persistAndFlush(usuario);
     }
 }

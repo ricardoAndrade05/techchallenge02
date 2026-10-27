@@ -18,12 +18,11 @@ public class ExcluirRestauranteUseCase {
     }
 
     public void execute(ExcluirRestauranteDTO excluirRestauranteDTO) {
-        Usuario usuario = this.usuarioGateway.buscaUsuarioPorId(excluirRestauranteDTO.idUsuarioLogado(),excluirRestauranteDTO.idRestaurante())
-            .orElseThrow(() -> new RecursoNaoEncontradoException ("Usuário não encontrado"));
-        Restaurante restaurante = this.restauranteGateway.buscaRestaurantePorId(excluirRestauranteDTO.idRestaurante())
-            .orElseThrow(() -> new RecursoNaoEncontradoException ("Restaurante não encontrado"));
+        Usuario usuarioLogado = this.usuarioGateway.buscaUsuarioPorId(excluirRestauranteDTO.idUsuarioLogado(),excluirRestauranteDTO.idRestaurante()).orElseThrow(() -> new RecursoNaoEncontradoException ("Usuário não encontrado"));
+        Restaurante restaurante = this.restauranteGateway.buscaRestaurantePorId(excluirRestauranteDTO.idRestaurante()).orElseThrow(() -> new RecursoNaoEncontradoException ("Restaurante não encontrado"));
         Usuario dono = restaurante.getDono();
-        if (!usuario.podeExcluir() || !dono.getId().equals(usuario.getId())) {
+        boolean usuarioLogadoIsODono = dono.getId().equals(usuarioLogado.getId());
+        if (!usuarioLogado.podeExcluir() || !usuarioLogadoIsODono) {
             throw new UsuarioSemPermissaoException("Usuário não tem permissão para excluir restaurante");
         }
         this.restauranteGateway.excluirRestaurante(excluirRestauranteDTO.idRestaurante());
