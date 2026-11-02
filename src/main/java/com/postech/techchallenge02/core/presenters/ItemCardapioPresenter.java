@@ -9,8 +9,7 @@ import com.postech.techchallenge02.core.entities.ItemCardapio;
 
 public class ItemCardapioPresenter {
 	public static ItemCardapioDTO toDTO(ItemCardapio item) {
-		RestauranteDTO restauranteDTO = new RestauranteDTO(item.getIdRestaurante(),
-				item.getRestaurante().getNome(), null, null, null, null, null);
+		RestauranteDTO restauranteDTO = RestaurantePresenter.toDTO(item.getRestaurante());
 		return new ItemCardapioDTO(item.getId(), item.getNome(), item.getDescricao(), item.getPreco(),
 				item.getTipoDisponibilidade(), item.getCaminhoImagem(), restauranteDTO);
 	}

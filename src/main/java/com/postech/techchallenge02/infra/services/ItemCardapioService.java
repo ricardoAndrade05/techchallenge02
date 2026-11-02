@@ -28,13 +28,13 @@ public class ItemCardapioService {
 
     @Transactional(readOnly = true)
     public ItemCardapioDTO buscarPorId(Long id) {
-        return null; //this.itemCardapioController.buscarPorId(idRestaurante);
+        return this.itemCardapioController.consulta(id);
     }
 
     
     @Transactional(readOnly = true)
     public Page<ItemCardapioDTO> listaItensRestaurante(Long idRestaurante, Pageable pageable) {
-        return null; //this.itemCardapioController.buscarPorId(idRestaurante);
+        return this.itemCardapioController.listaPorRestaurante(idRestaurante, pageable);
     }
 
     @Transactional

@@ -1,5 +1,9 @@
 package com.postech.techchallenge02.infra.adapters;
 
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.postech.techchallenge02.core.dtos.ItemCardapioDTO;
@@ -32,6 +36,20 @@ public class ItemCardapioDataSourceAdapter implements ItemCardapioDataSource {
 		itemCardapioDB.setRestaurante(restauranteDB);
 		itemCardapioDB = this.cardapioRepo.saveAndFlush(itemCardapioDB);
 		return cardapioMapper.toDTO(itemCardapioDB);
+	}
+
+	@Override
+	public Optional<ItemCardapio> consulta(Long id) {
+		var itemCardapioDB = this.cardapioRepo.findById(id);
+		if (itemCardapioDB.isPresent()) {
+			return Optional.of(this.cardapioMapper.toDomain(itemCardapioDB.get()));
+		}
+		return Optional.empty();
+	}
+
+	public Page<ItemCardapio> listaItensRestaurante(Long id, Pageable pageable) {
+		Page<ItemCardapioEntity> lista = this.cardapioRepo.findByRestauranteId(id, pageable);
+		return lista.map(this.cardapioMapper::toDomain);
 	}
 }
 

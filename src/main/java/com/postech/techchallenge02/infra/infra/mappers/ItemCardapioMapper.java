@@ -27,6 +27,17 @@ public class ItemCardapioMapper {
 
 		return itemCardapioDTO;
 	}
+
+	public ItemCardapio toDomain(ItemCardapioEntity entity) {
+		if (entity == null) {
+			return null;
+		}
+		ItemCardapio itemCardapio = ItemCardapio.restaura(
+				entity.getId(), entity.getNome(), entity.getDescricao(), entity.getPreco(),
+				entity.getTipoDisponibilidade(), entity.getCaminhoImagem(), null);
+
+		return itemCardapio;
+	}
 	
 	public ItemCardapioEntity toEntity(ItemCardapio itemCardapioDomain) {
 		if (itemCardapioDomain == null) {
