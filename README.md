@@ -35,7 +35,7 @@ Antes de começar, garanta que você possui instalado na sua máquina:
 Para subir o banco de dados PostgreSQL e a aplicação Spring Boot simultaneamente:
 
 # 1. Clone o repositório
-git clone git@github.com:ricardoAndrade05/techchallenge02 
+git clone git@github.com:ricardoAndrade05/techchallenge02   
 cd techchallenge02
 
 # 2. Suba todos os serviços containerizados

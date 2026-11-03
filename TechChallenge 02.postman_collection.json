@@ -1,0 +1,2031 @@
+{
+  "info": {
+    "_postman_id": "419a5ac0-acd9-41b8-819f-02fbbe769ad1",
+    "name": "TechChallenge 02",
+    "description": "Esta coleção reúne os endpoints da **API do Tech Challenge 02** para gerenciar tipos de usuário, usuários irwns do cardápio e restaurantes. Inclui operações para gerenciamento de restaurantes, consulta, criação, atualização e exclusão de tipos de usuário; associação e desassociação de tipos aos usuários.\n\nTambém contém exemplos de respostas de sucesso e de erros de validação, facilitando o desenvolvimento e os testes dos principais fluxos da aplicação.\n\nAs requisições estão organizadas em grupos funcionais:\n\n- Restaurante: operações de CRUD;\n    \n- **Tipos de Usuarios**: operações de CRUD e listagem por restaurante;\n    \n- **Item de Cardápio**: operações de CRUD e listagem por restaurante;\n    \n- **Usuarios**: para usuários já existentes permite associar ou desvincular a tipos de usuário;",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "10727864"
+  },
+  "item": [
+    {
+      "name": "Restaurante",
+      "item": [
+        {
+          "name": "Cadastro restaurante",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nome\": \"Nonas\",\r\n  \"endereco\": {\r\n    \"logradouro\": \"Rua Buarque de macedo\",\r\n    \"numero\": \"63\",\r\n    \"cidade\": \"Porto Alegre\",\r\n    \"estado\": \"RS\",\r\n    \"cep\": \"99777-88\"\r\n  },\r\n  \"tipoCozinha\": 1,\r\n  \"horarioAbertura\": \"19:00:00\",\r\n  \"horarioFechamento\": \"23:59:00\",\r\n  \"idUsuarioLogado\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/restaurantes",
+              "host": [
+                "{{LOCAL_HOST}}"
+              ],
+              "path": [
+                "restaurantes"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nome\": \"Nonas\",\r\n  \"endereco\": {\r\n    \"logradouro\": \"Rua Buarque de macedo\",\r\n    \"numero\": \"63\",\r\n    \"cidade\": \"Porto Alegre\",\r\n    \"estado\": \"RS\",\r\n    \"cep\": \"99777-88\"\r\n  },\r\n  \"tipoCozinha\": 1,\r\n  \"horarioAbertura\": \"19:00:00\",\r\n  \"horarioFechamento\": \"23:59:00\",\r\n  \"idUsuarioLogado\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/restaurantes",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "restaurantes"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 19:02:04 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 5,\n  \"nome\": \"Nonas\",\n  \"tipoCozinha\": \"BRASILEIRA\",\n  \"horarioInicio\": \"19:00:00\",\n  \"horarioFim\": \"23:59:00\",\n  \"endereco\": {\n    \"id\": 13,\n    \"logradouro\": \"Rua Buarque de macedo\",\n    \"numero\": \"63\",\n    \"cidade\": \"Porto Alegre\",\n    \"estado\": \"RS\",\n    \"cep\": \"99777-88\"\n  },\n  \"dono\": {\n    \"id\": 1,\n    \"nome\": \"Carlos Silva\",\n    \"tipoUsuario\": {\n      \"id\": 13,\n      \"nome\": \"Proprietário\",\n      \"tipo\": \"DONO\"\n    }\n  }\n}"
+            },
+            {
+              "name": "Erro tipo de cozinha invalido",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nome\": \"Nonas\",\r\n  \"endereco\": {\r\n    \"logradouro\": \"Rua Buarque de macedo\",\r\n    \"numero\": \"63\",\r\n    \"cidade\": \"Porto Alegre\",\r\n    \"estado\": \"RS\",\r\n    \"cep\": \"99777-88\"\r\n  },\r\n  \"tipoCozinha\": 9,\r\n  \"horarioAbertura\": \"19:00:00\",\r\n  \"horarioFechamento\": \"23:59:00\",\r\n  \"idUsuarioLogado\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/restaurantes",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "restaurantes"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 19:02:30 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"recurso-nao-encontrado\",\n  \"title\": \"Recurso não encontrado\",\n  \"status\": 404,\n  \"detail\": \"Código de tipo de cozinha inválido: 9\",\n  \"instance\": \"/restaurantes\",\n  \"timestamp\": \"03/11/2026 19:02:30\"\n}"
+            },
+            {
+              "name": "Erro usuário dono inválido",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nome\": \"Nonas\",\r\n  \"endereco\": {\r\n    \"logradouro\": \"Rua Buarque de macedo\",\r\n    \"numero\": \"63\",\r\n    \"cidade\": \"Porto Alegre\",\r\n    \"estado\": \"RS\",\r\n    \"cep\": \"99777-88\"\r\n  },\r\n  \"tipoCozinha\": 1,\r\n  \"horarioAbertura\": \"19:00:00\",\r\n  \"horarioFechamento\": \"23:59:00\",\r\n  \"idUsuarioLogado\": 99\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/restaurantes",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "restaurantes"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 19:05:37 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"recurso-nao-encontrado\",\n  \"title\": \"Recurso não encontrado\",\n  \"status\": 404,\n  \"detail\": \"Usuário não encontrado\",\n  \"instance\": \"/restaurantes\",\n  \"timestamp\": \"03/11/2026 19:05:37\"\n}"
+            },
+            {
+              "name": "Erro nome nulo",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"endereco\": {\r\n    \"logradouro\": \"Rua Buarque de macedo\",\r\n    \"numero\": \"63\",\r\n    \"cidade\": \"Porto Alegre\",\r\n    \"estado\": \"RS\",\r\n    \"cep\": \"99777-88\"\r\n  },\r\n  \"tipoCozinha\": 1,\r\n  \"horarioAbertura\": \"19:00:00\",\r\n  \"horarioFechamento\": \"23:59:00\",\r\n  \"idUsuarioLogado\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/restaurantes",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "restaurantes"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 19:06:05 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"requisicao-invalida\",\n  \"title\": \"Requisição inválida\",\n  \"status\": 400,\n  \"detail\": \"O nome não pode ser nulo ou vazio\",\n  \"instance\": \"/restaurantes\",\n  \"timestamp\": \"03/11/2026 19:06:05\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Consulta restaurante por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{LOCAL_HOST}}/restaurantes/4",
+              "host": [
+                "{{LOCAL_HOST}}"
+              ],
+              "path": [
+                "restaurantes",
+                "4"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/restaurantes/4",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "restaurantes",
+                    "4"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 19:06:37 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 4,\n  \"nome\": \"Sabor Arabe\",\n  \"tipoCozinha\": \"ARABE\",\n  \"horarioInicio\": \"11:30:00\",\n  \"horarioFim\": \"21:30:00\",\n  \"endereco\": {\n    \"id\": 12,\n    \"logradouro\": \"Avenida Pedro Álvares Cabral\",\n    \"numero\": \"500\",\n    \"cidade\": \"São Paulo\",\n    \"estado\": \"SP\",\n    \"cep\": \"04094-050\"\n  },\n  \"dono\": {\n    \"id\": 4,\n    \"nome\": \"Mariana Costa\",\n    \"tipoUsuario\": {\n      \"id\": 10,\n      \"nome\": \"Proprietário\",\n      \"tipo\": \"DONO\"\n    }\n  }\n}"
+            },
+            {
+              "name": "Erro ID inexistente",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/restaurantes/99",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "restaurantes",
+                    "99"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 19:07:10 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"recurso-nao-encontrado\",\n  \"title\": \"Recurso não encontrado\",\n  \"status\": 404,\n  \"detail\": \"Não há restaurante com id: 99\",\n  \"instance\": \"/restaurantes/99\",\n  \"timestamp\": \"03/11/2026 19:07:10\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Atualização restaurante",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 4,\r\n    \"nome\": \"Sabor Arabe\",\r\n    \"tipoCozinha\": 7,\r\n    \"horarioInicio\": \"11:30:00\",\r\n    \"horarioFim\": \"21:30:00\",\r\n    \"logradouro\": \"Avenida Pedro Álvares Cabral\",\r\n    \"numero\": \"500\",\r\n    \"cidade\": \"São Paulo\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"04094-050\",\r\n    \"idDonoRestaurante\": 4,\r\n    \"idUsuarioLogado\": 4\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/restaurantes/4",
+              "host": [
+                "{{LOCAL_HOST}}"
+              ],
+              "path": [
+                "restaurantes",
+                "4"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Erro usuário invalido",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 4,\r\n    \"nome\": \"Sabor Arabe\",\r\n    \"tipoCozinha\": 7,\r\n    \"horarioInicio\": \"11:30:00\",\r\n    \"horarioFim\": \"21:30:00\",\r\n    \"logradouro\": \"Avenida Pedro Álvares Cabral\",\r\n    \"numero\": \"501\",\r\n    \"cidade\": \"São Paulo\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"04094-050\",\r\n    \"idDonoRestaurante\": 4,\r\n    \"idUsuarioLogado\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{LOCAL_HOST}}/restaurantes/4",
+                  "host": [
+                    "{{LOCAL_HOST}}"
+                  ],
+                  "path": [
+                    "restaurantes",
+                    "4"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 19:47:36 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"recurso-nao-encontrado\",\n  \"title\": \"Recurso não encontrado\",\n  \"status\": 404,\n  \"detail\": \"Usuário logado não encontrado para o restaurante informado.\",\n  \"instance\": \"/restaurantes/4\",\n  \"timestamp\": \"03/11/2026 19:47:36\"\n}"
+            },
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 4,\r\n    \"nome\": \"Sabor Arabe\",\r\n    \"tipoCozinha\": 7,\r\n    \"horarioInicio\": \"11:30:00\",\r\n    \"horarioFim\": \"21:30:00\",\r\n    \"logradouro\": \"Avenida Pedro Álvares Cabral\",\r\n    \"numero\": \"501\",\r\n    \"cidade\": \"São Paulo\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"04094-050\",\r\n    \"idDonoRestaurante\": 4,\r\n    \"idUsuarioLogado\": 4\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{LOCAL_HOST}}/restaurantes/4",
+                  "host": [
+                    "{{LOCAL_HOST}}"
+                  ],
+                  "path": [
+                    "restaurantes",
+                    "4"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 19:48:26 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 4,\n  \"nome\": \"Sabor Arabe\",\n  \"tipoCozinha\": \"ARABE\",\n  \"horarioInicio\": \"11:30:00\",\n  \"horarioFim\": \"21:30:00\",\n  \"endereco\": {\n    \"id\": 12,\n    \"logradouro\": \"Avenida Pedro Álvares Cabral\",\n    \"numero\": \"501\",\n    \"cidade\": \"São Paulo\",\n    \"estado\": \"SP\",\n    \"cep\": \"04094-050\"\n  },\n  \"dono\": {\n    \"id\": 4,\n    \"nome\": \"Mariana Costa\",\n    \"tipoUsuario\": {\n      \"id\": 10,\n      \"nome\": \"Proprietário\",\n      \"tipo\": \"DONO\"\n    }\n  }\n}"
+            },
+            {
+              "name": "Erro tipo de cozinha inválido",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 4,\r\n    \"nome\": \"Sabor Arabe\",\r\n    \"tipoCozinha\": 99,\r\n    \"horarioInicio\": \"11:30:00\",\r\n    \"horarioFim\": \"21:30:00\",\r\n    \"logradouro\": \"Avenida Pedro Álvares Cabral\",\r\n    \"numero\": \"501\",\r\n    \"cidade\": \"São Paulo\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"04094-050\",\r\n    \"idDonoRestaurante\": 4,\r\n    \"idUsuarioLogado\": 4\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{LOCAL_HOST}}/restaurantes/4",
+                  "host": [
+                    "{{LOCAL_HOST}}"
+                  ],
+                  "path": [
+                    "restaurantes",
+                    "4"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 19:49:50 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"recurso-nao-encontrado\",\n  \"title\": \"Recurso não encontrado\",\n  \"status\": 404,\n  \"detail\": \"Código de tipo de cozinha inválido: 99\",\n  \"instance\": \"/restaurantes/4\",\n  \"timestamp\": \"03/11/2026 19:49:50\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Exclusão de restaurante",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"idUsuarioLogado\": 1 }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/restaurantes/6",
+              "host": [
+                "{{LOCAL_HOST}}"
+              ],
+              "path": [
+                "restaurantes",
+                "6"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Erro usuário sem vinculo com restaurante",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \"idUsuarioLogado\": 4 }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{LOCAL_HOST}}/restaurantes/1",
+                  "host": [
+                    "{{LOCAL_HOST}}"
+                  ],
+                  "path": [
+                    "restaurantes",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 19:53:08 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"recurso-nao-encontrado\",\n  \"title\": \"Recurso não encontrado\",\n  \"status\": 404,\n  \"detail\": \"Usuário não encontrado\",\n  \"instance\": \"/restaurantes/1\",\n  \"timestamp\": \"03/11/2026 19:53:08\"\n}"
+            },
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \"idUsuarioLogado\": 1 }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{LOCAL_HOST}}/restaurantes/6",
+                  "host": [
+                    "{{LOCAL_HOST}}"
+                  ],
+                  "path": [
+                    "restaurantes",
+                    "6"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 19:54:35 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tipos Usuario",
+      "item": [
+        {
+          "name": "Consulta por id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/tipos-usuario/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "tipos-usuario",
+                "1"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/tipos-usuario/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "tipos-usuario",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:29:53 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 1,\n  \"restaurante\": {\n    \"id\": 1,\n    \"nome\": \"Trattoria Bella Italia\",\n    \"tipoCozinha\": null,\n    \"horarioInicio\": null,\n    \"horarioFim\": null,\n    \"endereco\": null,\n    \"dono\": null\n  },\n  \"nome\": \"Proprietário\",\n  \"tipo\": \"DONO\"\n}"
+            },
+            {
+              "name": "Erro id inexistente",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/tipos-usuario/99",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "tipos-usuario",
+                    "99"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:30:09 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"recurso-nao-encontrado\",\n  \"title\": \"Recurso não encontrado\",\n  \"status\": 404,\n  \"detail\": \"Não há tipo de usuário com id: 99\",\n  \"instance\": \"/tipos-usuario/99\",\n  \"timestamp\": \"03/11/2026 20:30:09\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Busca todos dado o restaurante",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/tipos-usuario/restaurante/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "tipos-usuario",
+                "restaurante",
+                "1"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/tipos-usuario/restaurante/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "tipos-usuario",
+                    "restaurante",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:30:38 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"content\": [\n    {\n      \"id\": 1,\n      \"restaurante\": {\n        \"id\": 1,\n        \"nome\": \"Trattoria Bella Italia\",\n        \"tipoCozinha\": null,\n        \"horarioInicio\": null,\n        \"horarioFim\": null,\n        \"endereco\": null,\n        \"dono\": null\n      },\n      \"nome\": \"Proprietário\",\n      \"tipo\": \"DONO\"\n    },\n    {\n      \"id\": 2,\n      \"restaurante\": {\n        \"id\": 1,\n        \"nome\": \"Trattoria Bella Italia\",\n        \"tipoCozinha\": null,\n        \"horarioInicio\": null,\n        \"horarioFim\": null,\n        \"endereco\": null,\n        \"dono\": null\n      },\n      \"nome\": \"Gerente de Atendimento\",\n      \"tipo\": \"DONO\"\n    },\n    {\n      \"id\": 3,\n      \"restaurante\": {\n        \"id\": 1,\n        \"nome\": \"Trattoria Bella Italia\",\n        \"tipoCozinha\": null,\n        \"horarioInicio\": null,\n        \"horarioFim\": null,\n        \"endereco\": null,\n        \"dono\": null\n      },\n      \"nome\": \"Cliente VIP\",\n      \"tipo\": \"CLIENTE\"\n    }\n  ],\n  \"pageable\": {\n    \"pageNumber\": 0,\n    \"pageSize\": 10,\n    \"sort\": {\n      \"sorted\": false,\n      \"unsorted\": true,\n      \"empty\": true\n    },\n    \"offset\": 0,\n    \"paged\": true,\n    \"unpaged\": false\n  },\n  \"totalElements\": 3,\n  \"totalPages\": 1,\n  \"last\": true,\n  \"numberOfElements\": 3,\n  \"size\": 10,\n  \"number\": 0,\n  \"sort\": {\n    \"sorted\": false,\n    \"unsorted\": true,\n    \"empty\": true\n  },\n  \"first\": true,\n  \"empty\": false\n}"
+            },
+            {
+              "name": "Erro restaurante inexistente",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/tipos-usuario/restaurante/99",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "tipos-usuario",
+                    "restaurante",
+                    "99"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:30:54 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"recurso-nao-encontrado\",\n  \"title\": \"Recurso não encontrado\",\n  \"status\": 404,\n  \"detail\": \"Restaurante não encontrado\",\n  \"instance\": \"/tipos-usuario/restaurante/99\",\n  \"timestamp\": \"03/11/2026 20:30:54\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Atualizar",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"novoNome\": \"Chefão do Restaurante\",\n    \"idUsuarioLogado\": 1,\n    \"idRestaurante\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/tipos-usuario/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "tipos-usuario",
+                "1"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"novoNome\": \"Chefão do Restaurante\",\n    \"idUsuarioLogado\": 1,\n    \"idRestaurante\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/tipos-usuario/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "tipos-usuario",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:31:50 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 1,\n  \"restaurante\": {\n    \"id\": 1,\n    \"nome\": \"Trattoria Bella Italia\",\n    \"tipoCozinha\": null,\n    \"horarioInicio\": null,\n    \"horarioFim\": null,\n    \"endereco\": null,\n    \"dono\": null\n  },\n  \"nome\": \"Chefão do Restaurante\",\n  \"tipo\": \"DONO\"\n}"
+            },
+            {
+              "name": "Erro usuário invalido",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"novoNome\": \"Chefão do Restaurante\",\n    \"idUsuarioLogado\": 1,\n    \"idRestaurante\": 99\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/tipos-usuario/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "tipos-usuario",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:32:06 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"recurso-nao-encontrado\",\n  \"title\": \"Recurso não encontrado\",\n  \"status\": 404,\n  \"detail\": \"Usuario nao encontrado\",\n  \"instance\": \"/tipos-usuario/1\",\n  \"timestamp\": \"03/11/2026 20:32:06\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Novo tipo usuario",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"idRestaurante\": 1,\n    \"nomeTipo\": \"Garçom\",\n    \"tipoUsuario\": \"DONO\",\n    \"idUsuarioCriador\":1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/tipos-usuario",
+              "host": [
+                "{{LOCAL_HOST}}"
+              ],
+              "path": [
+                "tipos-usuario"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"idRestaurante\": 1,\n    \"nomeTipo\": \"Garçom\",\n    \"tipoUsuario\": \"DONO\",\n    \"idUsuarioCriador\":1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{LOCAL_HOST}}/tipos-usuario",
+                  "host": [
+                    "{{LOCAL_HOST}}"
+                  ],
+                  "path": [
+                    "tipos-usuario"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Location",
+                  "value": "http://localhost:8080/tipos-usuario/15"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:33:56 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 15,\n  \"restaurante\": {\n    \"id\": 1,\n    \"nome\": \"Trattoria Bella Italia\",\n    \"tipoCozinha\": null,\n    \"horarioInicio\": null,\n    \"horarioFim\": null,\n    \"endereco\": null,\n    \"dono\": null\n  },\n  \"nome\": \"Garçom\",\n  \"tipo\": \"DONO\"\n}"
+            },
+            {
+              "name": "Erro classificação inválida",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"idRestaurante\": 1,\n    \"nomeTipo\": \"Garçom\",\n    \"tipoUsuario\": \"OUTRO\",\n    \"idUsuarioCriador\":1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{LOCAL_HOST}}/tipos-usuario",
+                  "host": [
+                    "{{LOCAL_HOST}}"
+                  ],
+                  "path": [
+                    "tipos-usuario"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:34:13 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"timestamp\": \"2026-11-03T20:34:13.988+00:00\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"path\": \"/tipos-usuario\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Excluir",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"idUsuarioLogado\":1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/tipos-usuario/15",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "tipos-usuario",
+                "15"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"idUsuarioLogado\":1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/tipos-usuario/15",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "tipos-usuario",
+                    "15"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:34:44 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Erro ID inexistente",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"idUsuarioLogado\":1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/tipos-usuario/15",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "tipos-usuario",
+                    "15"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:34:58 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"recurso-nao-encontrado\",\n  \"title\": \"Recurso não encontrado\",\n  \"status\": 404,\n  \"detail\": \"Tipo de usuário não encontrado/inexistente: 15\",\n  \"instance\": \"/tipos-usuario/15\",\n  \"timestamp\": \"03/11/2026 20:34:58\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "Desassociar Tipo",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"idUsuarioLogado\":1,\n    \"idRestaurante\":1,\n    \"idUsuarioADesassociar\":5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/usuarios/desassociar-tipo",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "usuarios",
+                "desassociar-tipo"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"idUsuarioLogado\":1,\n    \"idRestaurante\":1,\n    \"idUsuarioADesassociar\":5\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/usuarios/desassociar-tipo",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "usuarios",
+                    "desassociar-tipo"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:35:47 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "Erro usuário desvinculado",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"idUsuarioLogado\":1,\n    \"idRestaurante\":1,\n    \"idUsuarioADesassociar\":5\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/usuarios/desassociar-tipo",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "usuarios",
+                    "desassociar-tipo"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:35:54 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"recurso-nao-encontrado\",\n  \"title\": \"Recurso não encontrado\",\n  \"status\": 404,\n  \"detail\": \"Usuario a ser desassociado não encontrado.\",\n  \"instance\": \"/usuarios/desassociar-tipo\",\n  \"timestamp\": \"03/11/2026 20:35:54\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Associar Tipo",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"idUsuarioLogado\":1,\n    \"idRestaurante\":1,\n    \"idUsuarioAAssociar\":5,\n    \"idTipoUsuario\":3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/usuarios/associar-tipo",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "usuarios",
+                "associar-tipo"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Erro conflito de usuario e restaurante",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"idUsuarioLogado\":1,\n    \"idRestaurante\":1,\n    \"idUsuarioAAssociar\":5,\n    \"idTipoUsuario\":3\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/usuarios/associar-tipo",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "usuarios",
+                    "associar-tipo"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:35:24 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"conflito-recurso\",\n  \"title\": \"Conflito de Recurso\",\n  \"status\": 409,\n  \"detail\": \"Usuario já possui um tipo de usuario cadastrado para este restaurante.\",\n  \"instance\": \"/usuarios/associar-tipo\",\n  \"timestamp\": \"03/11/2026 20:35:24\"\n}"
+            },
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"idUsuarioLogado\":1,\n    \"idRestaurante\":1,\n    \"idUsuarioAAssociar\":5,\n    \"idTipoUsuario\":3\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/usuarios/associar-tipo",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "usuarios",
+                    "associar-tipo"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:36:21 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 5,\n  \"nome\": \"Lucas Pereira\",\n  \"tipoUsuario\": {\n    \"id\": 3,\n    \"restaurante\": null,\n    \"nome\": \"Cliente VIP\",\n    \"tipo\": \"CLIENTE\"\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Item do Cardápio",
+      "item": [
+        {
+          "name": "Consulta item por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/itens-cardapio/1",
+              "host": [
+                "{{LOCAL_HOST}}"
+              ],
+              "path": [
+                "itens-cardapio",
+                "1"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{LOCAL_HOST}}/itens-cardapio/1",
+                  "host": [
+                    "{{LOCAL_HOST}}"
+                  ],
+                  "path": [
+                    "itens-cardapio",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:00:16 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 1,\n  \"nome\": \"Spaghetti à Carbonara\",\n  \"descricao\": \"Massa italiana com molho de ovos, parmesão, pancetta e pimenta-do-reino.\",\n  \"preco\": 42.9,\n  \"tipoDisponibilidade\": \"ENTREGA\",\n  \"caminhoImagem\": \"/images/cardapio/carbonara.jpg\",\n  \"restaurante\": null\n}"
+            },
+            {
+              "name": "Erro id inexistente",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{LOCAL_HOST}}/itens-cardapio/99",
+                  "host": [
+                    "{{LOCAL_HOST}}"
+                  ],
+                  "path": [
+                    "itens-cardapio",
+                    "99"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:00:36 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"recurso-nao-encontrado\",\n  \"title\": \"Recurso não encontrado\",\n  \"status\": 404,\n  \"detail\": \"Não há tipo de usuário com id: 99\",\n  \"instance\": \"/itens-cardapio/99\",\n  \"timestamp\": \"03/11/2026 20:00:36\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Consulta item por restaurante",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{LOCAL_HOST}}/itens-cardapio/restaurante/4",
+              "host": [
+                "{{LOCAL_HOST}}"
+              ],
+              "path": [
+                "itens-cardapio",
+                "restaurante",
+                "4"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{LOCAL_HOST}}/itens-cardapio/restaurante/1",
+                  "host": [
+                    "{{LOCAL_HOST}}"
+                  ],
+                  "path": [
+                    "itens-cardapio",
+                    "restaurante",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:01:20 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"content\": [\n    {\n      \"id\": 1,\n      \"nome\": \"Spaghetti à Carbonara\",\n      \"descricao\": \"Massa italiana com molho de ovos, parmesão, pancetta e pimenta-do-reino.\",\n      \"preco\": 42.9,\n      \"tipoDisponibilidade\": \"ENTREGA\",\n      \"caminhoImagem\": \"/images/cardapio/carbonara.jpg\",\n      \"restaurante\": null\n    },\n    {\n      \"id\": 2,\n      \"nome\": \"Pizza Margherita\",\n      \"descricao\": \"Pizza artesanal com molho de tomate, mussarela, manjericão fresco e azeite.\",\n      \"preco\": 55.9,\n      \"tipoDisponibilidade\": \"RETIRADA\",\n      \"caminhoImagem\": \"/images/cardapio/margherita.jpg\",\n      \"restaurante\": null\n    },\n    {\n      \"id\": 3,\n      \"nome\": \"Lasagna Bolonhesa\",\n      \"descricao\": \"Lasanha artesanal com camadas de massa, molho bolonhesa e queijo gratinado.\",\n      \"preco\": 48.9,\n      \"tipoDisponibilidade\": \"ENTREGA\",\n      \"caminhoImagem\": \"/images/cardapio/lasanha.jpg\",\n      \"restaurante\": null\n    },\n    {\n      \"id\": 4,\n      \"nome\": \"Risotto de Funghi\",\n      \"descricao\": \"Risoto cremoso preparado com cogumelos frescos e parmesão.\",\n      \"preco\": 52.9,\n      \"tipoDisponibilidade\": \"TODOS\",\n      \"caminhoImagem\": \"/images/cardapio/risotto-funghi.jpg\",\n      \"restaurante\": null\n    },\n    {\n      \"id\": 5,\n      \"nome\": \"Tiramisu\",\n      \"descricao\": \"Sobremesa italiana com biscoito champagne, café, creme de mascarpone e cacau.\",\n      \"preco\": 24.9,\n      \"tipoDisponibilidade\": \"LOCAL\",\n      \"caminhoImagem\": \"/images/cardapio/tiramisu.jpg\",\n      \"restaurante\": null\n    }\n  ],\n  \"pageable\": {\n    \"pageNumber\": 0,\n    \"pageSize\": 10,\n    \"sort\": {\n      \"sorted\": false,\n      \"unsorted\": true,\n      \"empty\": true\n    },\n    \"offset\": 0,\n    \"paged\": true,\n    \"unpaged\": false\n  },\n  \"totalElements\": 5,\n  \"totalPages\": 1,\n  \"last\": true,\n  \"numberOfElements\": 5,\n  \"size\": 10,\n  \"number\": 0,\n  \"sort\": {\n    \"sorted\": false,\n    \"unsorted\": true,\n    \"empty\": true\n  },\n  \"first\": true,\n  \"empty\": false\n}"
+            },
+            {
+              "name": "Erro restaurante inexistente",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{LOCAL_HOST}}/itens-cardapio/restaurante/88",
+                  "host": [
+                    "{{LOCAL_HOST}}"
+                  ],
+                  "path": [
+                    "itens-cardapio",
+                    "restaurante",
+                    "88"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:02:05 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"recurso-nao-encontrado\",\n  \"title\": \"Recurso não encontrado\",\n  \"status\": 404,\n  \"detail\": \"Não há itens no cardapio para o restaurante: 88\",\n  \"instance\": \"/itens-cardapio/restaurante/88\",\n  \"timestamp\": \"03/11/2026 20:02:05\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Cadastro item",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nome\": \"Kit 2 poke tradicionais\",\r\n  \"descricao\": \"Kit de 2 poke tradicionais feitos com salmão, gergilim e arroz\",\r\n  \"preco\": 59.90,\r\n  \"tipoDisponibilidade\": 1,\r\n  \"caminhoImagem\": \"/images/cardapio/poke.jpg\",\r\n  \"idRestaurante\": 2\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/itens-cardapio",
+              "host": [
+                "{{LOCAL_HOST}}"
+              ],
+              "path": [
+                "itens-cardapio"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nome\": \"Kit 2 poke tradicionais\",\r\n  \"descricao\": \"Kit de 2 poke tradicionais feitos com salmão, gergilim e arroz\",\r\n  \"preco\": 59.90,\r\n  \"tipoDisponibilidade\": 1,\r\n  \"caminhoImagem\": \"/images/cardapio/poke.jpg\",\r\n  \"idRestaurante\": 2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{LOCAL_HOST}}/itens-cardapio",
+                  "host": [
+                    "{{LOCAL_HOST}}"
+                  ],
+                  "path": [
+                    "itens-cardapio"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:28:15 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 22,\n  \"nome\": \"Kit 2 poke tradicionais\",\n  \"descricao\": \"Kit de 2 poke tradicionais feitos com salmão, gergilim e arroz\",\n  \"preco\": 59.9,\n  \"tipoDisponibilidade\": \"TODOS\",\n  \"caminhoImagem\": \"/images/cardapio/poke.jpg\",\n  \"restaurante\": {\n    \"id\": 2,\n    \"nome\": \"Sushiman Prime\",\n    \"tipoCozinha\": \"JAPONESA\",\n    \"horarioInicio\": \"18:00:00\",\n    \"horarioFim\": \"23:30:00\",\n    \"endereco\": {\n      \"id\": 10,\n      \"logradouro\": \"Avenida Brigadeiro Luís Antônio\",\n      \"numero\": \"2000\",\n      \"cidade\": \"São Paulo\",\n      \"estado\": \"SP\",\n      \"cep\": \"01318-002\"\n    },\n    \"dono\": {\n      \"id\": 2,\n      \"nome\": \"Ana Oliveira\",\n      \"tipoUsuario\": {\n        \"id\": 4,\n        \"nome\": \"Proprietário\",\n        \"tipo\": \"DONO\"\n      }\n    }\n  }\n}"
+            },
+            {
+              "name": "Erro tipo de disponibilidade inválido",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nome\": \"Kit 2 poke tradicionais\",\r\n  \"descricao\": \"Kit de 2 poke tradicionais feitos com salmão, gergilim e arroz\",\r\n  \"preco\": 59.90,\r\n  \"tipoDisponibilidade\": 5,\r\n  \"caminhoImagem\": \"/images/cardapio/poke.jpg\",\r\n  \"idRestaurante\": 2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{LOCAL_HOST}}/itens-cardapio",
+                  "host": [
+                    "{{LOCAL_HOST}}"
+                  ],
+                  "path": [
+                    "itens-cardapio"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:28:42 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"recurso-nao-encontrado\",\n  \"title\": \"Recurso não encontrado\",\n  \"status\": 404,\n  \"detail\": \"Código de disponibilidade do cardapio inválido: 5\",\n  \"instance\": \"/itens-cardapio\",\n  \"timestamp\": \"03/11/2026 20:28:42\"\n}"
+            },
+            {
+              "name": "Erro restaurante inexistente",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nome\": \"Kit 2 poke tradicionais\",\r\n  \"descricao\": \"Kit de 2 poke tradicionais feitos com salmão, gergilim e arroz\",\r\n  \"preco\": 59.90,\r\n  \"tipoDisponibilidade\": 3,\r\n  \"caminhoImagem\": \"/images/cardapio/poke.jpg\",\r\n  \"idRestaurante\": 99\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{LOCAL_HOST}}/itens-cardapio",
+                  "host": [
+                    "{{LOCAL_HOST}}"
+                  ],
+                  "path": [
+                    "itens-cardapio"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 03 Nov 2026 20:29:21 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"recurso-nao-encontrado\",\n  \"title\": \"Recurso não encontrado\",\n  \"status\": 404,\n  \"detail\": \"Restaurante 99 não encontrado\",\n  \"instance\": \"/itens-cardapio\",\n  \"timestamp\": \"03/11/2026 20:29:21\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "LOCAL_HOST",
+      "value": "http://localhost:8080"
+    }
+  ]
+}
