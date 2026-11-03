@@ -6,19 +6,19 @@ import com.postech.techchallenge02.core.dtos.TipoUsuarioDTO;
 import com.postech.techchallenge02.core.dtos.TipoUsuarioDonoDTO;
 import com.postech.techchallenge02.core.dtos.UsuarioDTO;
 import com.postech.techchallenge02.core.dtos.UsuarioDonoDTO;
-import com.postech.techchallenge02.infra.entities.TipoUsuario;
-import com.postech.techchallenge02.infra.entities.Usuario;
+import com.postech.techchallenge02.infra.jpa.entities.TipoUsuarioEntity;
+import com.postech.techchallenge02.infra.jpa.entities.Usuario;
 
 @Component
 public class UsuarioMapper {
 
     private final TipoUsuarioMapper tipoUsuarioMapper;
 
-    UsuarioMapper(TipoUsuarioMapper tipoUsuarioMapper) {
+    public UsuarioMapper(TipoUsuarioMapper tipoUsuarioMapper) {
         this.tipoUsuarioMapper = tipoUsuarioMapper;
     }
 
-    public UsuarioDonoDTO toUsuarioDonoDTO(Usuario usuario, TipoUsuario tipoUsuario) {
+    public UsuarioDonoDTO toUsuarioDonoDTO(Usuario usuario, TipoUsuarioEntity tipoUsuario) {
         if (usuario == null && tipoUsuario == null) {
             return null;
         }
@@ -55,7 +55,7 @@ public class UsuarioMapper {
         return usuarioDonoDTO;
     }
 
-    public UsuarioDTO toDTO(Usuario usuario, TipoUsuario tipoUsuario) {
+    public UsuarioDTO toDTO(Usuario usuario, TipoUsuarioEntity tipoUsuario) {
         if (usuario == null && tipoUsuario == null) {
             return null;
         }

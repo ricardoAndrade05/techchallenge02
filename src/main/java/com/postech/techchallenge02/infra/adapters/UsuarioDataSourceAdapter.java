@@ -5,11 +5,11 @@ import org.springframework.stereotype.Component;
 import com.postech.techchallenge02.core.dtos.UsuarioDTO;
 import com.postech.techchallenge02.core.dtos.UsuarioDonoDTO;
 import com.postech.techchallenge02.core.interfaces.UsuarioDataSource;
-import com.postech.techchallenge02.infra.entities.TipoUsuario;
-import com.postech.techchallenge02.infra.entities.Usuario;
 import com.postech.techchallenge02.infra.infra.mappers.UsuarioMapper;
-import com.postech.techchallenge02.infra.repositories.TipoUsuarioRepository;
-import com.postech.techchallenge02.infra.repositories.UsuarioRepository;
+import com.postech.techchallenge02.infra.jpa.entities.TipoUsuarioEntity;
+import com.postech.techchallenge02.infra.jpa.entities.Usuario;
+import com.postech.techchallenge02.infra.jpa.repositories.TipoUsuarioRepository;
+import com.postech.techchallenge02.infra.jpa.repositories.UsuarioRepository;
 
 @Component 
 public class UsuarioDataSourceAdapter implements UsuarioDataSource {
@@ -54,7 +54,7 @@ public class UsuarioDataSourceAdapter implements UsuarioDataSource {
     @Override
     public UsuarioDTO vincularUsuarioAoTipo(Long idUsuario, Long idTipoUsuario) {
         Usuario usuario = this.usuarioRepository.findById(idUsuario).orElse(null);
-        TipoUsuario tiposUsuario = this.tipoUsuarioRepository.findById(idTipoUsuario).orElse(null);
+        TipoUsuarioEntity tiposUsuario = this.tipoUsuarioRepository.findById(idTipoUsuario).orElse(null);
         usuario.addTiposUsuario(tiposUsuario);
         usuario = this.usuarioRepository.saveAndFlush(usuario);
         return this.usuarioMapper.toDTO(usuario,tiposUsuario);
@@ -63,7 +63,7 @@ public class UsuarioDataSourceAdapter implements UsuarioDataSource {
     @Override
     public void desvincularUsuarioAoTipo(Long idUsuario, Long idTipoUsuario) {
         Usuario usuario = this.usuarioRepository.findById(idUsuario).orElse(null);
-        TipoUsuario tiposUsuario = this.tipoUsuarioRepository.findById(idTipoUsuario).orElse(null);
+        TipoUsuarioEntity tiposUsuario = this.tipoUsuarioRepository.findById(idTipoUsuario).orElse(null);
         usuario.removeTiposUsuario(tiposUsuario);
         this.usuarioRepository.saveAndFlush(usuario);
     }

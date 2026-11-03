@@ -49,7 +49,38 @@ VALUES
     (3, 'Fogo & Brasa Churrascaria', '11:00:00', '22:00:00', 1, 3, 11),
     (4, 'Sabor Arabe', '11:30:00', '21:30:00', 7, 4, 12);
 
--- 4. Inserir Tipos de Usuário
+-- 4. Inserir itens no cardapio
+INSERT INTO tb_item_cardapio (id, nome, descricao, preco, caminho_imagem, tipo_disponibilidade, id_restaurante)
+VALUES
+-- RESTAURANTE 1: Trattoria Bella Italia
+(1, 'Spaghetti à Carbonara', 'Massa italiana com molho de ovos, parmesão, pancetta e pimenta-do-reino.', 42.90, '/images/cardapio/carbonara.jpg', 4, 1),
+(2, 'Pizza Margherita', 'Pizza artesanal com molho de tomate, mussarela, manjericão fresco e azeite.', 55.90, '/images/cardapio/margherita.jpg', 3, 1),
+(3, 'Lasagna Bolonhesa', 'Lasanha artesanal com camadas de massa, molho bolonhesa e queijo gratinado.', 48.90, '/images/cardapio/lasanha.jpg', 4, 1),
+(4, 'Risotto de Funghi', 'Risoto cremoso preparado com cogumelos frescos e parmesão.', 52.90, '/images/cardapio/risotto-funghi.jpg', 1, 1),
+(5, 'Tiramisu', 'Sobremesa italiana com biscoito champagne, café, creme de mascarpone e cacau.', 24.90, '/images/cardapio/tiramisu.jpg', 2, 1),
+
+-- RESTAURANTE 2: Sushiman Prime
+(6, 'Combo Sushi Premium', 'Seleção especial com 20 peças de sushi, sashimi e uramaki.', 89.90, '/images/cardapio/combo-sushi.jpg', 4, 2),
+(7, 'Temaki de Salmão', 'Cone de alga nori recheado com arroz japonês, salmão fresco e cream cheese.', 32.90, '/images/cardapio/temaki-salmao.jpg', 3, 2),
+(8, 'Hot Roll', 'Enrolado de arroz e salmão empanado e frito, servido com molho especial.', 36.90, '/images/cardapio/hot-roll.jpg', 4, 2),
+(9, 'Sashimi de Salmão', 'Fatias selecionadas de salmão fresco, servidas com wasabi e gengibre.', 45.90, '/images/cardapio/sashimi.jpg', 1, 2),
+(10, 'Harumaki de Legumes', 'Rolinho primavera crocante recheado com legumes selecionados.', 22.90, '/images/cardapio/harumaki.jpg', 2, 2),
+
+-- RESTAURANTE 3: Fogo & Brasa Churrascaria
+(11, 'Picanha na Brasa', 'Picanha grelhada na brasa, acompanhada de arroz, farofa e vinagrete.', 79.90, '/images/cardapio/picanha.jpg', 4, 3),
+(12, 'Costela Assada', 'Costela bovina assada lentamente na brasa, macia e suculenta.', 69.90, '/images/cardapio/costela.jpg', 3, 3),
+(13, 'Espetinho de Frango', 'Espetinho de peito de frango temperado e grelhado na brasa.', 18.90, '/images/cardapio/espetinho-frango.jpg', 2, 3),
+(14, 'Alcatra Completa', 'Alcatra grelhada acompanhada de arroz, fritas e salada.', 64.90, '/images/cardapio/alcatra.jpg', 4, 3),
+(15, 'Coração de Galinha', 'Corações de frango temperados e assados na brasa.', 29.90, '/images/cardapio/coracao.jpg', 1, 3),
+
+-- RESTAURANTE 4: Sabor Arabe
+(16, 'Combo de Esfihas', 'Combo com 6 esfihas abertas de carne, queijo e frango.', 39.90, '/images/cardapio/esfihas.jpg', 4, 4),
+(17, 'Kibe Frito', 'Kibe tradicional recheado com carne temperada e especiarias.', 12.90, '/images/cardapio/kibe.jpg', 3, 4),
+(18, 'Shawarma de Frango', 'Pão sírio recheado com frango temperado, salada e molho de alho.', 32.90, '/images/cardapio/shawarma.jpg', 4, 4),
+(19, 'Homus', 'Pasta tradicional de grão-de-bico com tahine, limão e azeite.', 25.90, '/images/cardapio/homus.jpg', 2, 4),
+(20, 'Falafel', 'Bolinho de grão-de-bico com ervas e especiarias, acompanhado de molho tahine.', 28.90, '/images/cardapio/falafel.jpg', 1, 4);
+
+-- 5. Inserir Tipos de Usuário
 INSERT INTO tb_tipo_usuario (id, nome, tipo, id_restaurante)
 VALUES 
     -- Restaurante 1 (Trattoria)
@@ -73,7 +104,7 @@ VALUES
     (11, 'Gerente Geral', 1, 4),
     (12, 'Cliente', 2, 4);
 
--- 5. Vincular Usuários aos Tipos na tabela intermediária
+-- 6. Vincular Usuários aos Tipos na tabela intermediária
 INSERT INTO tb_usuario_tipo_usuario (id_usuario, id_tipo_usuario)
 VALUES 
     -- Proprietários
@@ -87,8 +118,9 @@ VALUES
     (7, 9),
     (8, 12);
 
--- 6. Reiniciar o auto-incremento dos IDs para os próximos registros
+-- 7. Reiniciar o auto-incremento dos IDs para os próximos registros
 ALTER TABLE tb_endereco ALTER COLUMN id RESTART WITH 13;
 ALTER TABLE tb_usuario ALTER COLUMN id RESTART WITH 9;
 ALTER TABLE tb_restaurante ALTER COLUMN id RESTART WITH 5;
 ALTER TABLE tb_tipo_usuario ALTER COLUMN id RESTART WITH 14;
+ALTER TABLE tb_item_cardapio ALTER COLUMN id RESTART WITH 21;

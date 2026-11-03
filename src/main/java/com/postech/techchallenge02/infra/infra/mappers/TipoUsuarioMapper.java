@@ -7,19 +7,18 @@ import com.postech.techchallenge02.core.dtos.RestauranteDTO;
 import com.postech.techchallenge02.core.dtos.TipoUsuarioDTO;
 import com.postech.techchallenge02.core.dtos.TipoUsuarioDonoDTO;
 import com.postech.techchallenge02.core.enums.CategoriaEnun;
-import com.postech.techchallenge02.infra.entities.TipoUsuario;
+import com.postech.techchallenge02.infra.jpa.entities.TipoUsuarioEntity;
 
 @Component 
 public class TipoUsuarioMapper {
 
     private final RestauranteMapper restauranteMapper;
 
-    TipoUsuarioMapper(RestauranteMapper restauranteMapper) {
+    public TipoUsuarioMapper(RestauranteMapper restauranteMapper) {
         this.restauranteMapper = restauranteMapper;
     }
 
-
-    public TipoUsuarioDTO toDTO(TipoUsuario tipoUsuario) {
+    public TipoUsuarioDTO toDTO(TipoUsuarioEntity tipoUsuario) {
         if ( tipoUsuario == null ) {
             return null;
         }
@@ -40,12 +39,12 @@ public class TipoUsuarioMapper {
     }
 
 
-    public TipoUsuario toEntity(NovoTipoUsuarioDTO novoTipoUsuarioDTO) {
+    public TipoUsuarioEntity toEntity(NovoTipoUsuarioDTO novoTipoUsuarioDTO) {
         if ( novoTipoUsuarioDTO == null ) {
             return null;
         }
 
-        TipoUsuario tipoUsuario = new TipoUsuario();
+        TipoUsuarioEntity tipoUsuario = new TipoUsuarioEntity();
 
         tipoUsuario.setTipo( novoTipoUsuarioDTO.tipoUsuario() );
         tipoUsuario.setNome( novoTipoUsuarioDTO.nomeTipo() );
@@ -54,7 +53,7 @@ public class TipoUsuarioMapper {
     }
 
 
-    public TipoUsuarioDonoDTO toTipoUsuarioRetornoDTO(TipoUsuario tipoUsuario) {
+    public TipoUsuarioDonoDTO toTipoUsuarioRetornoDTO(TipoUsuarioEntity tipoUsuario) {
         if ( tipoUsuario == null ) {
             return null;
         }

@@ -12,11 +12,11 @@ import com.postech.techchallenge02.core.dtos.RestauranteDTO;
 import com.postech.techchallenge02.core.dtos.TipoUsuarioDTO;
 import com.postech.techchallenge02.core.enums.CategoriaEnun;
 import com.postech.techchallenge02.core.interfaces.TipoUsuarioDataSource;
-import com.postech.techchallenge02.infra.entities.Restaurante;
-import com.postech.techchallenge02.infra.entities.TipoUsuario;
 import com.postech.techchallenge02.infra.infra.mappers.TipoUsuarioMapper;
-import com.postech.techchallenge02.infra.repositories.RestauranteRepository;
-import com.postech.techchallenge02.infra.repositories.TipoUsuarioRepository;
+import com.postech.techchallenge02.infra.jpa.entities.RestauranteEntity;
+import com.postech.techchallenge02.infra.jpa.entities.TipoUsuarioEntity;
+import com.postech.techchallenge02.infra.jpa.repositories.RestauranteRepository;
+import com.postech.techchallenge02.infra.jpa.repositories.TipoUsuarioRepository;
 
 @Component 
 public class TipoUsuarioDataSourceAdapter implements TipoUsuarioDataSource {
@@ -35,7 +35,7 @@ public class TipoUsuarioDataSourceAdapter implements TipoUsuarioDataSource {
     public TipoUsuarioDTO buscaTipoUsuarioPorId(Long idTipoUsuario) {
         return this.tipoUsuarioRepository.findById(idTipoUsuario)
                 .map(tipoUsuario -> {
-                    Restaurante restaurante = tipoUsuario.getRestaurante();
+                    RestauranteEntity restaurante = tipoUsuario.getRestaurante();
                     RestauranteDTO restauranteDTO = new RestauranteDTO(restaurante.getId(), restaurante.getNome(),null,null,null,null,null);
                     return new TipoUsuarioDTO(
                             tipoUsuario.getId(),
@@ -48,8 +48,8 @@ public class TipoUsuarioDataSourceAdapter implements TipoUsuarioDataSource {
 
     @Override
     public TipoUsuarioDTO cadastraTipoUsuario(NovoTipoUsuarioDTO novoTipoUsuarioDTO) {
-        TipoUsuario tipoUsuario = this.tipoUsuarioMapper.toEntity(novoTipoUsuarioDTO);
-        Restaurante restaurante = this.restauranteRepository.findById(novoTipoUsuarioDTO.idRestaurante()).get();
+        TipoUsuarioEntity tipoUsuario = this.tipoUsuarioMapper.toEntity(novoTipoUsuarioDTO);
+        RestauranteEntity restaurante = this.restauranteRepository.findById(novoTipoUsuarioDTO.idRestaurante()).get();
         tipoUsuario.setRestaurante(restaurante);      
         tipoUsuario = this.tipoUsuarioRepository.save(tipoUsuario);
         return this.tipoUsuarioMapper.toDTO(tipoUsuario);
@@ -62,7 +62,7 @@ public class TipoUsuarioDataSourceAdapter implements TipoUsuarioDataSource {
 
     @Override
     public TipoUsuarioDTO atualizar(TipoUsuarioDTO dto) {
-        TipoUsuario tipoUsuario = this.tipoUsuarioRepository.findById(dto.id()).get();
+        TipoUsuarioEntity tipoUsuario = this.tipoUsuarioRepository.findById(dto.id()).get();
         tipoUsuario.setNome(dto.nome());
         this.tipoUsuarioRepository.save(tipoUsuario);
         return this.tipoUsuarioMapper.toDTO(tipoUsuario);
@@ -81,7 +81,7 @@ public class TipoUsuarioDataSourceAdapter implements TipoUsuarioDataSource {
     @Override
     public Pagina<TipoUsuarioDTO> buscaTiposUsuarioPorRestaurante(Long idRestaurante, Paginacao paginacao) {
         Pageable pageable = PageRequest.of(paginacao.pagina(), paginacao.tamanho());
-        Page<TipoUsuario> paginaEntity = this.tipoUsuarioRepository.buscaTiposUsuarioPorRestaurante(idRestaurante, pageable);
+        Page<TipoUsuarioEntity> paginaEntity = this.tipoUsuarioRepository.buscaTiposUsuarioPorRestaurante(idRestaurante, pageable);
         Page<TipoUsuarioDTO> pageDTO = paginaEntity.map(this.tipoUsuarioMapper::toDTO);
         return new Pagina<TipoUsuarioDTO>(pageDTO.getContent(), pageDTO.getNumber(), pageDTO.getSize(), pageDTO.getTotalElements(), pageDTO.getTotalPages());   
     }

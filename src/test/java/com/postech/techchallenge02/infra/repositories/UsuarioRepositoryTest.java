@@ -17,9 +17,10 @@ import org.springframework.test.context.TestPropertySource;
 
 import com.postech.techchallenge02.core.enums.TipoCozinhaEnun;
 import com.postech.techchallenge02.core.enums.CategoriaEnun;
-import com.postech.techchallenge02.infra.entities.Restaurante;
-import com.postech.techchallenge02.infra.entities.TipoUsuario;
-import com.postech.techchallenge02.infra.entities.Usuario;
+import com.postech.techchallenge02.infra.jpa.entities.RestauranteEntity;
+import com.postech.techchallenge02.infra.jpa.entities.TipoUsuarioEntity;
+import com.postech.techchallenge02.infra.jpa.entities.Usuario;
+import com.postech.techchallenge02.infra.jpa.repositories.UsuarioRepository;
 
 @DataJpaTest
 @TestPropertySource(properties = "spring.sql.init.mode=never")
@@ -37,8 +38,8 @@ class UsuarioRepositoryTest {
     @DisplayName("Deve retornar true quando existir usuário associado ao idTipoUsuario informado")
     void deveRetornarTrueQuandoExistirUsuarioComOTipoUsuarioInformado() {
         // Arrange
-        Restaurante restaurante = criarRestaurante("Restaurante Padrão");
-        TipoUsuario tipoUsuario = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
+        RestauranteEntity restaurante = criarRestaurante("Restaurante Padrão");
+        TipoUsuarioEntity tipoUsuario = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
         criarUsuario("João Silva", "joao@email.com", tipoUsuario);
 
         // Act
@@ -52,8 +53,8 @@ class UsuarioRepositoryTest {
     @DisplayName("Deve retornar false quando não houver nenhum usuário associado ao idTipoUsuario")
     void deveRetornarFalseQuandoNaoExistirUsuarioComOTipoUsuarioInformado() {
         // Arrange
-        Restaurante restaurante = criarRestaurante("Restaurante Padrão");
-        TipoUsuario tipoUsuario = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
+        RestauranteEntity restaurante = criarRestaurante("Restaurante Padrão");
+        TipoUsuarioEntity tipoUsuario = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
 
         // Act
         boolean existe = usuarioRepository.existeUsuarioComEsteTipoUsuario(tipoUsuario.getId());
@@ -66,9 +67,9 @@ class UsuarioRepositoryTest {
     @DisplayName("Deve retornar false quando usuários existentes pertencerem a outro tipo de usuário")
     void deveRetornarFalseQuandoUsuariosExistentesPossuemOutroTipoUsuario() {
         // Arrange
-        Restaurante restaurante = criarRestaurante("Restaurante Padrão");
-        TipoUsuario tipoUsuario = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
-        TipoUsuario outroTipoUsuario = criarTipoUsuario("Cliente", CategoriaEnun.CLIENTE, restaurante);
+        RestauranteEntity restaurante = criarRestaurante("Restaurante Padrão");
+        TipoUsuarioEntity tipoUsuario = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
+        TipoUsuarioEntity outroTipoUsuario = criarTipoUsuario("Cliente", CategoriaEnun.CLIENTE, restaurante);
         criarUsuario("Maria Souza", "maria@email.com", outroTipoUsuario);
 
         // Act
@@ -82,8 +83,8 @@ class UsuarioRepositoryTest {
     @DisplayName("Deve retornar false quando informado um id de tipo de usuário inexistente")
     void deveRetornarFalseQuandoIdTipoUsuarioForInexistente() {
         // Arrange
-        Restaurante restaurante = criarRestaurante("Restaurante Padrão");
-        TipoUsuario tipoUsuario = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
+        RestauranteEntity restaurante = criarRestaurante("Restaurante Padrão");
+        TipoUsuarioEntity tipoUsuario = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
         criarUsuario("João Silva", "joao@email.com", tipoUsuario);
 
         // Act
@@ -98,8 +99,8 @@ class UsuarioRepositoryTest {
     @Test
     @DisplayName("usuarioEstaVinculadoAoRestaurante - Deve retornar true quando o usuário tiver tipo vinculado ao restaurante")
     void deveRetornarTrueQuandoUsuarioEstiverVinculadoAoRestaurante() {
-        Restaurante restaurante = criarRestaurante("Restaurante Padrão");
-        TipoUsuario tipoUsuario = criarTipoUsuario("Garçom", CategoriaEnun.DONO, restaurante);
+        RestauranteEntity restaurante = criarRestaurante("Restaurante Padrão");
+        TipoUsuarioEntity tipoUsuario = criarTipoUsuario("Garçom", CategoriaEnun.DONO, restaurante);
         Usuario usuario = criarUsuario("Carlos Santos", "carlos@email.com", tipoUsuario);
 
         boolean vinculado = usuarioRepository.usuarioEstaVinculadoAoRestaurante(usuario.getId(), restaurante.getId());
@@ -110,9 +111,9 @@ class UsuarioRepositoryTest {
     @Test
     @DisplayName("usuarioEstaVinculadoAoRestaurante - Deve retornar false quando o usuário tiver tipo vinculado a outro restaurante")
     void deveRetornarFalseQuandoUsuarioEstiverVinculadoAOutroRestaurante() {
-        Restaurante restaurante1 = criarRestaurante("Restaurante 1");
-        Restaurante restaurante2 = criarRestaurante("Restaurante 2");
-        TipoUsuario tipoUsuario1 = criarTipoUsuario("Garçom", CategoriaEnun.DONO, restaurante1);
+        RestauranteEntity restaurante1 = criarRestaurante("Restaurante 1");
+        RestauranteEntity restaurante2 = criarRestaurante("Restaurante 2");
+        TipoUsuarioEntity tipoUsuario1 = criarTipoUsuario("Garçom", CategoriaEnun.DONO, restaurante1);
         Usuario usuario = criarUsuario("Carlos Santos", "carlos@email.com", tipoUsuario1);
 
         boolean vinculado = usuarioRepository.usuarioEstaVinculadoAoRestaurante(usuario.getId(), restaurante2.getId());
@@ -123,7 +124,7 @@ class UsuarioRepositoryTest {
     @Test
     @DisplayName("usuarioEstaVinculadoAoRestaurante - Deve retornar false quando o usuário não tiver nenhum tipo de usuário vinculado")
     void deveRetornarFalseQuandoUsuarioNaoPossuirTiposVinculados() {
-        Restaurante restaurante = criarRestaurante("Restaurante Padrão");
+        RestauranteEntity restaurante = criarRestaurante("Restaurante Padrão");
         Usuario usuarioSemTipo = criarUsuarioSemTipo("Ana Paula", "ana@email.com");
 
         boolean vinculado = usuarioRepository.usuarioEstaVinculadoAoRestaurante(usuarioSemTipo.getId(), restaurante.getId());
@@ -134,7 +135,7 @@ class UsuarioRepositoryTest {
     @Test
     @DisplayName("usuarioEstaVinculadoAoRestaurante - Deve retornar false quando o ID do usuário não existir")
     void deveRetornarFalseQuandoIdUsuarioInexistenteAoVerificarVinculo() {
-        Restaurante restaurante = criarRestaurante("Restaurante Padrão");
+        RestauranteEntity restaurante = criarRestaurante("Restaurante Padrão");
 
         boolean vinculado = usuarioRepository.usuarioEstaVinculadoAoRestaurante(9999L, restaurante.getId());
 
@@ -146,10 +147,10 @@ class UsuarioRepositoryTest {
     @Test
     @DisplayName("findAllByTiposUsuarioIn - Deve retornar usuários associados aos tipos de usuário informados")
     void deveRetornarUsuariosQuandoPertenceremAosTiposInformados() {
-        Restaurante restaurante = criarRestaurante("Restaurante Padrão");
-        TipoUsuario tipoGerente = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
-        TipoUsuario tipoGarcom = criarTipoUsuario("Garçom", CategoriaEnun.DONO, restaurante);
-        TipoUsuario tipoOutro = criarTipoUsuario("Outro", CategoriaEnun.DONO, restaurante);
+        RestauranteEntity restaurante = criarRestaurante("Restaurante Padrão");
+        TipoUsuarioEntity tipoGerente = criarTipoUsuario("Gerente", CategoriaEnun.DONO, restaurante);
+        TipoUsuarioEntity tipoGarcom = criarTipoUsuario("Garçom", CategoriaEnun.DONO, restaurante);
+        TipoUsuarioEntity tipoOutro = criarTipoUsuario("Outro", CategoriaEnun.DONO, restaurante);
 
         Usuario usuario1 = criarUsuario("User Gerente", "gerente@email.com", tipoGerente);
         Usuario usuario2 = criarUsuario("User Garçom", "garcom@email.com", tipoGarcom);
@@ -165,8 +166,8 @@ class UsuarioRepositoryTest {
     @Test
     @DisplayName("findAllByTiposUsuarioIn - Deve retornar lista vazia quando nenhum usuário pertencer aos tipos informados")
     void deveRetornarListaVaziaQuandoNenhumUsuarioPertencerAosTiposInformados() {
-        Restaurante restaurante = criarRestaurante("Restaurante Padrão");
-        TipoUsuario tipoSemUsuarios = criarTipoUsuario("Sem Usuários", CategoriaEnun.DONO, restaurante);
+        RestauranteEntity restaurante = criarRestaurante("Restaurante Padrão");
+        TipoUsuarioEntity tipoSemUsuarios = criarTipoUsuario("Sem Usuários", CategoriaEnun.DONO, restaurante);
 
         List<Usuario> resultado = usuarioRepository.findAllByTiposUsuarioIn(List.of(tipoSemUsuarios));
 
@@ -182,9 +183,9 @@ class UsuarioRepositoryTest {
     }
 
     // Helper methods para criação isolada de dados de teste
-    private Restaurante criarRestaurante(String nome) {
+    private RestauranteEntity criarRestaurante(String nome) {
         String uniqueId = UUID.randomUUID().toString().substring(0, 8);
-        Restaurante novoRestaurante = new Restaurante();
+        RestauranteEntity novoRestaurante = new RestauranteEntity();
         novoRestaurante.setNome(nome + " " + uniqueId);
         novoRestaurante.setTipoCozinha(TipoCozinhaEnun.ITALIANA);
         novoRestaurante.setHorarioFuncionamentoInicio(LocalTime.of(10, 0));
@@ -192,15 +193,15 @@ class UsuarioRepositoryTest {
         return entityManager.persistAndFlush(novoRestaurante);
     }
 
-    private TipoUsuario criarTipoUsuario(String nome, CategoriaEnun tipo, Restaurante rest) {
-        TipoUsuario novoTipo = new TipoUsuario();
+    private TipoUsuarioEntity criarTipoUsuario(String nome, CategoriaEnun tipo, RestauranteEntity rest) {
+        TipoUsuarioEntity novoTipo = new TipoUsuarioEntity();
         novoTipo.setNome(nome);
         novoTipo.setTipo(tipo);
         novoTipo.setRestaurante(rest);
         return entityManager.persistAndFlush(novoTipo);
     }
 
-    private Usuario criarUsuario(String nome, String email, TipoUsuario tpUsuario) {
+    private Usuario criarUsuario(String nome, String email, TipoUsuarioEntity tpUsuario) {
         String uniqueId = UUID.randomUUID().toString().substring(0, 8);
         Usuario usuario = new Usuario();
         usuario.setNome(nome + " " + uniqueId);

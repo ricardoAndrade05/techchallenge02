@@ -11,12 +11,12 @@ import com.postech.techchallenge02.core.dtos.AtualizarRestauranteDTO;
 import com.postech.techchallenge02.core.dtos.NovoRestauranteDTO;
 import com.postech.techchallenge02.core.dtos.RestauranteDTO;
 import com.postech.techchallenge02.core.interfaces.RestauranteDataSource;
-import com.postech.techchallenge02.infra.entities.Restaurante;
-import com.postech.techchallenge02.infra.entities.TipoUsuario;
-import com.postech.techchallenge02.infra.entities.Usuario;
 import com.postech.techchallenge02.infra.infra.mappers.RestauranteMapper;
-import com.postech.techchallenge02.infra.repositories.RestauranteRepository;
-import com.postech.techchallenge02.infra.repositories.UsuarioRepository;
+import com.postech.techchallenge02.infra.jpa.entities.RestauranteEntity;
+import com.postech.techchallenge02.infra.jpa.entities.TipoUsuarioEntity;
+import com.postech.techchallenge02.infra.jpa.entities.Usuario;
+import com.postech.techchallenge02.infra.jpa.repositories.RestauranteRepository;
+import com.postech.techchallenge02.infra.jpa.repositories.UsuarioRepository;
 
 @Component
 public class RestauranteDataSourceAdapter implements RestauranteDataSource {
@@ -33,7 +33,7 @@ public class RestauranteDataSourceAdapter implements RestauranteDataSource {
 
     @Override
     public RestauranteDTO buscaRestaurantePorId(Long idRestaurante) {
-        Optional<Restaurante> restauranteOptional = this.restauranteRepository.findById(idRestaurante);
+        Optional<RestauranteEntity> restauranteOptional = this.restauranteRepository.findById(idRestaurante);
         if (restauranteOptional.isEmpty()) {
             return null;
         }
@@ -44,10 +44,10 @@ public class RestauranteDataSourceAdapter implements RestauranteDataSource {
 
     @Override
     public void excluirRestaurante(Long idRestaurante) {
-        Restaurante restaurante = restauranteRepository.findById(idRestaurante).get();
-        List<TipoUsuario> tiposDoRestaurante = restaurante.getTiposUsuario();
+        RestauranteEntity restaurante = restauranteRepository.findById(idRestaurante).get();
+        List<TipoUsuarioEntity> tiposDoRestaurante = restaurante.getTiposUsuario();
         if (!tiposDoRestaurante.isEmpty()) {
-            Set<Long> idsParaRemover = tiposDoRestaurante.stream().map(TipoUsuario::getId).collect(Collectors.toSet());
+            Set<Long> idsParaRemover = tiposDoRestaurante.stream().map(TipoUsuarioEntity::getId).collect(Collectors.toSet());
             List<Usuario> usuarios = usuarioRepository.findAllByTiposUsuarioIn(tiposDoRestaurante);
             usuarios.forEach(usuario -> usuario.getTiposUsuario().removeIf(tu -> idsParaRemover.contains(tu.getId())));
             usuarioRepository.saveAll(usuarios);
@@ -58,7 +58,7 @@ public class RestauranteDataSourceAdapter implements RestauranteDataSource {
 
     @Override
     public RestauranteDTO cadastrarRestaurante(NovoRestauranteDTO dto) {
-        Restaurante restaurante = restauranteMapper.toEntity(dto);
+        RestauranteEntity restaurante = restauranteMapper.toEntity(dto);
         Usuario dono = usuarioRepository.findById(dto.idUsuarioLogado()).get();
         restaurante.setDono(dono);
 
@@ -70,7 +70,7 @@ public class RestauranteDataSourceAdapter implements RestauranteDataSource {
 
 @Override
 public RestauranteDTO atualizarRestaurante(AtualizarRestauranteDTO dto) {
-    Restaurante restaurante = restauranteRepository.findById(dto.idRestaurante()).get();
+    RestauranteEntity restaurante = restauranteRepository.findById(dto.idRestaurante()).get();
     restaurante.setNome(dto.nome());
     restaurante.setTipoCozinha(dto.tipoCozinha());
     restaurante.setHorarioFuncionamentoInicio(dto.horaAbertura());
@@ -84,7 +84,7 @@ public RestauranteDTO atualizarRestaurante(AtualizarRestauranteDTO dto) {
     }
     Usuario dono = usuarioRepository.findById(dto.idDono()).get();
     restaurante.setDono(dono);
-    Restaurante restauranteAtualizado = restauranteRepository.saveAndFlush(restaurante);
+    RestauranteEntity restauranteAtualizado = restauranteRepository.saveAndFlush(restaurante);
     return restauranteMapper.toDTO(restauranteAtualizado);
 }
 

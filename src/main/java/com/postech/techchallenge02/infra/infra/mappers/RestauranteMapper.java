@@ -12,20 +12,20 @@ import com.postech.techchallenge02.core.dtos.RestauranteDTO;
 import com.postech.techchallenge02.core.dtos.TipoUsuarioDonoDTO;
 import com.postech.techchallenge02.core.dtos.UsuarioDonoDTO;
 import com.postech.techchallenge02.core.enums.TipoCozinhaEnun;
-import com.postech.techchallenge02.infra.entities.Restaurante;
-import com.postech.techchallenge02.infra.entities.TipoUsuario;
-import com.postech.techchallenge02.infra.entities.Usuario;
+import com.postech.techchallenge02.infra.jpa.entities.RestauranteEntity;
+import com.postech.techchallenge02.infra.jpa.entities.TipoUsuarioEntity;
+import com.postech.techchallenge02.infra.jpa.entities.Usuario;
 
 @Component
 public class RestauranteMapper {
 
     private final EnderecoMapper enderecoMapper;
 
-    RestauranteMapper(EnderecoMapper enderecoMapper) {
+    public RestauranteMapper(EnderecoMapper enderecoMapper) {
         this.enderecoMapper = enderecoMapper;
     }
 
-    public RestauranteDTO toDTO(Restaurante restaurante) {
+    public RestauranteDTO toDTO(RestauranteEntity restaurante) {
         if (restaurante == null) {
             return null;
         }
@@ -51,12 +51,12 @@ public class RestauranteMapper {
         return restauranteDTO;
     }
 
-    public Restaurante toEntity(NovoRestauranteDTO dto) {
+    public RestauranteEntity toEntity(NovoRestauranteDTO dto) {
         if (dto == null) {
             return null;
         }
 
-        Restaurante restaurante = new Restaurante();
+        RestauranteEntity restaurante = new RestauranteEntity();
 
         restaurante.setHorarioFuncionamentoInicio(dto.horarioAbertura());
         restaurante.setHorarioFuncionamentoFim(dto.horarioFechamento());
@@ -68,12 +68,12 @@ public class RestauranteMapper {
     }
 
 
-    public Restaurante toEntity(AtualizarRestauranteDTO dto) {
+    public RestauranteEntity toEntity(AtualizarRestauranteDTO dto) {
         if (dto == null) {
             return null;
         }
 
-        Restaurante restaurante = new Restaurante();
+        RestauranteEntity restaurante = new RestauranteEntity();
         restaurante.setId(dto.idRestaurante());
         restaurante.setHorarioFuncionamentoInicio(dto.horaAbertura());
         restaurante.setHorarioFuncionamentoFim(dto.horaFechamento());
@@ -90,11 +90,11 @@ public class RestauranteMapper {
         }
 
         TipoUsuarioDonoDTO tipoUsuario = null;
-        Set<TipoUsuario> tipos = usuario.getTiposUsuario();
+        Set<TipoUsuarioEntity> tipos = usuario.getTiposUsuario();
 
         if (tipos != null && !tipos.isEmpty() && idRestaurante != null) {
-            for (TipoUsuario tu : tipos) {
-                Restaurante restaurante = tu.getRestaurante();
+            for (TipoUsuarioEntity tu : tipos) {
+                RestauranteEntity restaurante = tu.getRestaurante();
                 if (restaurante != null && idRestaurante.equals(restaurante.getId())) {
                     tipoUsuario = new TipoUsuarioDonoDTO(tu.getId(), tu.getNome(), tu.getTipo());
                     break;
