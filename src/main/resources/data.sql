@@ -115,3 +115,4 @@ SELECT setval('tb_endereco_id_seq', (SELECT MAX(id) FROM tb_endereco));
 SELECT setval('tb_usuario_id_seq', (SELECT MAX(id) FROM tb_usuario));
 SELECT setval('tb_restaurante_id_seq', (SELECT MAX(id) FROM tb_restaurante));
 SELECT setval('tb_tipo_usuario_id_seq', (SELECT MAX(id) FROM tb_tipo_usuario));
+SELECT setval('tb_item_cardapio', (SELECT MAX(id) FROM tb_item_cardapio));
