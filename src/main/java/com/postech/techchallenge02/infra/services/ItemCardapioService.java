@@ -6,10 +6,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.postech.techchallenge02.core.controllers.ItemCardapioController;
+import com.postech.techchallenge02.core.dtos.ExclusaoItemCardapioDTO;
 import com.postech.techchallenge02.core.dtos.ItemCardapioDTO;
 import com.postech.techchallenge02.core.dtos.NovoItemCardapioDTO;
 import com.postech.techchallenge02.core.interfaces.ItemCardapioDataSource;
 import com.postech.techchallenge02.core.interfaces.RestauranteDataSource;
+import com.postech.techchallenge02.core.interfaces.TipoUsuarioDataSource;
+import com.postech.techchallenge02.core.interfaces.UsuarioDataSource;
 
 
 @Service
@@ -17,8 +20,8 @@ public class ItemCardapioService {
     
     private final ItemCardapioController itemCardapioController;
 
-    public ItemCardapioService(ItemCardapioDataSource dataSource, RestauranteDataSource restauranteDataSource) {
-        this.itemCardapioController = ItemCardapioController.getInstance(dataSource, restauranteDataSource);
+    public ItemCardapioService(ItemCardapioDataSource dataSource, RestauranteDataSource restauranteDataSource, UsuarioDataSource usuarioDataSource, TipoUsuarioDataSource tipoUsuarioDataSource) {
+        this.itemCardapioController = ItemCardapioController.getInstance(dataSource, restauranteDataSource, usuarioDataSource, tipoUsuarioDataSource);
     }
 
     @Transactional
@@ -39,16 +42,12 @@ public class ItemCardapioService {
 
     @Transactional
     public ItemCardapioDTO atualizaItemCardapio(Long id, ItemCardapioDTO dto) {
-        return null; //this.itemCardapioController.atualizarRestaurante(atualizarItemCardapioDTO);
+        return null; 
     }
 
     @Transactional
-    public void exclui(Long idRestaurante) {
-        //this.restauranteController.excluirRestaurante(new ExcluirItemCardapioDTO(idUsuarioLogado, idRestaurante));
+    public void exclui(Long id, Long idUsuario ) {
+        this.itemCardapioController.excluiItemCardapio(new ExclusaoItemCardapioDTO(idUsuario, id));
     }
 
-    @Transactional
-    public ItemCardapioDTO cadastra(ItemCardapioDTO novoItemCardapioDTO) {
-        return null; //this.restauranteController.cadastrarRestaurante(novoItemCardapioDTO);
-    }
 }

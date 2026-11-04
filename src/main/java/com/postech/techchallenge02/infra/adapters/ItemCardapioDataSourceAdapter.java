@@ -51,5 +51,10 @@ public class ItemCardapioDataSourceAdapter implements ItemCardapioDataSource {
 		Page<ItemCardapioEntity> lista = this.cardapioRepo.findByRestauranteId(id, pageable);
 		return lista.map(this.cardapioMapper::toDomain);
 	}
+
+	@Override
+	public void excluiItem(Long id) {
+		this.cardapioRepo.deleteById(id);
+	}
 }
 

@@ -43,4 +43,9 @@ public class ItemCardapioGatewayImpl implements ItemCardapioGateway {
 		return this.dataSource.listaItensRestaurante(idRestaurante, pageable);
 	}
 
+	@Override
+	public void exclusaoItem(Long id) {
+		this.dataSource.excluiItem(id);
+	}
+
 }

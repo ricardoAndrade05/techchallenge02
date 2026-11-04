@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import com.postech.techchallenge02.core.dtos.ItemCardapioDTO;
 import com.postech.techchallenge02.core.dtos.RestauranteDTO;
 import com.postech.techchallenge02.core.entities.ItemCardapio;
+import com.postech.techchallenge02.core.entities.Restaurante;
 import com.postech.techchallenge02.infra.jpa.entities.ItemCardapioEntity;
 
 @Component
@@ -32,9 +33,16 @@ public class ItemCardapioMapper {
 		if (entity == null) {
 			return null;
 		}
+		var restauranteEntity = entity.getRestaurante();
+		var restaurante = Restaurante.restaurar(
+				restauranteEntity.getId(),
+				restauranteEntity.getNome(),
+				restauranteEntity.getTipoCozinha(),
+				restauranteEntity.getHorarioFuncionamentoInicio(),
+				restauranteEntity.getHorarioFuncionamentoFim(), null, null);
 		ItemCardapio itemCardapio = ItemCardapio.restaura(
 				entity.getId(), entity.getNome(), entity.getDescricao(), entity.getPreco(),
-				entity.getTipoDisponibilidade(), entity.getCaminhoImagem(), null);
+				entity.getTipoDisponibilidade(), entity.getCaminhoImagem(), restaurante);
 
 		return itemCardapio;
 	}

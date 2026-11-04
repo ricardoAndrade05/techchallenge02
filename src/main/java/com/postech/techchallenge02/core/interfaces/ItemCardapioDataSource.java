@@ -15,4 +15,6 @@ public interface ItemCardapioDataSource {
 	Optional<ItemCardapio> consulta(Long id);
 
 	Page<ItemCardapio> listaItensRestaurante(Long id, Pageable pageable);
+
+    void excluiItem(Long id);
 }

@@ -7,32 +7,44 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import com.postech.techchallenge02.core.dtos.ExclusaoItemCardapioDTO;
 import com.postech.techchallenge02.core.dtos.ItemCardapioDTO;
 import com.postech.techchallenge02.core.dtos.NovoItemCardapioDTO;
 import com.postech.techchallenge02.core.entities.ItemCardapio;
 import com.postech.techchallenge02.core.gateways.ItemCardapioGatewayImpl;
 import com.postech.techchallenge02.core.gateways.RestauranteGatewayImpl;
+import com.postech.techchallenge02.core.gateways.UsuarioGatewayImpl;
 import com.postech.techchallenge02.core.interfaces.ItemCardapioDataSource;
 import com.postech.techchallenge02.core.interfaces.ItemCardapioGateway;
 import com.postech.techchallenge02.core.interfaces.RestauranteDataSource;
 import com.postech.techchallenge02.core.interfaces.RestauranteGateway;
+import com.postech.techchallenge02.core.interfaces.TipoUsuarioDataSource;
+import com.postech.techchallenge02.core.interfaces.UsuarioDataSource;
+import com.postech.techchallenge02.core.interfaces.UsuarioGateway;
 import com.postech.techchallenge02.core.presenters.ItemCardapioPresenter;
 import com.postech.techchallenge02.core.usecases.CadastrarItemCardapioUseCase;
 import com.postech.techchallenge02.core.usecases.ConsultaItemCardapioUseCase;
+import com.postech.techchallenge02.core.usecases.ExcluiItemCardapioUseCase;
 
 public class ItemCardapioController {
 
 	private final ItemCardapioDataSource itemCardapioDataSource;
 	private final RestauranteDataSource restauranteDataSource;
+	private final UsuarioDataSource usuarioDataSource;
+	private final TipoUsuarioDataSource tipoUsuariodataSource;
 
-	private ItemCardapioController(ItemCardapioDataSource dataSource, RestauranteDataSource restauranteDataSource) {
+	private ItemCardapioController(ItemCardapioDataSource dataSource, RestauranteDataSource restauranteDataSource,
+			UsuarioDataSource usuarioDataSource, TipoUsuarioDataSource tipoUsuarioDataSource) {
 		this.itemCardapioDataSource = dataSource;
 		this.restauranteDataSource = restauranteDataSource;
+		this.usuarioDataSource = usuarioDataSource;
+		this.tipoUsuariodataSource = tipoUsuarioDataSource;
 	}
 
 	public static ItemCardapioController getInstance(ItemCardapioDataSource dataSource,
-			RestauranteDataSource restauranteDataSource) {
-		return new ItemCardapioController(dataSource, restauranteDataSource);
+			RestauranteDataSource restauranteDataSource, UsuarioDataSource usuarioDataSource,
+			TipoUsuarioDataSource tipoUsuariodataSource) {
+		return new ItemCardapioController(dataSource, restauranteDataSource, usuarioDataSource, tipoUsuariodataSource);
 	}
 
 	public ItemCardapioDTO cadastro(NovoItemCardapioDTO novoItem) {
@@ -63,5 +75,20 @@ public class ItemCardapioController {
 		return new PageImpl<>(
 				pageDTO,
 				pageable, pageDTO.size() / page.getPageSize());
+	}
+
+	public ItemCardapio atualizaCardapio(ItemCardapioDTO atualizacao) {
+
+		return null;
+	}
+
+	public void excluiItemCardapio(ExclusaoItemCardapioDTO exclusaoItemCardapioDTO) {
+		UsuarioGateway usuarioGateway = UsuarioGatewayImpl.getInstance(this.usuarioDataSource,
+				this.tipoUsuariodataSource);
+
+		ItemCardapioGateway cardapioGateway = ItemCardapioGatewayImpl.getInstance(itemCardapioDataSource);
+
+		ExcluiItemCardapioUseCase.getInstance(cardapioGateway, usuarioGateway)
+				.execute(exclusaoItemCardapioDTO);
 	}
 }
