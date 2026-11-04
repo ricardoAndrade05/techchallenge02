@@ -684,12 +684,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/tipos-usuario/1",
-              "protocol": "http",
+              "raw": "{{LOCAL_HOST}}/tipos-usuario/1",
               "host": [
-                "localhost"
+                "{{LOCAL_HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "tipos-usuario",
                 "1"
@@ -797,12 +795,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/tipos-usuario/restaurante/1",
-              "protocol": "http",
+              "raw": "{{LOCAL_HOST}}/tipos-usuario/restaurante/1",
               "host": [
-                "localhost"
+                "{{LOCAL_HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "tipos-usuario",
                 "restaurante",
@@ -922,12 +918,10 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/tipos-usuario/1",
-              "protocol": "http",
+              "raw": "{{LOCAL_HOST}}/tipos-usuario/1",
               "host": [
-                "localhost"
+                "{{LOCAL_HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "tipos-usuario",
                 "1"
@@ -1193,12 +1187,10 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/tipos-usuario/15",
-              "protocol": "http",
+              "raw": "{{LOCAL_HOST}}/tipos-usuario/15",
               "host": [
-                "localhost"
+                "{{LOCAL_HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "tipos-usuario",
                 "15"
@@ -1330,12 +1322,10 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/usuarios/desassociar-tipo",
-              "protocol": "http",
+              "raw": "{{LOCAL_HOST}}/usuarios/desassociar-tipo",
               "host": [
-                "localhost"
+                "{{LOCAL_HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "usuarios",
                 "desassociar-tipo"
@@ -1462,12 +1452,10 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/usuarios/associar-tipo",
-              "protocol": "http",
+              "raw": "{{LOCAL_HOST}}/usuarios/associar-tipo",
               "host": [
-                "localhost"
+                "{{LOCAL_HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "usuarios",
                 "associar-tipo"
@@ -2016,6 +2004,169 @@
               ],
               "cookie": [],
               "body": "{\n  \"type\": \"recurso-nao-encontrado\",\n  \"title\": \"Recurso não encontrado\",\n  \"status\": 404,\n  \"detail\": \"Restaurante 99 não encontrado\",\n  \"instance\": \"/itens-cardapio\",\n  \"timestamp\": \"03/11/2026 20:29:21\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Excluir item",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "idUsuario",
+                "value": "2"
+              }
+            ],
+            "url": {
+              "raw": "{{LOCAL_HOST}}/itens-cardapio/21",
+              "host": [
+                "{{LOCAL_HOST}}"
+              ],
+              "path": [
+                "itens-cardapio",
+                "21"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Erro ID inexistente",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "idUsuario",
+                    "value": "1"
+                  }
+                ],
+                "url": {
+                  "raw": "{{LOCAL_HOST}}/itens-cardapio/21",
+                  "host": [
+                    "{{LOCAL_HOST}}"
+                  ],
+                  "path": [
+                    "itens-cardapio",
+                    "21"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Wed, 04 Nov 2026 00:42:39 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"recurso-nao-encontrado\",\n  \"title\": \"Recurso não encontrado\",\n  \"status\": 404,\n  \"detail\": \"Item Cardapio não encontrado/inexistente: 21\",\n  \"instance\": \"/itens-cardapio/21\",\n  \"timestamp\": \"03/11/2026 21:42:39\"\n}"
+            },
+            {
+              "name": "Erro usuário sem vinculo",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "idUsuario",
+                    "value": "3"
+                  }
+                ],
+                "url": {
+                  "raw": "{{LOCAL_HOST}}/itens-cardapio/21",
+                  "host": [
+                    "{{LOCAL_HOST}}"
+                  ],
+                  "path": [
+                    "itens-cardapio",
+                    "21"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Wed, 04 Nov 2026 00:43:42 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"recurso-nao-encontrado\",\n  \"title\": \"Recurso não encontrado\",\n  \"status\": 404,\n  \"detail\": \"Usuário não encontrado/inexistente para esse restaurante.\",\n  \"instance\": \"/itens-cardapio/21\",\n  \"timestamp\": \"03/11/2026 21:43:42\"\n}"
+            },
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "idUsuario",
+                    "value": "2"
+                  }
+                ],
+                "url": {
+                  "raw": "{{LOCAL_HOST}}/itens-cardapio/21",
+                  "host": [
+                    "{{LOCAL_HOST}}"
+                  ],
+                  "path": [
+                    "itens-cardapio",
+                    "21"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Wed, 04 Nov 2026 00:46:21 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": ""
             }
           ]
         }
