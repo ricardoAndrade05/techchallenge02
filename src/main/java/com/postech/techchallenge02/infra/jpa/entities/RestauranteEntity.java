@@ -45,6 +45,9 @@ public class RestauranteEntity {
     @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TipoUsuarioEntity> tiposUsuario = new ArrayList<>();
 
+    @OneToMany(mappedBy = "restaurante", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<ItemCardapioEntity> itensCardapio = new ArrayList<>();
+
     public Long getId() {
         return id;
     }

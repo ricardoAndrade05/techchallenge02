@@ -14,4 +14,6 @@ public interface ItemCardapioGateway {
     Optional<ItemCardapio> consulta(Long id);
 
     Page<ItemCardapio> consultaPorRestaurante(Long id, Pageable pageable);
+
+    void exclusaoItem(Long id);
 }

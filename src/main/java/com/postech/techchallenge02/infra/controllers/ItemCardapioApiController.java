@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,8 +54,8 @@ public class ItemCardapioApiController implements ItemCardapioAPI {
 
 	@Override
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> exclui(Long id) {
-		this.itemCardapioService.exclui(id);
+	public ResponseEntity<Void> exclui(@PathVariable Long id, @RequestHeader("idUsuario") Long idUsuario) {
+		this.itemCardapioService.exclui(id, idUsuario);
 		return ResponseEntity.noContent().build();
 	}
 

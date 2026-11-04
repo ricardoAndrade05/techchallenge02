@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.postech.techchallenge02.core.dtos.ItemCardapioDTO;
 import com.postech.techchallenge02.core.dtos.NovoItemCardapioDTO;
@@ -46,7 +47,7 @@ interface ItemCardapioAPI {
 			@ApiResponse(responseCode = "204", description = "Exclusão de item realizada com sucesso."),
 			@ApiResponse(responseCode = "404", description = "Item do cardápio não encontrado.", content = @Content(schema = @Schema(implementation = ErroPadraoDTO.class)))
 	})
-	ResponseEntity<Void> exclui(@PathVariable Long id);
+	ResponseEntity<Void> exclui(@PathVariable Long id, @RequestHeader("idUsuario") Long idUsuario);
 
 	@Operation(summary = "Atualiza item do cardapio", description = "Atualiza um item do cardapio.")
 	@ApiResponses(value = {
